@@ -1,4 +1,4 @@
-[<img src="assets/RUshield.webp" alt="Rutgers University](https://www.ece.rutgers.edu/)
+[<img src="assets/RUshield.webp" alt="Rutgers University"](https://www.ece.rutgers.edu/)
 # ECE-451/556 Parallel and Distributed Computing
 * 2023 Fall
 * **Instructor:**  [Dov Kruger](https://RU-ECE/DovKrugerCourses/DovKrugerBio.md)
