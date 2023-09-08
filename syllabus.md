@@ -19,7 +19,7 @@ Because students today may have a Mac running an ARM CPU, we will provide online
 
 * Intel 4th generation or better capable of executing AVX2 instructions
 * Intel ISPC compiler
-* CUDA running on NVIDIA GTX 1050 or better
+* CUDA running on NVIDIA GTX 10xx or better
 
 ## COURSE DESCRIPTION
 
@@ -57,6 +57,7 @@ All textbooks are optional. Most materials for this course are linked in the not
 * [Intel ISPC Compiler](https://ispc.github.io/)
 * [Intel Intrinsics Guide](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html)
 * [CUDA programming guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html)
+* 
 
 * Other Readings: 	Papers available in ref directory of repo
 
