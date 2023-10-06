@@ -1,3 +1,5 @@
+all: examining_intrinsics hwsort8col
+
 examining_intrinsics: examining_intrinsics.cpp examining_intrinsics_main.cpp
 	g++ -O2 -mavx2 examining_intrinsics.cpp examining_intrinsics_main.cpp -o examining_intrinsics
 

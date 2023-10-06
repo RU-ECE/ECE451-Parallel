@@ -31,13 +31,38 @@ void minmax(__m256i& a, __m256i& b) {
   a = temp;
 }
 
+/*
+    C++ calling convention ON x86 running linux
+
+    f(int a, int b) -> a = esi, b = edi
+    f(uint64_t a, uint64_t b, uint64_t c, uint64_t d) -> a = rsi, b = rdi, c = r8, d = r9)
+    g(double a, double b, double c, double d, double e) -> ymm0, ymm1, ymm2, ymm3, ymm5
+
+    r(__m256i a, __m256i b, __m256i c, __m256i d) -> a = ymm0, b = ymm1, c = ymm2, d = ymm3
+*/
+
 void sort8cols(__m256i a, __m256i b, __m256i c, __m256i d, __m256i e, __m256i f, __m256i g, __m256i h) {
     minmax(a,b);
     minmax(c,d);
     minmax(e,f);
     minmax(g,h);
     minmax(a,c);
+    //...
 }
+
+/*
+    given pointer to 64 consecutive 32-bit integers
+    sort each column of 8
+*/
+void sort8cols(uint32_t* p) {
+    __m256i a = _mm256_load_si256((__m256i const*)p);
+    // load 8 _m256i registers a..h
+    __m256i aout, bout, cout, dout, eout, fout, gout, hout;
+    // sort8cols(a,b,c,d,e,f,g,h, aout, bout, cout, dout, eout, fout, gout, hout);
+    // store 8 _m256i registers a..h
+    _mm256_store_si256((__m256i*)p, a);
+}
+
 
 __m256i load(const uint32_t* ap){
     uint32_t* temp = (uint32_t*)aligned_alloc(32, 32);
