@@ -1,0 +1,9 @@
+task scheduling slides
+Looking for problem spaces
+	Clean, SIMPLE mesh problem
+	Finite Element analysis: heat? stress/strain (harder)
+	tides (2d gravity)
+	ocean currents (3d, horribly complex)
+	atmospheric simulation (3d, even worse)
+Intel ISPC
+
