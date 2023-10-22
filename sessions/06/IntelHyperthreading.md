@@ -26,3 +26,9 @@ RBX					  RBX
 
 FAST FAST FAST switching between two threads
 whichever units of thread 1 are not used can be used by thread2???
+
+
+
+
+hash(x) = f(x) MOD n
+	       AND (n-1)
