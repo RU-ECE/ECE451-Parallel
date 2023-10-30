@@ -1,0 +1,42 @@
+# Instructions to log onto Amarel
+
+1. If you are off campus, you need to setup vpn.
+  * download Cisco Anyconnect from software.rutgers.edu and install
+  *
+
+
+
+
+
+1. On Amarel, load modules for the software you want
+
+```bash
+module available        # see which modules are available to load
+module load cuda        # load the latest cuda software
+module load openmpi     # load openmp
+module load hdf5
+```
+
+1. To run a job, use SLURM. Here is a sample script
+```bash
+#!/bin/bash
+# submit this job by giving the following command:
+# sbatch hello_job.slurm
+#SBATCH --job-name=test1_job
+#SBATCH --output=test1.txt
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=16
+#SBATCH --cpus-per-task=1
+#SBATCH --time=00:05:00
+
+# Load any necessary modules (if required)
+# module load openmpi
+
+# Run the compiled program
+srun  --mpi=openmpi  ./test1
+```
+
+1. To run
+```bash
+sbatch test1_job.slurm
+```

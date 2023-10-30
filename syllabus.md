@@ -1,9 +1,12 @@
-[<img src="assets/RUshield.png" alt="Rutgers University"](https://www.ece.rutgers.edu/)
+<a href="ece.rutgers.edu>
+<img src="assets/RUshield.png" alt="Rutgers Logo" width="100">
+</a>
+
 # ECE-451/556 Parallel and Distributed Computing
 * 2023 Fall
 * **Instructor:**  [Dov Kruger](https://RU-ECE/DovKrugerCourses/DovKrugerBio.md)
 * **[Meeting Times and Office hours](https://bit.ly/3ObwKEr)
-* **[Resources](https:github.com//RU-ece/DovKrugerCourses/DovKrugerBio.md)**
+* **[Resources](https://github.com/RU-ece/DovKrugerCourses/DovKrugerBio.md)**
 * **[Course Web Address](https://github.com/RU-ECE/ECE451-Parallel)**
 ** Prerequisites**
   * Required good command of C++, good idea to know some machine language
