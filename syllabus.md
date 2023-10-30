@@ -1,4 +1,4 @@
-<a href="ece.rutgers.edu">
+<a href="https://www.ece.rutgers.edu">
 <img src="assets/RUshield.png" alt="Rutgers Logo" width="100">
 </a>
 
