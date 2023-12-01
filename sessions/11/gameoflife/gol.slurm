@@ -1,8 +1,8 @@
 #!/bin/bash
 # submit this job by giving the following command:
-# sbatch hello_job.slurm
-#SBATCH --job-name=test1_job
-#SBATCH --output=test1.txt
+# sbatch gol.slurm
+#SBATCH --job-name=gol
+#SBATCH --output=gol.txt
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=16
 #SBATCH --cpus-per-task=1

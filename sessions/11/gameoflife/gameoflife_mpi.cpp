@@ -1,10 +1,15 @@
 #include <mpi.h>
 #include <iostream>
+#include <cstdint>
 using namespace std;
 
 
+int numcpus;
+int id;
 uint32_t cpu_grid = 4;
-uint32_t n;
+const uint32_t n = 10;
+const uint32_t row = n + 2;
+const uint32_t grid_size = 4;
 uint8_t* life;
 uint8_t* nextlife;
 
@@ -113,10 +118,9 @@ void stepForward() {
 
   }
   if (id >= grid_size)
-    MPI_Send(life[row+1], n, MPI_CHAR, id-grid_size,
+    MPI_Send(&life[row+1], n, MPI_CHAR, id-grid_size,
 	     1, MPI_COMM_WORLD);
 
-  MPI_Recv(void* data, int count, MPI_Datatype datatype, int from, int tag, MPI_Comm comm, MPI_Status* status);
     for (int i = 0, c = n+2+1; i < n; i++, c+= 2)
       for (int j = 0; j < n ; j++, c++)
         calcLiveOrDead(c);
@@ -133,14 +137,11 @@ void print() {
 }
 int main(int argc, char* argv[]) {
   MPI_Init(&argc, &argv);
-  int numcpus;
-  int id;
   MPI_Comm_size(MPI_COMM_WORLD, &numcpus);
   if (id == 0)
     cout << numcpus << '\n';
   MPI_Comm_rank(MPI_COMM_WORLD, &id);
-  n = 10;
-  int row = n+2;
+  cout << "I am cpu: " << id << " numcpus=" << numcpus << '\n';
   int num_generations = 4;
   init();
   life[2*row+3] = 1;
