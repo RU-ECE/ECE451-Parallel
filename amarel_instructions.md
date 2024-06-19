@@ -15,7 +15,15 @@
 
 ```bash
 ssh dk9999@amarel
+ssh dk9999@amarel.hpc.rutgers.edu
 ```
+
+To copy your ssh-key to amarel
+
+```bash
+ssh-copy-id dk9999@amarel
+```
+from then on login will work without a password from your computer
 
 The full name of the amarel cluster is amarel.hpc.rutgers.edu but the above seems to work when I am on the vpn.
 

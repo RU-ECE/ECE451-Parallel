@@ -1,12 +1,19 @@
 #include <mpi.h>
 #include <iostream>
+#include <cstdint>
 using namespace std;
 
 
-uint32_t cpu_grid = 4;
-uint32_t n;
+int num_cpus;
+int id;
+const uint32_t cpu_grid = 4;
+const uint32_t n = 10;
+const uint32_t row = n + 2;
+const uint32_t grid_size = 4;
 uint8_t* life;
 uint8_t* nextlife;
+uint8_t* westbuf;
+uint8_t* eastbuf;
 
 
 void init() {
@@ -16,6 +23,10 @@ void init() {
 
     for (int i = 0; i < size; i++)
       life[i] = 0;
+
+    //east-west buffers need n + 2 elements to include the incoming value from NORTH/SOUTH
+    westbuf = new uint8_t[row];
+    eastbuf = new uint8_t[row];
 }
 
 /*
@@ -63,18 +74,18 @@ each grid is surrounded by a buffer of zeros.
 Now we will use it by copying in the value from the neighbor
 // TODO: DIAGONALS STINK! We have to do
 
-  0 0 0 0 0 0 0 0 0 0 0 0 0
-  0 1 1 1 0 0 0 0 0 0 0 0                  0 0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0 0 0                  0 0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0 0 0                  0 0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0 0 0                  0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0                  0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0                  0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0                  0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0                  0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0                  0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0                  0 0 0 0 0 0 0 0 0 0 0
-   
+  x x x x x x x x x x x x
+  x 1 1 1 0 0 0 0 0 0 0 x                 0 0 0 0 0 0 0 0 0 0 0
+  x 0 0 0 0 0 0 0 0 0 0 x                 0 0 0 0 0 0 0 0 0 0 0
+  x 0 0 0 0 0 0 0 0 0 0 x                 0 0 0 0 0 0 0 0 0 0 0
+  x 0 0 0 0 0 0 0 0 0 0 x                 0 0 0 0 0 0 0 0 0 0 0
+  x 0 0 0 0 0 0 0 0 0 0 x                 0 0 0 0 0 0 0 0 0 0 0
+  x 0 0 0 0 0 0 0 0 0 0 x                 0 0 0 0 0 0 0 0 0 0 0
+  x 0 0 0 0 0 0 0 0 0 0 x                 0 0 0 0 0 0 0 0 0 0 0
+  x 0 0 0 0 0 0 0 0 0 0 x                 0 0 0 0 0 0 0 0 0 0 0
+  x 0 0 0 0 0 0 0 0 0 0 x                 0 0 0 0 0 0 0 0 0 0 0
+  x 0 0 0 0 0 0 0 0 0 0 x                 0 0 0 0 0 0 0 0 0 0 0
+  x x x x x x x x x x x x 
     1                                        2
 */
 
@@ -96,31 +107,42 @@ void calcLiveOrDead(uint32_t i) {
 void stepForward() {
   // first copy to/from our neighbors
   if (id >= grid_size) {
-     MPI_Send(&life[row+1], n, MPI_CHAR, id-grid_size,
-	     1, MPI_COMM_WORLD);
-    MPI_Recv(&life[1], n, MPI_CHAR, id+grid_size, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);    
+     MPI_Send(&life[row+1], n, MPI_CHAR, id-grid_size, 1, MPI_COMM_WORLD);
   }
 
-  if (id% grid_size >= 1) {
-    char buf[n];
-    for (int i = 0, c = row + 1; i < n; i++)
-      buf[i] = life[c]; // copy into a sequential buffer
-    MPI_Send(buf, n, MPI_CHAR, id-1,
-	     1, MPI_COMM_WORLD);
-    MPI_Recv(buf, n, MPI_CHAR, id+1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);       for (int i = 0, c = row + 1+n; i < n; i++)
-      life[c] = buf[i]; // copy fromsequential buffer into our array
-    
-
+  if (id < num_cpus - grid_size) {// highest with neightbor to south = 11
+     MPI_Send(&life[row*n+1], n, MPI_CHAR, id+grid_size, 1, MPI_COMM_WORLD);     
+     MPI_Recv(&life[1], n, MPI_CHAR, id+grid_size, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);    
   }
-  if (id >= grid_size)
-    MPI_Send(life[row+1], n, MPI_CHAR, id-grid_size,
-	     1, MPI_COMM_WORLD);
 
-  MPI_Recv(void* data, int count, MPI_Datatype datatype, int from, int tag, MPI_Comm comm, MPI_Status* status);
-    for (int i = 0, c = n+2+1; i < n; i++, c+= 2)
-      for (int j = 0; j < n ; j++, c++)
-        calcLiveOrDead(c);
-    swap(life, nextlife);
+  if (id >= grid_size) {
+     MPI_Recv(&life[row*n+1], n, MPI_CHAR, id-grid_size, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+  }
+
+  if (id % grid_size > 0) {
+    for (int i = 0, c = 1; i < row; i++, c += row)
+      westbuf[i] = life[c]; // copy into a sequential buffer
+    MPI_Send(westbuf, row, MPI_CHAR, id-1, 1, MPI_COMM_WORLD);
+  }
+
+  if (id % grid_size  < grid_size-1) {
+    for (int i = 0, c = n; i < row; i++, c += row)
+      eastbuf[i] = life[c]; // copy our eastern edge to send east
+    MPI_Send(eastbuf, row, MPI_CHAR, id+1, 1, MPI_COMM_WORLD);
+
+    MPI_Recv(eastbuf, row, MPI_CHAR, id+1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    for (int i = 0, c = n+1; i < row; i++, c += row)
+      life[c] = eastbuf[i]; // copy fromsequential buffer into our array
+  }
+
+  if (id % grid_size > 0) {
+    MPI_Recv(westbuf, row, MPI_CHAR, id-1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+  }
+
+  for (int i = 0, c = n+2+1; i < n; i++, c+= 2)
+    for (int j = 0; j < n ; j++, c++)
+      calcLiveOrDead(c);
+  swap(life, nextlife);
 }
 
 void print() {
@@ -129,27 +151,31 @@ void print() {
         cout << int(life[c]) << ' ';
       cout << "\n";
     }
-    cout << "\n\n";
+    cout << "\n\n" << endl;
 }
+
 int main(int argc, char* argv[]) {
   MPI_Init(&argc, &argv);
-  int numcpus;
-  int id;
-  MPI_Comm_size(MPI_COMM_WORLD, &numcpus);
-  if (id == 0)
-    cout << numcpus << '\n';
+  MPI_Comm_size(MPI_COMM_WORLD, &num_cpus);
   MPI_Comm_rank(MPI_COMM_WORLD, &id);
-  n = 10;
-  int row = n+2;
-  int num_generations = 4;
+  cout << "I am cpu: " << id << " numcpus=" << num_cpus << '\n';
+  int num_generations = 25;
   init();
-  life[2*row+3] = 1;
-  life[2*row+4] = 1;
-  life[2*row+5] = 1;
+  if (id == 0) {
+    //create a glider
+    life[1*row+4] = 1;
+    life[2*row+5] = 1;
+    life[3*row+3] = 1;
+    life[3*row+4] = 1;
+    life[3*row+5] = 1;
+  }
   for (int i = 0; i < num_generations; i++) {
+
     stepForward();
-    if (id == 0)
+    if (id == 0) {
+      cout << "gen: " << i << endl;
       print();
+    }
   }
   MPI_Finalize();
 }
