@@ -4,7 +4,7 @@
 
 # ECE-451/556 Parallel and Distributed Computing
 
-* 2023 Fall
+* 2024 Fall
 * **Instructor:**  [Dov Kruger](https://www.ece.rutgers.edu/DovKrugerCourses/Dov-Kruger)
 * **[Meeting Times and Office hours](https://bit.ly/3ObwKEr)**
 * **[Resources](ref)**
@@ -38,6 +38,8 @@ This course covers parallel computing
   * Current limits to parallel execution speed
     * Memory bandwidth
     * Latency
+    * Scheduling
+    * Load balancing
   * Future Improvements
 * Approaches to Parallelism
   * Multithreading
