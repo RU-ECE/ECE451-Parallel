@@ -14,21 +14,21 @@
 
   * Required good command of C++, helpful to know some machine language but not required
   * 16:332:563 (Grads) or 16:332:331 (undergrads)
-  * 16:332:351 (Programming Methodology-II & Data
-  * Strongly advised to have a solid background using Linux
-    * Tools in this course will use linux, remote machines will be available
+  * 16:332:351 (Programming Methodology-II & Data)
+  * Helps to have a solid background using Linux
+    * Tools in this course will use Linux, remote machines will be available
   * 14:332:434 – Operating Systems (helpful)
 
 ## Software and Hardware Requirements
 
-Because students today may have a Mac running an ARM CPU, we will provide online facilities, but if you can compile on your own intel machine this will lighten the load on the central resources. Everyone is expected to get an account on Amarel, the Rutgers research cluster, and to use the resource carefully as we are guests.
+Because students today may have a Mac running an ARM CPU, we will provide online facilities for Intel, but if you can compile on your own intel machine this will lighten the load on the central resources. Everyone is expected to get an account on Amarel, the Rutgers research cluster, and to use the resource carefully as we are guests.
 
-* g++/clang++ compiler capable of executing c++-14 and OpenMP
+* g++/clang++ compiler
 * c++ threading
+* Intel ISPC
 * Intel 4th generation or better capable of executing AVX2 instructions
 * CUDA running on NVIDIA GTX 10xx or better
 * OpenMPI (running on Amarel cluster)
-* Icarus Verilog (if time permits)
 
 ## COURSE DESCRIPTION
 
@@ -51,11 +51,11 @@ This course covers parallel computing
   * OpenMP (multithreaded and vectorized)
   * CUDA (massively parallel execution on GPUs)
   * MPI (Message Passing Interface)
-  * Verilog (custom parallel computing if time permits)
 
 ## Course Outcomes
 
 After completion of this course, students will be able to
+
 *  Write code using C++ threads
 *  Write code using openmp
 *  Benchmark code to measure actual performance
@@ -63,7 +63,7 @@ After completion of this course, students will be able to
 *  Analyze problems to determine whether they are memory bound
 *  Optimize algorithms to decrease memory utilization where possible 
 *  Write SIMD programs using AVX instructions (or ARM Neon if you prefer)
-*  Use a parallelizing compiler like OpenMP to generate vectorized code
+*  Use a parallelizing compiler like ISPC to generate vectorized code
 *  Write CUDA kernels to run on NVIDIA GPUs
 *  Write parallel programs on clusters using MPI
 
@@ -73,10 +73,8 @@ After completion of this course, students will be able to
 
 ## COURSE MATERIALS
 
-All textbooks are optional. Most materials for this course are linked in the notes and are freely downloadable.
+There is no required textbook. Materials for this course are linked in the notes and are freely downloadable.
 
-* Optional textbooks
-  * Programming Massively Parallel Processors 4e, Hwu, Kirk, and Hajj, 2023.
 * [Intel ISPC Compiler](https://ispc.github.io/)
 * [Intel Intrinsics Guide](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html)
 * [CUDA programming guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html)
@@ -91,15 +89,13 @@ All textbooks are optional. Most materials for this course are linked in the not
 ## GRADING PROCEDURES
 
 Grades will be based on:
-* Homework problem sets on theory                     (5%)
-* Paired Programming Homeworks                        (15%)
-* Mini projects                                       (15%)
-* Midterm                                             (32.5%)
-* Final exam                                          (32.5%)
+* Homework                                            (20%)
+* Midterm                                             (40%)
+* Final project                                       (40%)
 
 [Grading Policies] (https://github.com/RU-ECE/DovKrugerCourses/grading.md)
 [Academic Honesty and Discipline] (https://github.com/RU-ECE/DovKrugerCourses/academichonesty.md)
 
 ## IMPORTANT DATES
-* Midterm          ** 2024-TBD **
-* Final            ** 2024-TBD **
+* Midterm          ** 2023-10-26 **
+* Final            ** 2023-12-21 **
