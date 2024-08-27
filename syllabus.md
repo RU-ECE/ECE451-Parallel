@@ -65,13 +65,14 @@ All textbooks are optional. Most materials for this course are linked in the not
 * Other Readings: 	Papers available in ref directory of repo
 
 ## COURSE REQUIREMENTS
-* **Attendance:**	Attendance is crucial for an effective learning but will not be graded. Your work will speak for itself.
-* **Homework:** 	Coding assignments will be submitted via canvas for individual single files, or via github.
+* **Attendance:**	Attendance is crucial for an effective learning but will not be graded. There will be in-class handouts to encourage participation and attendance. Not doing the in-class work means you are not eligible for curving or grade modifications.
+* **Homework:** 	Coding assignments will be submitted via canvas for individual single files, or via github. Theory assignments will be submitted on paper or in canvas quizzes.
 
 ## GRADING PROCEDURES
 Grades will be based on:
 * Homework problem sets on theory                      (5%)
 * Group Programming Homeworks                         (20%)
+* Mini Project                                        (15%)
 * Midterm                                             (30%)
 * Final Project or final exam                         (30%)
 
