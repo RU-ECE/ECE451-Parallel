@@ -1,0 +1,9 @@
+1. get set up for github
+https://docs.google.com/document/d/1WOJqA5Vdo9QbeYMGn8pN1B8Uo8-1EnfZAMCAdkDKjFk/edit?usp=sharing
+
+2. create your repo with the right directory structure
+
+3. Make sure you can get on amarel
+   amarel_instruction.md in home directory
+
+4. 
