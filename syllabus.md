@@ -5,7 +5,7 @@
 # ECE-451/556 Parallel and Distributed Computing
 
 * 2024 Fall
-* **Instructor:**  [Dov Kruger](https://www.ece.rutgers.edu/DovKrugerCourses/Dov-Kruger)
+* **Instructor:**  [Dov Kruger](https://www.ece.rutgers.edu/Dov-Kruger)
 * **[Meeting Times and Office hours](https://bit.ly/3ObwKEr)**
 * **[Resources](ref)**
 * **[Course Web Address](https://github.com/RU-ECE/ECE451-Parallel)**
