@@ -4,7 +4,12 @@
 #include <cmath>
 
 using namespace std;
-
+//	0x7e92ed659b4b3490
+//  last 4 digits  0011 0100 1001 0000
+//  first number 1..127
+// seconds  128..255
+// third   256..38
+// 3*5*7 = 105  *   64 
 const uint64_t wheel[] = {
 	0x7e92ed659b4b3490, 0xde697df279b5b3cd, 0x5b769edfa5fbcb36, 0xf7cb66decdbdbfcf,
 	0xf7cb66decdbdbfcf, 0xeb75b77bbddaf9b4, 0xf4bf4bf793cfbdfa, 0x7fedbb697fb3cf67,
@@ -400,13 +405,15 @@ public:
 		uint64_t lim = sqrt(n);
 		uint64_t k = 0;
 		for (uint64_t i = 0; i < num_words; i++) {
-			//			p[i] = wheel[k++];
-			p[i] = wheelupto11[k++];
-			if (k >= 1155) // 105 for wheel
+			p[i] = wheel[k++];
+			//p[i] = wheelupto11[k++];
+			if (k >= 105) // 1154 for wheel11
 				k = 0;
 		}
+// 11*11 = 121  + 11*2 = 143   + 11*2 = 165
+// 11, 13, 17, 19, 23, 29, 31
 
-		for (uint64_t i = 13; i <= lim; i += 2)
+		for (uint64_t i = 11; i <= lim; i += 2)
 			if (is_prime(i)) {
 				count++;
 				for (uint64_t j = i*i; j <= n; j += 2*i)
@@ -464,7 +471,7 @@ public:
 
 	
 	// use bitcounting to avoid counting each one separately
-	void build_wheel(uint64_t s) {
+	void build_wheel(uint64_t s) { //3*5*7 = 105
 		uint64_t size = 128*s; 
 		for (uint64_t i = 3; i <= size; i += 2)
 			if (is_prime(i)) {
@@ -488,8 +495,11 @@ int main(int argc, char* argv[]) {
 		exit(-1);
 	}
 	uint64_t n = atol(argv[1]);
-	prime_bits primes(n);
 
+	prime_bits primes(n);
+// COPYING prime_bits objects is ILLEGAL (no copy constructor)
+// see me if you have questions
+//	prime_bits p2 = primes;
 	primes.build_wheel(3*5*7); // 2,3,5,7 repeats in 3*5*7 = 105
 
 	primes.build_wheel(3*5*7*11); // 2,3,5,7,11 repeats in 3*5*7*11 = = 1155

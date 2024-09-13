@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdint>
 #include <cmath>
 using namespace std;
 
@@ -22,6 +23,7 @@ uint64_t eratosthenes(bool primes[], uint64_t n) {
 
 int main(int argc, char* argv[]) {
 	uint64_t n = argc > 1 ? atol(argv[1]) : 1000;
-	bool primes[n+1];
+	bool* primes = new bool[n+1];
 	cout << eratosthenes(primes, n) << '\n';
+    delete[] primes;
 }

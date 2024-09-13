@@ -12,6 +12,26 @@ n=1,000,000,000
 
 sqrt(n) =~ 33,000
 
+## Understanding how to parallelize eratosthenes
+
+1. Calculate up to square root (this is not parallel at first)
+2. 
+
+isprime = new bool[n+1]
+first calculate up to sqrt(n)
+
+multithreaded sieve
+example n =10^9
+first calculate up to sqrt(n) = 33k
+divide up sqrt(n) ...   n into num_threads pieces
+a = sqrt(n)   b= n;
+thread 1: a, a + (b-a)/4
+thread 2: a + (b-a)/4+1, a + (b-a)/2
+thread 3: a + (b-a)/2+1, a + (b-a)*3/4
+thread 4: a + (b-a)*3/4+1, b
+
+
+
 ## Wheel factorization
 
 2: skip even numbers
@@ -88,3 +108,13 @@ lcm(64,105 ) = 64*105
 
 ## How fast can we initialize 2,3,5,7?
 
+## Memory
+
+n=30 example
+single threaded n=5
+remaining 6..30 (divide into 4 pieces, each thread does one piece)
+6..12 13..18 19..24 25..30
+
+
+RAM: RAS CAS ...
+     35  30

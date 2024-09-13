@@ -2,10 +2,10 @@ OPT	:= -O2
 DEBUG	:= -g
 COMP	:= g++ $(OPT) $(DEBUG)
 
-EXE	:= 00simple_eratosthenes 01_better_eratosthenes
+EXE	:= 00_simple_eratosthenes 01_better_eratosthenes 02_bitwise_eratosthenes 03_syncronization
 all: $(EXE)
 
-00simple_eratosthenes: 00simple_eratosthenes.cpp
+00_simple_eratosthenes: 00_simple_eratosthenes.cpp
 	$(COMP) $< -o $@
 
 01_better_eratosthenes: 01_better_eratosthenes.cpp
@@ -13,6 +13,9 @@ all: $(EXE)
 
 02_bitwise_eratosthenes: 02_bitwise_eratosthenes.cpp
 	$(COMP) -mpopcnt $< -o $@
+
+03_syncronization: 03_syncronization.cpp
+	$(COMP) $< -o $@
 
 # wipe it all out so you can build clean
 clean:
