@@ -369,7 +369,7 @@ public:
 				for (uint64_t j = i*i; j <= size; j += 2*i)
 					clear_prime(j);
 			}
-		for (uint64_t i = (lim + 2)| 1; i <= size; i += 2)
+		for (uint64_t i = (lim + 1)| 1; i <= size; i += 2)
 			if (is_prime(i))
 				count++;
 		return count;
@@ -389,7 +389,7 @@ public:
 			handle the few primes between sqrt(n) and the next 64-bit word boundary
 		*/
 		uint64_t word_index = (lim + 127) / 128;
-		for (uint64_t i = (lim + 2)|1; i < word_index * 128; i++)
+		for (uint64_t i = (lim + 1)|1; i < word_index * 128; i++)
 			clear_prime(i);
 		
 		lim = (lim + 127) / 128; // round up to next even word boundary
@@ -424,7 +424,7 @@ public:
 			handle the few primes between sqrt(n) and the next 64-bit word boundary
 		*/
 		uint64_t word_index = (lim + 127) / 128;
-		for (uint64_t i = (lim + 2)|1; i < word_index * 128; i++)
+		for (uint64_t i = (lim + 1)|1; i < word_index * 128; i++)
 			clear_prime(i);
 		
 		lim = (lim + 127) / 128; // round up to next even word boundary
