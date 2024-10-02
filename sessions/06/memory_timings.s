@@ -21,7 +21,7 @@ read_one:
         jg   read_memory_scalar  # keep going until all n locations have been read
         ret
 
-
+// [0] [1] [2] [3] ... [n-1]
 # Read 8 bytes (64 bits) at a time
 read_memory_scalar:
         mov  (%rdi), %rax        # read one 64-bit memory
@@ -44,6 +44,12 @@ read_memory_every2:
         sub  $2, %rsi           # count down
         jg   1b                 # keep going until all n locations have been read
         ret
+// DDR4 RAM wants to read 8 sequential locations in a burst
+// DDR5 RAM wants to read 16 sequential locations
+// DDR5-46-45-45
+// 46+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+// if your computer has 2 banks, perhaps double that..
+// +1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
 
 # Read words skipping k, then go back and fill in the missing ones
 # for k=4, 0, 4, 8, 12, ... 1, 5, 9, 13, ..., 2, 6, 10, 14, ..., 3, 7, 11, 15, ...
