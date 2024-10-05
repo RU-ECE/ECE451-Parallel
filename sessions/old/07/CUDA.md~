@@ -1,0 +1,8 @@
+# CUDA
+
+Today: OpenGL supports vertex shaders, fragment shaders, and compute shaders
+
+Vulkan = new OpenGL for C++ (multithreaded, object-oriented, extremely complicated, faster)
+
+CUDA (NVIDIA's language for parallel coding)
+

@@ -1,0 +1,17 @@
+task scheduling slides
+Looking for problem spaces
+	Clean, SIMPLE mesh problem
+	Finite Element analysis: heat? stress/strain (harder)
+	tides (2d gravity)
+	ocean currents (3d, horribly complex)
+	atmospheric simulation (3d, even worse)
+	*Mandelbrot
+	*Gravity Simulator
+
+	F = Gm_1m_2/(r^2)
+	a1 = Gm_2/r^2
+
+	faster algorithm: big bodies affect small bodies (Jupiter affects asteroids) but space ship does not affect big bodies
+
+Intel ISPC
+The Mandelbrot example in ISPC
