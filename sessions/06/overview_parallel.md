@@ -1,0 +1,92 @@
+# Summary of Parallel Programming taught in this Course
+
+## Course Outline
+
+- Overview of Parallel Programming
+  - What is Parallel Programming?
+  - Mechanisms of Parallelism we will cover
+    - C++
+      - Threads
+      - Bit operations
+    - SIMD (Vectorization)
+      - AVX intrinsics (C++ functions wrapping Intel SIMD instructions)
+      - Optional: Use Neon for ARM for anyone who has an ARM CPU
+    - OpenMP
+      - Automated parallelization using threads and SIMD
+      - extra hints in pragmas tell the compiler how to generate parallel code
+    - GPUs
+      - CUDA
+      - Optional: HIS (AMD open source API)
+    - MPI (Message Passing Interface)
+      - Run multiple computers in parallel
+      - Synergistic with OpenMP, GPU programming, etc.
+- Introduction to Parallel Computing: Threads
+  - C++ programming skills
+    - C++11/14/17/20/23
+    - Debugging with gdb
+      - Useful debuggers: CLion, VSCode
+      - Debugging tools on linux: Valgrind, AddressSanitizer, MemorySanitizer, ThreadSanitizer
+  - C++ Threads
+  - mutexes
+  - limitations to parallel execution
+    - memory bandwidth and characteristics
+    - cache
+    - branch prediction
+    - race conditions
+    - deadlock
+  - Using bit operations to reduce memory bandwidth
+    - Eratosthenes' sieve example
+    - Using special instructions like popcnt to parallelize operations
+  - Writing high performance C++
+- SIMD (Single Instruction, Multiple Data) Computing
+  - AVX intrinsics (C++ functions wrapping Intel SIMD instructions)
+  - Naming conventions for Intel intrinsics
+- OpenMP
+  - Parallelizing loops
+  - Parallelizing regions
+  - Parallelizing functions
+  - Summation/reduction
+  - Using OpenMP pragmas
+  - Using OpenMP API
+- CUDA
+
+## Memory Architecture
+- Memory speed is inversely related to the size
+    - Smaller memory is faster
+        - Fastest memory is CPU registers
+        - CPU cache (on x86, L1, L2, L3)
+          - L1 cache ~64k..256k single core
+          - L2 cache ~256k..1M shared by multiple cores (2, 4, 6, 8 cores?)
+          - L3 cache ~4M..32M shared by multiple (typically all) cores
+        - Nonvolatile memory
+          - SSD (solid state drive, slower than RAM)
+          - Hard drive (slowest)
+
+- On a single computer, there is only one memory. Generally 2 banks on a PC.
+- Memory bandwidth is the amount of data that can be transferred per second.
+  - Number is highly dependent on the pattern of usage
+  - Read the same memory location repeatedly (cache, fastest)
+  - Sequential access (RAM, full rated speed)
+    - Usually enough for more than 1 core, usually not more than 2 going full tilt.
+    - This means that beyond two cores, memory is the limiting factor unless you can do significant computation between memory accesses.
+    - DDR4, DDR5 RAM supports burst mode (first access is slow, subsequent 7 are 1 clock each)
+    - With 2 banks, 16 sequential accesses
+    - RAM timings [Tom's Hardware](https://www.tomshardware.com/reviews/cas-latency-ram-cl-timings-glossary-definition,6011.html)
+      - CL-Timing (CAS Latency, RAS to CAS Delay, RAS Precharge Delay)
+      - tRCD: RAS to CAS Delay (same bank)
+      - tRAS: RAS Precharge Delay (between banks)
+      - tRRD: RAS to RAS Delay (between banks)
+      - Micron 32GB DDR5-5600 ECC UDIMM 2Rx8 timings: 46-45-45
+        - Access time within a row: 46 clocks * 1/5600 GHz = 8.2 ns
+        - Access time between rows: 45 clocks * 1/5600 GHz = 8 ns additional
+        - Access time between banks: 45 clocks * 1/5600 GHz = 8 ns additional
+
+    - About 2% of DRAM bandwidth is used for refresh
+  - Skipping (non-adjacent) memory means using 
+- Memory bandwidth is limited.
+- Memory bandwidth is a characteristic of the memory system.
+- Memory bandwidth is usually measured in GB/s.
+- Memory bandwidth is usually measured in GB/s.
+- Memory bandwidth is usually measured in GB/s.
+- Memory bandwidth is usually measured in GB/s.
+- Memory bandwidth is usually measured in GB/s.

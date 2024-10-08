@@ -27,3 +27,13 @@ level 1 cache
 number of cores
 performance cores
 efficiency cores
+
+
+
+NVIDIA CARDS
+
+chip   Name     Board   Release     nm      transistors     RAM     CUDA    SM  Shader  TMU TDP
+GP106           1050    2016        16                      6GB     6.1     10  1280    80  120W
+GP107   Pascal                      14      3.3b                    6.1     6   768     48  75W
+GP108   Pascal          2017        14      1.8b                    6.1     3   384     24  30W
+GA106   Ampere  30xx    2021        8        
