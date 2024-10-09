@@ -2,6 +2,12 @@
 #include <chrono>
 using namespace std;
 
+//cannot be read from cache the first time
+// cannot fit into cache, therefore MISS
+// by the time you get back to the beginning, cache is remembering the end
+
+// while it does not work with cache
+// sequential access is the fastest way RAM works
 double a(volatile double x[], int n) {
     double sum = 0;
     for (int i = 0; i < n; i++)
@@ -9,13 +15,15 @@ double a(volatile double x[], int n) {
     return sum;
 }
 
+// go backwards through memory (just as fast as forwards)
 double b(volatile double x[], int n) {
-    double sum = 0;
-    for (int i = n-1; i >= 0; i--)
+	double sum = 0;
+	for (int i = n-1; i >= 0; i--)
     sum += x[i];
-    return sum;
+	return sum;
 }
 
+// this is faster (trick question) because it's doing 1/16 the work
 double c(volatile double x[], int n) {
     double sum = 0;
     for (int i = 0; i < n; i+=16)
@@ -30,8 +38,10 @@ double d(volatile double x[], int n) {
     return sum;
 }
 
+// increment every element by 1
+// forget about cache, we are writing!
 void e(volatile double x[], int n) {
-    for (int i = 0; i < n; i+=16)
+    for (int i = 0; i < n; i++)
        x[i]++;
 }
 
@@ -56,9 +66,10 @@ double h(volatile double x[], int stride,int n) {
     for (int i = 0; i < n; i++) {
         sum += x[0];
     }
-    return sum;
+    return sum; // x[0] * n
 }
 
+// read from elements [0] to [1023] repeatedly
 double j(volatile double x[], int stride,int n) {
     const int size = 1024;
     double sum = 0;
@@ -69,6 +80,8 @@ double j(volatile double x[], int stride,int n) {
     return sum;
 }
 
+// first pass no cache (you never read it)
+// subsequent pass cached for read, but write
 void k(volatile double x[], int stride,int n) {
     const int size = 1024;
     for (int i = 0; i < n; i+=size) {
