@@ -4,6 +4,9 @@
 #include <cmath>
 using namespace std;
 
+
+
+
 const double year = 365.25*24*60*60;
 const float G = 6.67e-11;
 /*
@@ -125,7 +128,10 @@ int main() {
     float dt = 100;
     const int num_steps = year/dt;
     initialize_solar_system(names, Gm, x, y, z, vx, vy, vz);
-    for (int i = 0; i < num_steps; i++) {
+    ax.resize(x.size());
+    ay.resize(y.size());
+    az.resize(z.size());
+   for (int i = 0; i < num_steps; i++) {
         compute_acceleration(Gm, x, y, z, vx, vy, vz, ax, ay, az);
         step_forward(x, y, z, vx, vy, vz, ax, ay, az, dt);
     }
