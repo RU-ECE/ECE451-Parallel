@@ -1,0 +1,37 @@
+# Name: Name of the celestial body
+# Orbits: The celestial body it orbits around
+# Mass(kg): Mass of the celestial body in kilograms
+# Diam(m): Diameter of the celestial body in meters
+# Perihelion(m): Closest distance to the sun in meters
+# Aphelion(m): Farthest distance from the sun in meters
+# orbPeriod(days): Orbital period in days
+# rotationalPeriod(hours): Rotational period in hours
+# axialtilt(deg): Axial tilt in degrees. 
+#This is the angle between the celestial body's rotational axis and its orbital axis.
+# It indicates how much the body is tilted relative to its orbit around the Sun.
+#
+# orbinclin(deg): Orbital inclination in degrees.
+# This is the angle between the plane of the celestial body's orbit and the plane of the ecliptic (the plane of Earth's orbit around the Sun).
+# It indicates how much the orbit is tilted relative to the ecliptic plane.
+# Note: The orbital inclination (orbinclin) of the Moon is 5.1 degrees. 
+# This angle represents the tilt of the Moon's orbit relative to the ecliptic plane.
+# However, this tilt can occur in any direction around the ecliptic plane.
+# For example, the tilt could be towards the x-axis (angle 0), towards the y-axis (angle pi/2), or any angle in between.
+# In the current simulation, all celestial bodies are aligned, but this could be randomized for more accuracy.
+# Another number to consider is the argument of periapsis, which defines the orientation of the orbit within the orbital plane.
+# This angle specifies the direction of the closest approach to the central body (e.g., the Sun).
+# Implementing this would require additional data and calculations.
+# For now, this is documented but not yet implemented in the simulation.
+#
+
+#Name        Orbits    Mass(kg)     Diam(m)     Perihelion(m)    Aphelion(m)    orbPeriod(days)    rotationalPeriod(hours)    axialtilt(deg)    orbinclin(deg)
+Sun         NaN       1.9891e30    1.391684e9  0                0              0                  587.28                     0                 0
+Mercury     Sun       0.330e24     4.879e6     4.6e10           6.98e10        88                 1407.6                     0.01              7.0
+Venus       Sun       4.87e24      1.2104e7    1.075e11         1.089e11       -224.7             -5832.5                    177.4             3.4
+Earth       Sun       5.97e24      1.2756e7    1.471e11         1.521e11       365.2425           23.9                       23.4              0.0
+Mars        Sun       0.642e24     6.792e7     2.066e11         2.492e11       687.0              24.6                       25.2              1.9
+Jupiter     Sun       1898e24      1.42984e8   7.405e11         8.166e11       4331               9.9                        3.1               1.3
+Saturn      Sun       568e24       1.20536e8   1.3526e12        1.5145e12      10747              10.7                       26.7              2.5
+Uranus      Sun       86.8e24      5.1118e7    2.7413e12        3.0063e12      30687              17.2                       97.8              0.8
+Neptune     Sun       102e24       4.9528e7    4.4445e12        4.5373e12      60190              16.1                       28.3              1.8
+Pluto       Sun       0.0146e24    2.377e6     4.4368e12        7.3759e12      90560              -153.3                     122.5             17.2

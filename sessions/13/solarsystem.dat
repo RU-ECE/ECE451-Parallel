@@ -1,0 +1,78 @@
+# Name: Name of the celestial body
+# Orbits: The celestial body it orbits around
+# Mass(kg): Mass of the celestial body in kilograms
+# Diam(m): Diameter of the celestial body in meters
+# Perihelion(m): Closest distance to the sun in meters
+# Aphelion(m): Farthest distance from the sun in meters
+# orbPeriod(days): Orbital period in days
+# rotationalPeriod(hours): Rotational period in hours
+# axialtilt(deg): Axial tilt in degrees. 
+#This is the angle between the celestial body's rotational axis and its orbital axis.
+# It indicates how much the body is tilted relative to its orbit around the Sun.
+#
+# orbinclin(deg): Orbital inclination in degrees.
+# This is the angle between the plane of the celestial body's orbit and the plane of the ecliptic (the plane of Earth's orbit around the Sun).
+# It indicates how much the orbit is tilted relative to the ecliptic plane.
+# Note: The orbital inclination (orbinclin) of the Moon is 5.1 degrees. 
+# This angle represents the tilt of the Moon's orbit relative to the ecliptic plane.
+# However, this tilt can occur in any direction around the ecliptic plane.
+# For example, the tilt could be towards the x-axis (angle 0), towards the y-axis (angle pi/2), or any angle in between.
+# In the current simulation, all celestial bodies are aligned, but this could be randomized for more accuracy.
+# Another number to consider is the argument of periapsis, which defines the orientation of the orbit within the orbital plane.
+# This angle specifies the direction of the closest approach to the central body (e.g., the Sun).
+# Implementing this would require additional data and calculations.
+# For now, this is documented but not yet implemented in the simulation.
+#
+
+#Name        Orbits    Mass(kg)     Diam(m)     Perihelion(m)    Aphelion(m)    orbPeriod(days)    rotationalPeriod(hours)    axialtilt(deg)    orbinclin(deg)
+Sun         NaN       1.9891e30    1.391684e9  0                0              0                  587.28                     0                 0
+Mercury     Sun       0.330e24     4.879e6     4.6e10           6.98e10        88                 1407.6                     0.01              7.0
+Venus       Sun       4.87e24      1.2104e7    1.075e11         1.089e11       -224.7             -5832.5                    177.4             3.4
+Earth       Sun       5.97e24      1.2756e7    1.471e11         1.521e11       365.2425           23.9                       23.4              0.0
+Moon        Earth     0.073e24     3.475e6     0.363e9          0.406e9        27.3               655.7                      6.7               5.1
+Mars        Sun       0.642e24     6.792e7     2.066e11         2.492e11       687.0              24.6                       25.2              1.9
+Jupiter     Sun       1898e24      1.42984e8   7.405e11         8.166e11       4331               9.9                        3.1               1.3
+Saturn      Sun       568e24       1.20536e8   1.3526e12        1.5145e12      10747              10.7                       26.7              2.5
+Io          Jupiter   893.2e20     3643.2e6    421.6e6          421.6e6        1.769138           NaN                        NaN               NaN
+Europa      Jupiter   480.0e20     3121.6e6    670.9e6          670.9e6        3.551181           NaN                        NaN               NaN
+Ganymede    Jupiter   1481.9e20    5262.4e6    1070.4e6         1070.4e6       7.154553           NaN                        NaN               NaN
+Callisto    Jupiter   1075.9e20    4820.6e6    1882.7e6         1882.7e6       16.689018          NaN                        NaN               NaN
+Phobos      Mars      1.05e-16     22.4e3      9.378e6          9.378e6        0.319              NaN                        NaN               NaN
+Deimos      Mars      5e11         12.2e3      23.495e6         23.495e6       1.262              NaN                        NaN               NaN
+Ceres       Sun       9.39e20      9.46e5      2.546e11         4.136e11       1680               9.1                        4.0               10.6
+Pallas      Sun       2.11e20      5.44e5      2.133e11         3.142e11       1687               7.8                        34.8              34.8
+Juno        Sun       2.67e19      2.33e5      1.979e11         3.475e11       1593               7.2                        12.9              12.9
+Vesta       Sun       2.59e20      5.26e5      2.152e11         3.775e11       1325               5.3                        29.0              29.0
+Astraea     Sun       2.8e18       1.19e5      2.083e11         3.746e11       1517               5.4                        5.4               5.4
+Hebe        Sun       1.28e19      1.85e5      1.944e11         3.736e11       1370               7.3                        15.5              15.5
+Iris        Sun       1.52e19      2.00e5      1.832e11         3.736e11       1345               7.1                        5.5               5.5
+Flora       Sun       1.35e19      1.40e5      1.835e11         3.376e11       1194               7.3                        5.9               5.9
+Metis       Sun       1.25e18      1.90e5      1.914e11         3.736e11       1350               5.1                        5.6               5.6
+Hygiea      Sun       8.67e19      4.30e5      2.941e11         4.376e11       2034               13.8                       3.8               3.8
+Eunomia     Sun       3.12e19      2.55e5      2.295e11         3.736e11       1568               6.1                        11.7              11.7
+Psyche      Sun       2.41e19      2.53e5      2.922e11         4.376e11       1825               4.2                        3.1               3.1
+Thisbe      Sun       1.19e19      2.00e5      2.922e11         4.376e11       1825               5.1                        5.1               5.1
+Melpomene   Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Fortuna     Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Victoria    Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Egeria      Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Irene       Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Eunike      Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Euphrosyne  Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Pomona      Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Polymnia    Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Doris       Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Eugenia     Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Hestia      Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Aglaja      Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Freia       Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Harmonia    Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Laetitia    Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Leda        Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Lachesis    Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Terpsichore Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Erato       Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Urania      Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Euterpe     Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Thalia      Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9
+Melpomene   Sun       1.35e19      1.40e5      2.922e11         4.376e11       1825               7.3                        5.9               5.9

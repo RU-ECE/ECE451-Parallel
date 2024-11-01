@@ -47,7 +47,7 @@ void e(volatile double x[], int n) {
 
 void f(volatile double x[], int stride, int n) {
     for (int i = 0; i < stride; i++) {
-        for (int j = i; i < n; i+=stride)
+        for (int j = i; j < n; i+=stride)
             x[j]++;
     }
 }

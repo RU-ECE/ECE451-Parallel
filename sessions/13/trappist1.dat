@@ -1,0 +1,12 @@
+# Trappist-1 Solar system configuration file
+# 
+# 
+#Name        Orbits    Mass(kg)     Diam(m)     Perihelion(m)    Aphelion(m)    orbPeriod(days)    rotationalPeriod(hours)    axialtilt(deg)    orbinclin(deg)
+Trappist-1   NaN       1.27e30      1.391684e9  0                0              0                  0                          0                 0
+Trappist-1b  Trappist-1 0.85e24     7.5e6       1.1e10           1.1e10         1.51               1.4                        0.0               0.0
+Trappist-1c  Trappist-1 1.38e24     9.1e6       1.6e10           1.6e10         2.42               1.4                        0.0               0.0
+Trappist-1d  Trappist-1 0.41e24     5.0e6       2.2e10           2.2e10         4.05               1.4                        0.0               0.0
+Trappist-1e  Trappist-1 0.62e24     6.1e6       2.9e10           2.9e10         6.10               1.4                        0.0               0.0
+Trappist-1f  Trappist-1 0.68e24     6.3e6       3.8e10           3.8e10         9.21               1.4                        0.0               0.0
+Trappist-1g  Trappist-1 1.34e24     8.1e6       4.5e10           4.5e10         12.35              1.4                        0.0               0.0
+Trappist-1h  Trappist-1 0.33e24     4.3e6       6.2e10           6.2e10         20.00              1.4                        0.0               0.0

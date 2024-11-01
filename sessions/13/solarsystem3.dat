@@ -1,0 +1,6 @@
+# Shortened file for testing, just Sun and Earth
+#
+#
+#Name        Orbits    Mass(kg)     Diam(m)     Perihelion(m)    Aphelion(m)    orbPeriod(days)    rotationalPeriod(hours)    axialtilt(deg)    orbinclin(deg)
+Sun         NaN       1.9891e30    1.391684e9  0                0              0                  587.28                     0                 0
+Earth       Sun       5.97e24      1.2756e7    1.471e11         1.521e11       365.2425           23.9                       23.4              0.0
