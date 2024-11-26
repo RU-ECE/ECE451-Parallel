@@ -3,12 +3,9 @@
 #include <iostream>
 using namespace std;
 
-<<<<<<< HEAD
-=======
 int world_size;
 int world_rank;
 
->>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
 class GameOfLife {
 private:
     uint8_t* board;
@@ -59,10 +56,7 @@ Suggestion 3: Use multiple MPI_Send
 
 */
     void print() const {
-<<<<<<< HEAD
-=======
         cout << "rank " << world_rank << endl;
->>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
         for (int i = 1, c = width2+1; i < height2-1; i++) {
             for (int j = 1; j < width2-1; j++, c++) {
                 cout << int(board[i * width + j]) << " ";
@@ -75,11 +69,7 @@ Suggestion 3: Use multiple MPI_Send
 /*
 board               next
 
-<<<<<<< HEAD
 BOARD 1
-
-=======
->>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
 0 0 0 0 0 0         0 0 0 0 0 0
 0 0 1 0 0 0         0 0 0 0 0 0
 0 0 1 0 0 0         0 1 1 1 0 0
@@ -93,11 +83,7 @@ BOARD 1
 0 0 1 0 0 0         0 0 0 0 0 0
 0 0 0 0 0 0         0 0 0 0 0 0
 0 0 0 0 0 0         0 0 0 0 0 0
-<<<<<<< HEAD
-
 BOARD 0
-=======
->>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
 */
 
 
@@ -111,30 +97,18 @@ BOARD 0
         const int SOUTHEAST = SOUTH + EAST;
         const int SOUTHWEST = SOUTH + WEST;
 
-<<<<<<< HEAD
-    if (rank == 0) {
-=======
     if (world_rank == 0) {
->>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
         const int other = 1;
         // send the top edge of our board to the board "above us"
         MPI_Send(board+width2+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD);
         // recv the top edge from the board "above us"
-        MPI_Recv(board+width2+width+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(board+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
-<<<<<<< HEAD
-    if (rank == 1) {
-        const int other = 0;
-        // receive the top edge of the board "above us"
-        MPI_Recv(board+width2+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        MPI_Send(board+width2+width+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD);
-=======
     if (world_rank == 1) {
         const int other = 0;
         // receive the top edge of the board "above us"
-        MPI_Recv(board+width2+1, width, MPI_UNSIGNED_CHAR, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        MPI_Send(board+width2+width+1, width, MPI_UNSIGNED_CHAR, 0, 0, MPI_COMM_WORLD);
->>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
+        MPI_Recv(board+width2*(n+1)+1, width, MPI_UNSIGNED_CHAR, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Send(board+width2*n+1, width, MPI_UNSIGNED_CHAR, 0, 0, MPI_COMM_WORLD);
     }
         for (int j = 0, c = width2+1; j < height; j++) {
             for (int i = 0; i < width; i++, c++) {
