@@ -98,15 +98,15 @@ board               next
     if (world_rank == 0) {
         const int other = 1;
         // send the top edge of our board to the board "above us"
-        MPI_Send(board+width2+1, width, MPI_UNSIGNED_CHAR, SCHED_OTHER, 0, MPI_COMM_WORLD);
+        MPI_Send(board+width2+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD);
         // recv the top edge from the board "above us"
-        MPI_Recv(board+width2+width+1, width, MPI_UNSIGNED_CHAR, SCHED_OTHER, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(board+width2+width+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
     if (world_rank == 1) {
         const int other = 0;
         // receive the top edge of the board "above us"
-        MPI_Recv(board+width2+1, width, MPI_UNSIGNED_CHAR, SCHED_OTHER, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        MPI_Send(board+width2+width+1, width, MPI_UNSIGNED_CHAR, SCHED_OTHER, 0, MPI_COMM_WORLD);
+        MPI_Recv(board+width2+1, width, MPI_UNSIGNED_CHAR, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Send(board+width2+width+1, width, MPI_UNSIGNED_CHAR, 0, 0, MPI_COMM_WORLD);
     }
         for (int j = 0, c = width2+1; j < height; j++) {
             for (int i = 0; i < width; i++, c++) {
@@ -148,7 +148,7 @@ void GameOfLife::set1() {
     set(2, 4);
 }
 
-// create a glider in the center of the board
+// create a glider at x,y
 void GameOfLife::set2(int x, int y) {
     set(x+2,y+5);
     set(x+3,y+6);
@@ -164,6 +164,7 @@ int main() {
     int n = 10;
     GameOfLife game(n, n); // n*n elements
     game.set2(2,6);
+    game.print();
     for (int i = 0; i < 10; i++) {
         game.step();
         game.print();
