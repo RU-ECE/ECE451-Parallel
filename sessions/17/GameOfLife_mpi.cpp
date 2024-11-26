@@ -3,6 +3,9 @@
 #include <iostream>
 using namespace std;
 
+int world_size;
+int world_rank;
+
 class GameOfLife {
 private:
     uint8_t* board;
@@ -53,6 +56,7 @@ Suggestion 3: Use multiple MPI_Send
 
 */
     void print() const {
+        cout << "rank " << world_rank << endl;
         for (int i = 1, c = width2+1; i < height2-1; i++) {
             for (int j = 1; j < width2-1; j++, c++) {
                 cout << int(board[i * width + j]) << " ";
@@ -91,14 +95,14 @@ board               next
         const int SOUTHEAST = SOUTH + EAST;
         const int SOUTHWEST = SOUTH + WEST;
 
-    if (rank == 0) {
+    if (world_rank == 0) {
         const int other = 1;
         // send the top edge of our board to the board "above us"
         MPI_Send(board+width2+1, width, MPI_UNSIGNED_CHAR, SCHED_OTHER, 0, MPI_COMM_WORLD);
         // recv the top edge from the board "above us"
         MPI_Recv(board+width2+width+1, width, MPI_UNSIGNED_CHAR, SCHED_OTHER, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
-    if (rank == 1) {
+    if (world_rank == 1) {
         const int other = 0;
         // receive the top edge of the board "above us"
         MPI_Recv(board+width2+1, width, MPI_UNSIGNED_CHAR, SCHED_OTHER, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -130,48 +134,45 @@ board               next
     }
 
     void set1();
-    void set2();
+    void set2(int x, int y);
 };
 
 
 void GameOfLife::set1() {
-    game.set(7, 5);
-    game.set(7, 6);
-    game.set(8, 5);
-    game.set(8, 6);
-
-
-    game.set(2, 2);
-    game.set(2, 3);
-    game.set(2, 4);
+    set(7, 5);
+    set(7, 6);
+    set(8, 5);
+    set(8, 6);
+    set(2, 2);
+    set(2, 3);
+    set(2, 4);
 }
 
 // create a glider in the center of the board
-void GameOfLife::set2() {
-    set(5,5);
-    set(6,6);
-    set(6,7);
-    set(5,7);
-    set(4,7);
+void GameOfLife::set2(int x, int y) {
+    set(x+2,y+5);
+    set(x+3,y+6);
+    set(x+3,y+7);
+    set(x+2,y+7);
+    set(x+1,y+7);
 }
 int main() {
     MPI_Init(NULL, NULL); // initialize MPI
-    // initialize with 2 computers sharing EAST/WEST border
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+    // initialize with 2 computers sharing NORTH/SOUTH border
     int n = 10;
     GameOfLife game(n, n); // n*n elements
-    game.set1();
-    // n elements per edge
+    game.set2(2,6);
+    for (int i = 0; i < 10; i++) {
+        game.step();
+        game.print();
+    }
 /*
 n=10   n^2 = 100   n = 10
 n = 1000 n^2 10^6  n = 1000
 n = 10,000 n^2 10^8
 */
-
-
-    game.print();
-    game.step();
-    game.print();
-    game.step();
-    game.print();
+    MPI_Finalize();
     return 0;
 }
