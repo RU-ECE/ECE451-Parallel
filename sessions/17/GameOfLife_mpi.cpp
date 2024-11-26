@@ -3,6 +3,12 @@
 #include <iostream>
 using namespace std;
 
+<<<<<<< HEAD
+=======
+int world_size;
+int world_rank;
+
+>>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
 class GameOfLife {
 private:
     uint8_t* board;
@@ -53,6 +59,10 @@ Suggestion 3: Use multiple MPI_Send
 
 */
     void print() const {
+<<<<<<< HEAD
+=======
+        cout << "rank " << world_rank << endl;
+>>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
         for (int i = 1, c = width2+1; i < height2-1; i++) {
             for (int j = 1; j < width2-1; j++, c++) {
                 cout << int(board[i * width + j]) << " ";
@@ -65,8 +75,11 @@ Suggestion 3: Use multiple MPI_Send
 /*
 board               next
 
+<<<<<<< HEAD
 BOARD 1
 
+=======
+>>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
 0 0 0 0 0 0         0 0 0 0 0 0
 0 0 1 0 0 0         0 0 0 0 0 0
 0 0 1 0 0 0         0 1 1 1 0 0
@@ -80,8 +93,11 @@ BOARD 1
 0 0 1 0 0 0         0 0 0 0 0 0
 0 0 0 0 0 0         0 0 0 0 0 0
 0 0 0 0 0 0         0 0 0 0 0 0
+<<<<<<< HEAD
 
 BOARD 0
+=======
+>>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
 */
 
 
@@ -95,18 +111,30 @@ BOARD 0
         const int SOUTHEAST = SOUTH + EAST;
         const int SOUTHWEST = SOUTH + WEST;
 
+<<<<<<< HEAD
     if (rank == 0) {
+=======
+    if (world_rank == 0) {
+>>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
         const int other = 1;
         // send the top edge of our board to the board "above us"
         MPI_Send(board+width2+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD);
         // recv the top edge from the board "above us"
         MPI_Recv(board+width2+width+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
+<<<<<<< HEAD
     if (rank == 1) {
         const int other = 0;
         // receive the top edge of the board "above us"
         MPI_Recv(board+width2+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Send(board+width2+width+1, width, MPI_UNSIGNED_CHAR, 1, 0, MPI_COMM_WORLD);
+=======
+    if (world_rank == 1) {
+        const int other = 0;
+        // receive the top edge of the board "above us"
+        MPI_Recv(board+width2+1, width, MPI_UNSIGNED_CHAR, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Send(board+width2+width+1, width, MPI_UNSIGNED_CHAR, 0, 0, MPI_COMM_WORLD);
+>>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
     }
         for (int j = 0, c = width2+1; j < height; j++) {
             for (int i = 0; i < width; i++, c++) {
@@ -134,11 +162,16 @@ BOARD 0
     }
 
     void set1();
+<<<<<<< HEAD
     void set2();
+=======
+    void set2(int x, int y);
+>>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
 };
 
 
 void GameOfLife::set1() {
+<<<<<<< HEAD
     game.set(7, 5);
     game.set(7, 6);
     game.set(8, 5);
@@ -165,11 +198,44 @@ int main() {
     GameOfLife game(n, n); // n*n elements
     game.set2();
     // n elements per edge
+=======
+    set(7, 5);
+    set(7, 6);
+    set(8, 5);
+    set(8, 6);
+    set(2, 2);
+    set(2, 3);
+    set(2, 4);
+}
+
+// create a glider at x,y
+void GameOfLife::set2(int x, int y) {
+    set(x+2,y+5);
+    set(x+3,y+6);
+    set(x+3,y+7);
+    set(x+2,y+7);
+    set(x+1,y+7);
+}
+int main() {
+    MPI_Init(NULL, NULL); // initialize MPI
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+    // initialize with 2 computers sharing NORTH/SOUTH border
+    int n = 10;
+    GameOfLife game(n, n); // n*n elements
+    game.set2(2,6);
+    game.print();
+    for (int i = 0; i < 10; i++) {
+        game.step();
+        game.print();
+    }
+>>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
 /*
 n=10   n^2 = 100   n = 10
 n = 1000 n^2 10^6  n = 1000
 n = 10,000 n^2 10^8
 */
+<<<<<<< HEAD
 
 
     for (int t = 0; t <= 5; t++) {
@@ -178,5 +244,8 @@ n = 10,000 n^2 10^8
         game.step();
     }
     game.print();
+=======
+    MPI_Finalize();
+>>>>>>> b4e23d8dab6b2f7c72609e3f3d7d3a7b15b97421
     return 0;
 }
