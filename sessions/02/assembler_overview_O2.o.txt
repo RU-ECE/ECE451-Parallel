@@ -1,0 +1,282 @@
+
+assembler_overview_O2.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_.isra.0>:
+   0:	41 54                	push   %r12
+   2:	55                   	push   %rbp
+   3:	48 83 ec 08          	sub    $0x8,%rsp
+   7:	48 8b 07             	mov    (%rdi),%rax
+   a:	48 8b 40 e8          	mov    -0x18(%rax),%rax
+   e:	4c 8b a4 07 f0 00 00 	mov    0xf0(%rdi,%rax,1),%r12
+  15:	00 
+  16:	4d 85 e4             	test   %r12,%r12
+  19:	74 58                	je     73 <_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_.isra.0+0x73>
+  1b:	41 80 7c 24 38 00    	cmpb   $0x0,0x38(%r12)
+  21:	48 89 fd             	mov    %rdi,%rbp
+  24:	74 1d                	je     43 <_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_.isra.0+0x43>
+  26:	41 0f be 74 24 43    	movsbl 0x43(%r12),%esi
+  2c:	48 89 ef             	mov    %rbp,%rdi
+  2f:	e8 00 00 00 00       	call   34 <_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_.isra.0+0x34>
+  34:	48 83 c4 08          	add    $0x8,%rsp
+  38:	5d                   	pop    %rbp
+  39:	48 89 c7             	mov    %rax,%rdi
+  3c:	41 5c                	pop    %r12
+  3e:	e9 00 00 00 00       	jmp    43 <_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_.isra.0+0x43>
+  43:	4c 89 e7             	mov    %r12,%rdi
+  46:	e8 00 00 00 00       	call   4b <_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_.isra.0+0x4b>
+  4b:	49 8b 04 24          	mov    (%r12),%rax
+  4f:	be 0a 00 00 00       	mov    $0xa,%esi
+  54:	48 8d 15 00 00 00 00 	lea    0x0(%rip),%rdx        # 5b <_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_.isra.0+0x5b>
+  5b:	48 8b 40 30          	mov    0x30(%rax),%rax
+  5f:	48 39 d0             	cmp    %rdx,%rax
+  62:	74 c8                	je     2c <_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_.isra.0+0x2c>
+  64:	be 0a 00 00 00       	mov    $0xa,%esi
+  69:	4c 89 e7             	mov    %r12,%rdi
+  6c:	ff d0                	call   *%rax
+  6e:	0f be f0             	movsbl %al,%esi
+  71:	eb b9                	jmp    2c <_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_.isra.0+0x2c>
+  73:	e8 00 00 00 00       	call   78 <_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_.isra.0+0x78>
+  78:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+  7f:	00 
+
+0000000000000080 <_Z11uint64_mathmm>:
+  80:	f3 0f 1e fa          	endbr64 
+  84:	48 89 f8             	mov    %rdi,%rax
+  87:	31 d2                	xor    %edx,%edx
+  89:	49 89 f9             	mov    %rdi,%r9
+  8c:	49 89 f8             	mov    %rdi,%r8
+  8f:	48 f7 f6             	div    %rsi
+  92:	4c 0f af c6          	imul   %rsi,%r8
+  96:	48 8d 0c 37          	lea    (%rdi,%rsi,1),%rcx
+  9a:	49 29 f1             	sub    %rsi,%r9
+  9d:	49 0f af c9          	imul   %r9,%rcx
+  a1:	48 0f af ff          	imul   %rdi,%rdi
+  a5:	49 0f af c0          	imul   %r8,%rax
+  a9:	48 29 d1             	sub    %rdx,%rcx
+  ac:	48 29 f9             	sub    %rdi,%rcx
+  af:	48 29 c1             	sub    %rax,%rcx
+  b2:	48 89 c8             	mov    %rcx,%rax
+  b5:	c3                   	ret    
+  b6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+  bd:	00 00 00 
+
+00000000000000c0 <_Z10float_mathff>:
+  c0:	f3 0f 1e fa          	endbr64 
+  c4:	0f 28 d0             	movaps %xmm0,%xmm2
+  c7:	f3 0f 58 c1          	addss  %xmm1,%xmm0
+  cb:	0f 28 e2             	movaps %xmm2,%xmm4
+  ce:	0f 28 da             	movaps %xmm2,%xmm3
+  d1:	f3 0f 5e e1          	divss  %xmm1,%xmm4
+  d5:	f3 0f 5c d9          	subss  %xmm1,%xmm3
+  d9:	f3 0f 59 c3          	mulss  %xmm3,%xmm0
+  dd:	0f 28 da             	movaps %xmm2,%xmm3
+  e0:	f3 0f 59 d9          	mulss  %xmm1,%xmm3
+  e4:	0f 28 c8             	movaps %xmm0,%xmm1
+  e7:	f3 0f 10 05 00 00 00 	movss  0x0(%rip),%xmm0        # ef <_Z10float_mathff+0x2f>
+  ee:	00 
+  ef:	f3 0f 59 c2          	mulss  %xmm2,%xmm0
+  f3:	0f 54 15 00 00 00 00 	andps  0x0(%rip),%xmm2        # fa <_Z10float_mathff+0x3a>
+  fa:	f3 0f 59 dc          	mulss  %xmm4,%xmm3
+  fe:	f3 0f 5c cb          	subss  %xmm3,%xmm1
+ 102:	f3 0f 58 c1          	addss  %xmm1,%xmm0
+ 106:	f3 0f 58 c2          	addss  %xmm2,%xmm0
+ 10a:	c3                   	ret    
+ 10b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+
+0000000000000110 <_Z11double_mathdd>:
+ 110:	f3 0f 1e fa          	endbr64 
+ 114:	66 0f 28 d0          	movapd %xmm0,%xmm2
+ 118:	f2 0f 58 c1          	addsd  %xmm1,%xmm0
+ 11c:	66 0f 28 e2          	movapd %xmm2,%xmm4
+ 120:	66 0f 28 da          	movapd %xmm2,%xmm3
+ 124:	f2 0f 5e e1          	divsd  %xmm1,%xmm4
+ 128:	f2 0f 5c d9          	subsd  %xmm1,%xmm3
+ 12c:	f2 0f 59 c3          	mulsd  %xmm3,%xmm0
+ 130:	66 0f 28 da          	movapd %xmm2,%xmm3
+ 134:	f2 0f 59 d9          	mulsd  %xmm1,%xmm3
+ 138:	66 0f 28 c8          	movapd %xmm0,%xmm1
+ 13c:	f2 0f 10 05 00 00 00 	movsd  0x0(%rip),%xmm0        # 144 <_Z11double_mathdd+0x34>
+ 143:	00 
+ 144:	f2 0f 59 c2          	mulsd  %xmm2,%xmm0
+ 148:	66 0f 54 15 00 00 00 	andpd  0x0(%rip),%xmm2        # 150 <_Z11double_mathdd+0x40>
+ 14f:	00 
+ 150:	f2 0f 59 dc          	mulsd  %xmm4,%xmm3
+ 154:	f2 0f 5c cb          	subsd  %xmm3,%xmm1
+ 158:	f2 0f 58 c1          	addsd  %xmm1,%xmm0
+ 15c:	f2 0f 58 c2          	addsd  %xmm2,%xmm0
+ 160:	c3                   	ret    
+ 161:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
+ 168:	00 00 00 00 
+ 16c:	0f 1f 40 00          	nopl   0x0(%rax)
+
+0000000000000170 <_Z24countPrimesMultithreadedmmPm>:
+ 170:	f3 0f 1e fa          	endbr64 
+ 174:	41 56                	push   %r14
+ 176:	41 55                	push   %r13
+ 178:	49 89 d5             	mov    %rdx,%r13
+ 17b:	41 54                	push   %r12
+ 17d:	45 31 e4             	xor    %r12d,%r12d
+ 180:	48 83 ff 02          	cmp    $0x2,%rdi
+ 184:	41 0f 94 c4          	sete   %r12b
+ 188:	48 83 cf 01          	or     $0x1,%rdi
+ 18c:	55                   	push   %rbp
+ 18d:	53                   	push   %rbx
+ 18e:	48 63 df             	movslq %edi,%rbx
+ 191:	48 39 de             	cmp    %rbx,%rsi
+ 194:	72 6d                	jb     203 <_Z24countPrimesMultithreadedmmPm+0x93>
+ 196:	f2 0f 10 0d 00 00 00 	movsd  0x0(%rip),%xmm1        # 19e <_Z24countPrimesMultithreadedmmPm+0x2e>
+ 19d:	00 
+ 19e:	48 89 f5             	mov    %rsi,%rbp
+ 1a1:	66 0f ef d2          	pxor   %xmm2,%xmm2
+ 1a5:	49 be 00 00 00 00 00 	movabs $0x8000000000000000,%r14
+ 1ac:	00 00 80 
+ 1af:	90                   	nop
+ 1b0:	48 85 db             	test   %rbx,%rbx
+ 1b3:	78 6b                	js     220 <_Z24countPrimesMultithreadedmmPm+0xb0>
+ 1b5:	66 0f ef c0          	pxor   %xmm0,%xmm0
+ 1b9:	f2 48 0f 2a c3       	cvtsi2sd %rbx,%xmm0
+ 1be:	66 0f 2e d0          	ucomisd %xmm0,%xmm2
+ 1c2:	77 7a                	ja     23e <_Z24countPrimesMultithreadedmmPm+0xce>
+ 1c4:	f2 0f 51 c0          	sqrtsd %xmm0,%xmm0
+ 1c8:	66 0f 2f c1          	comisd %xmm1,%xmm0
+ 1cc:	73 42                	jae    210 <_Z24countPrimesMultithreadedmmPm+0xa0>
+ 1ce:	f2 48 0f 2c f0       	cvttsd2si %xmm0,%rsi
+ 1d3:	b9 02 00 00 00       	mov    $0x2,%ecx
+ 1d8:	48 83 fe 01          	cmp    $0x1,%rsi
+ 1dc:	77 0f                	ja     1ed <_Z24countPrimesMultithreadedmmPm+0x7d>
+ 1de:	eb 16                	jmp    1f6 <_Z24countPrimesMultithreadedmmPm+0x86>
+ 1e0:	48 89 d8             	mov    %rbx,%rax
+ 1e3:	31 d2                	xor    %edx,%edx
+ 1e5:	48 f7 f1             	div    %rcx
+ 1e8:	48 85 d2             	test   %rdx,%rdx
+ 1eb:	74 0d                	je     1fa <_Z24countPrimesMultithreadedmmPm+0x8a>
+ 1ed:	48 83 c1 01          	add    $0x1,%rcx
+ 1f1:	48 39 ce             	cmp    %rcx,%rsi
+ 1f4:	73 ea                	jae    1e0 <_Z24countPrimesMultithreadedmmPm+0x70>
+ 1f6:	49 83 c4 01          	add    $0x1,%r12
+ 1fa:	48 83 c3 02          	add    $0x2,%rbx
+ 1fe:	48 39 eb             	cmp    %rbp,%rbx
+ 201:	76 ad                	jbe    1b0 <_Z24countPrimesMultithreadedmmPm+0x40>
+ 203:	5b                   	pop    %rbx
+ 204:	5d                   	pop    %rbp
+ 205:	4d 89 65 00          	mov    %r12,0x0(%r13)
+ 209:	41 5c                	pop    %r12
+ 20b:	41 5d                	pop    %r13
+ 20d:	41 5e                	pop    %r14
+ 20f:	c3                   	ret    
+ 210:	f2 0f 5c c1          	subsd  %xmm1,%xmm0
+ 214:	f2 48 0f 2c f0       	cvttsd2si %xmm0,%rsi
+ 219:	4c 31 f6             	xor    %r14,%rsi
+ 21c:	eb b5                	jmp    1d3 <_Z24countPrimesMultithreadedmmPm+0x63>
+ 21e:	66 90                	xchg   %ax,%ax
+ 220:	48 89 d8             	mov    %rbx,%rax
+ 223:	48 89 da             	mov    %rbx,%rdx
+ 226:	66 0f ef c0          	pxor   %xmm0,%xmm0
+ 22a:	48 d1 e8             	shr    %rax
+ 22d:	83 e2 01             	and    $0x1,%edx
+ 230:	48 09 d0             	or     %rdx,%rax
+ 233:	f2 48 0f 2a c0       	cvtsi2sd %rax,%xmm0
+ 238:	f2 0f 58 c0          	addsd  %xmm0,%xmm0
+ 23c:	eb 80                	jmp    1be <_Z24countPrimesMultithreadedmmPm+0x4e>
+ 23e:	e8 00 00 00 00       	call   243 <_Z24countPrimesMultithreadedmmPm+0xd3>
+ 243:	48 8b 05 00 00 00 00 	mov    0x0(%rip),%rax        # 24a <_Z24countPrimesMultithreadedmmPm+0xda>
+ 24a:	66 0f ef d2          	pxor   %xmm2,%xmm2
+ 24e:	66 48 0f 6e c8       	movq   %rax,%xmm1
+ 253:	e9 70 ff ff ff       	jmp    1c8 <_Z24countPrimesMultithreadedmmPm+0x58>
+
+Disassembly of section .text._ZNKSt5ctypeIcE8do_widenEc:
+
+0000000000000000 <_ZNKSt5ctypeIcE8do_widenEc>:
+   0:	f3 0f 1e fa          	endbr64 
+   4:	89 f0                	mov    %esi,%eax
+   6:	c3                   	ret    
+
+Disassembly of section .text.startup:
+
+0000000000000000 <main>:
+   0:	f3 0f 1e fa          	endbr64 
+   4:	41 56                	push   %r14
+   6:	48 c7 c6 fb ff ff ff 	mov    $0xfffffffffffffffb,%rsi
+   d:	41 55                	push   %r13
+   f:	4c 8d 2d 00 00 00 00 	lea    0x0(%rip),%r13        # 16 <main+0x16>
+  16:	41 54                	push   %r12
+  18:	55                   	push   %rbp
+  19:	48 8d 2d 00 00 00 00 	lea    0x0(%rip),%rbp        # 20 <main+0x20>
+  20:	48 89 ef             	mov    %rbp,%rdi
+  23:	48 83 ec 28          	sub    $0x28,%rsp
+  27:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
+  2e:	00 00 
+  30:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
+  35:	31 c0                	xor    %eax,%eax
+  37:	4c 8d 74 24 08       	lea    0x8(%rsp),%r14
+  3c:	4c 8d 64 24 10       	lea    0x10(%rsp),%r12
+  41:	e8 00 00 00 00       	call   46 <main+0x46>
+  46:	48 89 c7             	mov    %rax,%rdi
+  49:	e8 00 00 00 00       	call   4e <main+0x4e>
+  4e:	4c 89 f6             	mov    %r14,%rsi
+  51:	4c 89 ef             	mov    %r13,%rdi
+  54:	e8 00 00 00 00       	call   59 <main+0x59>
+  59:	4c 89 e6             	mov    %r12,%rsi
+  5c:	48 89 c7             	mov    %rax,%rdi
+  5f:	e8 00 00 00 00       	call   64 <main+0x64>
+  64:	48 8b 74 24 10       	mov    0x10(%rsp),%rsi
+  69:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
+  6e:	e8 00 00 00 00       	call   73 <main+0x73>
+  73:	48 89 ef             	mov    %rbp,%rdi
+  76:	48 89 c6             	mov    %rax,%rsi
+  79:	e8 00 00 00 00       	call   7e <main+0x7e>
+  7e:	ba 01 00 00 00       	mov    $0x1,%edx
+  83:	48 8d 74 24 07       	lea    0x7(%rsp),%rsi
+  88:	c6 44 24 07 0a       	movb   $0xa,0x7(%rsp)
+  8d:	48 89 c7             	mov    %rax,%rdi
+  90:	e8 00 00 00 00       	call   95 <main+0x95>
+  95:	4c 89 f6             	mov    %r14,%rsi
+  98:	4c 89 ef             	mov    %r13,%rdi
+  9b:	e8 00 00 00 00       	call   a0 <main+0xa0>
+  a0:	4c 89 e6             	mov    %r12,%rsi
+  a3:	48 89 c7             	mov    %rax,%rdi
+  a6:	e8 00 00 00 00       	call   ab <main+0xab>
+  ab:	66 0f ef c0          	pxor   %xmm0,%xmm0
+  af:	48 89 ef             	mov    %rbp,%rdi
+  b2:	e8 00 00 00 00       	call   b7 <main+0xb7>
+  b7:	48 89 c7             	mov    %rax,%rdi
+  ba:	e8 00 00 00 00       	call   bf <main+0xbf>
+  bf:	4c 89 f6             	mov    %r14,%rsi
+  c2:	4c 89 ef             	mov    %r13,%rdi
+  c5:	e8 00 00 00 00       	call   ca <main+0xca>
+  ca:	4c 89 e6             	mov    %r12,%rsi
+  cd:	48 89 c7             	mov    %rax,%rdi
+  d0:	e8 00 00 00 00       	call   d5 <main+0xd5>
+  d5:	48 89 ef             	mov    %rbp,%rdi
+  d8:	66 0f ef c0          	pxor   %xmm0,%xmm0
+  dc:	e8 00 00 00 00       	call   e1 <main+0xe1>
+  e1:	48 89 c7             	mov    %rax,%rdi
+  e4:	e8 00 00 00 00       	call   e9 <main+0xe9>
+  e9:	48 8b 44 24 18       	mov    0x18(%rsp),%rax
+  ee:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
+  f5:	00 00 
+  f7:	75 0e                	jne    107 <main+0x107>
+  f9:	48 83 c4 28          	add    $0x28,%rsp
+  fd:	31 c0                	xor    %eax,%eax
+  ff:	5d                   	pop    %rbp
+ 100:	41 5c                	pop    %r12
+ 102:	41 5d                	pop    %r13
+ 104:	41 5e                	pop    %r14
+ 106:	c3                   	ret    
+ 107:	e8 00 00 00 00       	call   10c <main+0x10c>
+ 10c:	0f 1f 40 00          	nopl   0x0(%rax)
+
+0000000000000110 <_GLOBAL__sub_I__Z11uint64_mathmm>:
+ 110:	f3 0f 1e fa          	endbr64 
+ 114:	55                   	push   %rbp
+ 115:	48 8d 2d 00 00 00 00 	lea    0x0(%rip),%rbp        # 11c <_GLOBAL__sub_I__Z11uint64_mathmm+0xc>
+ 11c:	48 89 ef             	mov    %rbp,%rdi
+ 11f:	e8 00 00 00 00       	call   124 <_GLOBAL__sub_I__Z11uint64_mathmm+0x14>
+ 124:	48 8b 3d 00 00 00 00 	mov    0x0(%rip),%rdi        # 12b <_GLOBAL__sub_I__Z11uint64_mathmm+0x1b>
+ 12b:	48 89 ee             	mov    %rbp,%rsi
+ 12e:	5d                   	pop    %rbp
+ 12f:	48 8d 15 00 00 00 00 	lea    0x0(%rip),%rdx        # 136 <_GLOBAL__sub_I__Z11uint64_mathmm+0x26>
+ 136:	e9 00 00 00 00       	jmp    13b <_GLOBAL__sub_I__Z11uint64_mathmm+0x2b>
