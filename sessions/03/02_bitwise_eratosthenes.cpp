@@ -339,7 +339,10 @@ private:
 	uint64_t* p; // point to the dynamic memory for the bits
 public:
 	prime_bits(uint64_t n) : // round up because we need n+1 bits
-		n(n+1), num_words(n/64+1), p(new uint64_t[n/64+1]) {}
+		n(n+1), num_words(n/64+1), p(new uint64_t[n/64+1]) {
+			for (int i =0; i < num_words; i++)
+			  prime_bits[i] = 0;
+		}
 	~prime_bits() {
 		delete [] p;
 	}
@@ -353,7 +356,7 @@ public:
 		// this is storing only odd numbers in each mask!
 		// note 1LL is crucial. If you write just 1 it's an int.
 		// (1 << 40) would be 0   (1LL << 40) is 10000000000000000000000000....
-		p[i / 128] |= (1LL << ((i%128) >> 1));
+		p[i/128] |= (1LL << ((i%128) >> 1));
 	}
 	bool is_prime(uint64_t i) const {
 		return (p[i / 128] & (1LL << ((i%128) >> 1))) == 0;
