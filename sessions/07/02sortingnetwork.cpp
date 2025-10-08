@@ -26,16 +26,22 @@ void sortingnetwork8(const uint32_t arr[], uint32_t n) {
         __m256i g = _mm256_loadu_si256((__m256i*)(arr+i+48));
         __m256i h = _mm256_loadu_si256((__m256i*)(arr+i+56));
         // a = [5, 1, 10, 2, 11, 14, 3, 6]
-        // b = [6, 2, 9,  3, 8, 6, 4, 7]
+        // c = [6, 2, 9,  3, 8, 6, 4, 7]
         // temp[5, 1, 9, 2,  8, 6, 3, 6]
-            __m256i temp = _mm256_min_epi32(a, c); // order all pairs in a,c
+        //cm = [6, 2, 10, 3, 11, 14, 4, 7]
+        if (x[i] < x[j]) {
+            temp = x[i];
+            x[i] = x[j];
+            x[j] = temp;
+        }
+        __m256i temp = _mm256_min_epi32(a, c); // order all pairs in a,c
         c = _mm256_max_epi32(a, c);
         a = temp;
 
         __m256i temp = _mm256_min_epi32(b, d); // order all pairs in a,c
         d = _mm256_max_epi32(b, d);
         b = temp;
-
+        //...
         _mm256_storeu_si256((__m256i*)(arr+i), a);
         _mm256_storeu_si256((__m256i*)(arr+i+8), b);
         _mm256_storeu_si256((__m256i*)(arr+i+16), c);
@@ -47,3 +53,14 @@ void sortingnetwork8(const uint32_t arr[], uint32_t n) {
         
     }
 }
+
+/**
+ *   5, 1, 10, 2, 11, 14, 3, 6,    6, 2, 9,  3, 8, 6, 4, 7
+ *   [1 5] [2 10] [11 14] [3 6]
+ *    i     j
+          i   j
+ *    [1 2 5  10]
+ * 
+ * 
+ * 
+ */
