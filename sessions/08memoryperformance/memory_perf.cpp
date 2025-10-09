@@ -4,6 +4,12 @@
 using namespace std;
 using namespace std::chrono;
 
+extern "C" {
+    void read_1byte_sequentially(const char a[], uint64_t n);
+    void read_1byte_sequentially_b(const char a[], uint64_t n);
+    void read_8byte_sequentially(const uint64_t a[], uint64_t n);
+    void read_8byte_skip(const uint64_t a[], uint64_t n, uint64_t skip);
+}
 /**
  * Read memory sequentially to measure memory performance.
  */
@@ -55,6 +61,18 @@ int main() {
         t1 = high_resolution_clock::now();
         cout << "reading bytes warm: " << duration_cast<microseconds>(t1 - t0).count() << " microseconds" << endl;
     }
+    for (uint32_t trials = 0; trials < num_trials; trials++) {
+        t0 = high_resolution_clock::now();
+        read_1byte_sequentially(a, n8);
+        t1 = high_resolution_clock::now();
+        cout << "asm reading bytes: " << duration_cast<microseconds>(t1 - t0).count() << " microseconds" << endl;
+    }
+    for (uint32_t trials = 0; trials < num_trials; trials++) {
+        t0 = high_resolution_clock::now();
+        read_1byte_sequentially_b(a, n8);
+        t1 = high_resolution_clock::now();
+        cout << "asm reading bytes b: " << duration_cast<microseconds>(t1 - t0).count() << " microseconds" << endl;
+    }
     delete[] a;
 
     void* p = malloc(n8*8);
@@ -69,10 +87,26 @@ int main() {
         t1 = high_resolution_clock::now();
         cout << "reading 64-bit words warm: " << duration_cast<microseconds>(t1 - t0).count() << " microseconds" << endl;
     }
-    // t0 = high_resolution_clock::now();
-    // read_memory64(b, n);
-    // t1 = high_resolution_clock::now();
-    // cout << "reading 64-bit words warm: " << duration_cast<microseconds>(t1 - t0).count() << " microseconds" << endl;
+
+    for (uint32_t trials = 0; trials < num_trials; trials++) {
+        t0 = high_resolution_clock::now();
+        read_8byte_sequentially(b, n);
+        t1 = high_resolution_clock::now();
+        cout << "asm 64-bit words: " << duration_cast<microseconds>(t1 - t0).count() << " microseconds" << endl;
+    }
+    for (uint64_t i = 2; i <= 1024; i*=2) {
+        t0 = high_resolution_clock::now();
+        read_memory_skip(b, n, i);
+        t1 = high_resolution_clock::now();
+        cout << "reading memory skip " << i << ": " << duration_cast<microseconds>(t1 - t0).count() << " microseconds" << endl;
+    }
+    for (uint64_t i = 2; i <= 1024; i*=2) {
+        t0 = high_resolution_clock::now();
+        read_8byte_skip(b, n/i, i);
+        t1 = high_resolution_clock::now();
+        cout << "reading memory skip " << i << ": " << duration_cast<microseconds>(t1 - t0).count() << " microseconds" << endl;
+    }
+
     delete[] b;
 
     return 0;
