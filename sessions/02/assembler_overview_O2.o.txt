@@ -44,14 +44,14 @@ Disassembly of section .text:
 
 0000000000000080 <_Z11uint64_mathmm>:
   80:	f3 0f 1e fa          	endbr64 
-  84:	48 89 f8             	mov    %rdi,%rax
-  87:	31 d2                	xor    %edx,%edx
-  89:	49 89 f9             	mov    %rdi,%r9
-  8c:	49 89 f8             	mov    %rdi,%r8
-  8f:	48 f7 f6             	div    %rsi
-  92:	4c 0f af c6          	imul   %rsi,%r8
-  96:	48 8d 0c 37          	lea    (%rdi,%rsi,1),%rcx
-  9a:	49 29 f1             	sub    %rsi,%r9
+  84:	48 89 f8             	mov    %rdi,%rax // rax = a
+  87:	31 d2                	xor    %edx,%edx // edx = 0 (division)
+  89:	49 89 f9             	mov    %rdi,%r9 // r9 = a
+  8c:	49 89 f8             	mov    %rdi,%r8 // r8 = a
+  8f:	48 f7 f6             	div    %rsi // rax=a/b
+  92:	4c 0f af c6          	imul   %rsi,%r8 // r8 = a*b
+  96:	48 8d 0c 37          	lea    (%rdi,%rsi,1),%rcx // rcx=a+b
+  9a:	49 29 f1             	sub    %rsi,%r9 // r9 = a - b
   9d:	49 0f af c9          	imul   %r9,%rcx
   a1:	48 0f af ff          	imul   %rdi,%rdi
   a5:	49 0f af c0          	imul   %r8,%rax
@@ -59,6 +59,7 @@ Disassembly of section .text:
   ac:	48 29 f9             	sub    %rdi,%rcx
   af:	48 29 c1             	sub    %rax,%rcx
   b2:	48 89 c8             	mov    %rcx,%rax
+  // rax = the return value
   b5:	c3                   	ret    
   b6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
   bd:	00 00 00 

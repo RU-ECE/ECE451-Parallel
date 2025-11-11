@@ -47,6 +47,9 @@ double double_math(double a, double b) {
     return p * q - r * s - 3*x + y + z; //TODO: is the compiler going to optimize 3*x+y out?
 }
 
+// this was failing to optimize, but now seems to work, *sigh*
+// something was stopping optimization from working in-register
+// can't duplicate issue. It's in the original code though
 inline bool isPrime(uint64_t n) {
     uint64_t lim = sqrt(n);
     for (uint64_t i = 2; i <= lim; i++) {
@@ -57,7 +60,8 @@ inline bool isPrime(uint64_t n) {
 }
 // do the counting in a register, do not write to memory
 void countPrimesMultithreaded(uint64_t a, uint64_t b, uint64_t* pcount) {
-    uint64_t count = (a == 2 ? 1 : 0);
+	cout << "countPrimesMultithreaded: " << a << "," << b << '\n';
+	uint64_t count = (a == 2 ? 1 : 0);
     a |= 1; // 10101010101010101010101010100001
   // THE ABOVE GUARANTEES THAT a IS odd 
     for (int i = a; i <= b; i+=2) //O(n)
@@ -68,6 +72,7 @@ void countPrimesMultithreaded(uint64_t a, uint64_t b, uint64_t* pcount) {
 
 // do the counting in a register, do not write to memory
 void countPrimesMultithreaded2(uint64_t a, uint64_t b, uint64_t* pcount) {
+	cout << "countPrimesMultithreaded2: " << a << "," << b << '\n';
     uint64_t count = a == 2 ? 1 : 0;
     a |= 1; // 10101010101010101010101010100001
 // round up to next odd number using OR
@@ -98,6 +103,7 @@ int main(int argc, char* argv[]) {
     }
     const int n = atoi(argv[1]); // count primes up to 1 million single threaded
     {
+			cout << "\n=========\n1 thread writing to memory:\n";
         uint64_t count;
         auto t0 = chrono::high_resolution_clock::now();
         countPrimesMultithreaded(2, n, &count);
@@ -105,6 +111,7 @@ int main(int argc, char* argv[]) {
         cout << "prime count=" << count << " elapsed: " << chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count()*1e-6 << endl;
     }
     {
+			  cout << "\n=========\n1 thread in registers:\n";
         uint64_t count = 0;
         auto t0 = chrono::high_resolution_clock::now();
         countPrimesMultithreaded2(2, n, &count);
@@ -112,15 +119,33 @@ int main(int argc, char* argv[]) {
         cout << "prime count=" << count << " elapsed: " << chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count()*1e-6 << endl;
     }
     {
+			cout << "\n=========\n2 threads:\n";
         uint64_t count1 = 0, count2 = 0;
         auto start = chrono::high_resolution_clock::now();
         thread t1(countPrimesMultithreaded2, 2, n/2, &count1);
-        thread t2(countPrimesMultithreaded2, 2, n/2, &count2);
+        thread t2(countPrimesMultithreaded2, n/2+1, n, &count2);
         t1.join();
         t2.join();
         uint64_t count = count1 + count2;
         auto end = chrono::high_resolution_clock::now();
         cout << "prime count=" << count << " elapsed: " << chrono::duration_cast<std::chrono::microseconds>(end - start).count()*1e-6 << endl;
     }
+    {
+			cout << "\n=========\n4 threads:\n";
+			uint64_t count1 = 0, count2 = 0, count3 = 0, count4 = 0;
+        auto start = chrono::high_resolution_clock::now();
+        thread t1(countPrimesMultithreaded2, 2, n/4, &count1);
+        thread t2(countPrimesMultithreaded2, n/4+1, n/2, &count2);
+        thread t3(countPrimesMultithreaded2, n/2+1, 3*n/4, &count3);
+        thread t4(countPrimesMultithreaded2, 3*n/4+1, n, &count4);
+        t1.join();
+        t2.join();
+        t3.join();
+        t4.join();
+        uint64_t count = count1 + count2 + count3 + count4;
+        auto end = chrono::high_resolution_clock::now();
+        cout << "prime count=" << count << " elapsed: " << chrono::duration_cast<std::chrono::microseconds>(end - start).count()*1e-6 << endl;
+    }
+
     return 0;
 }

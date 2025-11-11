@@ -23,6 +23,10 @@ using namespace std;
 */
 
 
+/*
+    Using an scalar dot product for speed. No writing to memory
+    for the inner loop
+*/
 void multiply_matrices(float* a, float* b, float* c, int n) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -48,22 +52,51 @@ void multiply_matrices_omp(float* a, float* b, float* c, int n) {
     }
 }
 
-
-void multiply_matrices_omp_simd(float* a, float* b, float* c, int n) {
-    #pragma omp parallel for
+void multiply_matrices_omp2(float* a, float* b, float* c, int n) {
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j += 8) {
-            __m256 sum = _mm256_setzero_ps();
+        for (int j = 0; j < n; j++) {
+            float sum = 0;
+            // this should be locking on the shared sum! Not good
+    #pragma omp parallel 
             for (int k = 0; k < n; k++) {
-                __m256 a_vec = _mm256_set1_ps(a[i * n + k]);
-                __m256 b_vec = _mm256_loadu_ps(&b[k * n + j]);
-                sum = _mm256_fmadd_ps(a_vec, b_vec, sum);
+                sum += a[i * n + k] * b[k * n + j];
             }
-            _mm256_storeu_ps(&c[i * n + j], sum);
+            c[i * n + j] = sum;
         }
     }
 }
 
+
+void multiply_matrices_omp_simd(float* a, float* b, float* c, int n) {
+    #pragma omp parallel for
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j ++) {
+            float sum = 0;
+            #pragma omp simd reduction(+:sum)
+            for (int k = 0; k < n; k++) {
+                sum += a[i * n + k] * b[k * n + j];
+            }
+            c[i * n + j] = sum;
+        }
+    }
+}
+
+/**
+     1 2 3       2 1  b3 b4 b5 b6 b7 b8 .. b15                          1*2+2*3+3*0, 1*1+2*3+3*2
+     4 5 6   x   3 3 = 
+    -1 2 1       0 2
+
+
+*  m x n     n x p    m x p
+ *  3 x 4         4 x 2    3 x 2
+ * a1 a2 a3 a4    b b
+ * a  a  a  a    x b b
+ * a a a a        b b
+ *                b b
+ * 
+ * avec = a1 a1 a1 a1 a1 a1 a1 a1 
+ * 
+ */
 void multiply_matrices_omp_simd_unroll(float* a, float* b, float* c, int n) {
     #pragma omp parallel for
     for (int i = 0; i < n; i++) {
@@ -119,7 +152,20 @@ void multiply_matrices_omp_simd_unroll_3(float* a, float* b, float* c, int n) {
         }
     }
 }
+/**
+  tiling is a technique to improve cache locality by breaking down
+    the matrix multiplication into smaller sub-matrices (tiles) that fit
 
+   a1 a2 a3 a4 ...      b1
+                        bn
+                        b2n
+                        b3n
+
+    Instead:
+    a1 a2             b1 b2      a1*b1 + a2*b2, a1*b3 + a2*b4
+    a3 a4             b3 b4  =   a3*b1 + a4*b2, a3*b3 + a4*b4
+
+ */
 void multiply_matrices_tiling(float* a, float* b, float* c, int n) {
     const int tile = 64;
     #pragma omp parallel for
