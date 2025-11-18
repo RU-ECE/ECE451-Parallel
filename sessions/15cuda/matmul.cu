@@ -24,7 +24,7 @@ using namespace std;
 
 // Adjustable tile size (change to 16/32 to test)
 #ifndef TILE
-#define TILE 32
+#define TILE 16
 #endif
 
 // Utility: set matrix (row-major) to constant 'k'
@@ -34,7 +34,16 @@ __global__ void set_matrix(float *A, int N, float k) {
     for (int i = idx; i < total; i += gridDim.x * blockDim.x)
         A[i] = k;
 }
+/*
+suppose memory row size = 8k
+N=1024
+a[0] a[1] ...     a[1023]  (4096 bytes)
+a[1024] = 4k
+a[2048] = 8k (on a new page?)
 
+
+
+*/
 // ------------------------ TRANSPOSE KERNELS ------------------------
 
 // 1 Naive transpose: each thread writes one element: ans[col*N + row] = a[row * N + col]
@@ -48,6 +57,7 @@ __global__ void transpose_naive(const float a[], float ans[], int N) {
 
 // 2 Shared-memory tiled transpose with padding to avoid bank conflicts
 __global__ void transpose_shared(const float a[], float ans[], int N) {
+//    __shared__ float tile[TILE][TILE]; // this has bank conflicts
     __shared__ float tile[TILE][TILE + 1]; // +1 avoids bank conflicts
     int x = blockIdx.x * TILE + threadIdx.x; // Global column for input 'a'
     int y = blockIdx.y * TILE + threadIdx.y; // Global row for input 'a'
@@ -68,6 +78,20 @@ __global__ void transpose_shared(const float a[], float ans[], int N) {
         ans[out_row * N + out_col] = tile[threadIdx.y][threadIdx.x];
 }
 
+/*
+1 2 3 4
+5 6 7 8
+9 10 11 12
+13 14 15 16
+
+
+becomes
+1 5 9 13
+2 6 10 14
+3 7 11 15
+4 8 12 16
+
+*/
 // 2b Shared-memory transpose with coalesced writes
 __global__ void transpose_shared_coalesced(const float a[], float ans[], int N) {
     __shared__ float tile[TILE][TILE + 1];
