@@ -1,6 +1,5 @@
-#include <iostream>
 #include <immintrin.h>
-#include <stdlib.h>
+#include <iostream>
 #include <memory.h>
 /*
 https://xhad1234.github.io/Parallel-Sort-Merge-Join-in-Peloton/
@@ -11,7 +10,7 @@ https://www.felixcloutier.com/x86/
 
 */
 
-__m256i f(__m256i a, __m256i b, __m256i c){
+__m256i f(const __m256i a, const __m256i b, const __m256i c){
     return a*b + c;
 }
 // the if statement is terrible for pipelining
@@ -25,8 +24,8 @@ inline void minmax(const int a, const int b, int& minab, int& maxab){
     }
 }
 
-void minmax(__m256i& a, __m256i& b) { 
-  __m256i temp = _mm256_min_epi32(a, b);
+void minmax(__m256i& a, __m256i& b) {
+	const __m256i temp = _mm256_min_epi32(a, b);
   b = _mm256_max_epi32(a, b);
   a = temp;
 }
@@ -55,7 +54,7 @@ void sort8cols(__m256i a, __m256i b, __m256i c, __m256i d, __m256i e, __m256i f,
     sort each column of 8
 */
 void sort8cols(uint32_t* p) {
-    __m256i a = _mm256_load_si256((__m256i const*)p);
+	const __m256i a = _mm256_load_si256((__m256i const*)p);
     // load 8 _m256i registers a..h
     __m256i aout, bout, cout, dout, eout, fout, gout, hout;
     // sort8cols(a,b,c,d,e,f,g,h, aout, bout, cout, dout, eout, fout, gout, hout);
@@ -77,22 +76,22 @@ extern "C" {
 }
 
 int main() {
-    uint32_t a[8] = {57, 58, 59, 60, 61, 62, 63, 64};
-    uint32_t b[8] = {49, 50, 51, 52, 53, 54, 55, 56};
-    uint32_t c[8] = {41, 42, 43, 44, 45, 46, 47, 48};
-    uint32_t d[8] = {33, 34, 35, 36, 37, 38, 39, 40};
-    uint32_t e[8] = {25, 26, 27, 28, 29, 30, 31, 32};
-    uint32_t f[8] = {17, 18, 19, 20, 21, 22, 23, 24};
-    uint32_t g[8] = {9, 10, 11, 12, 13, 14, 15, 16};
-    uint32_t h[8] = {1, 2, 3, 4, 5, 6, 7, 8};
-    __m256i av = load(a);
-    __m256i bv = load(b);
-    __m256i cv = load(c);
-    __m256i dv = load(d);
-    __m256i ev = load(e);
-    __m256i fv = load(f);
-    __m256i gv = load(g);
-    __m256i hv = load(h);
+	const uint32_t a[8] = {57, 58, 59, 60, 61, 62, 63, 64};
+	const uint32_t b[8] = {49, 50, 51, 52, 53, 54, 55, 56};
+	const uint32_t c[8] = {41, 42, 43, 44, 45, 46, 47, 48};
+	const uint32_t d[8] = {33, 34, 35, 36, 37, 38, 39, 40};
+	const uint32_t e[8] = {25, 26, 27, 28, 29, 30, 31, 32};
+	const uint32_t f[8] = {17, 18, 19, 20, 21, 22, 23, 24};
+	const uint32_t g[8] = {9, 10, 11, 12, 13, 14, 15, 16};
+	const uint32_t h[8] = {1, 2, 3, 4, 5, 6, 7, 8};
+	const __m256i av = load(a);
+	const __m256i bv = load(b);
+	const __m256i cv = load(c);
+	const __m256i dv = load(d);
+	const __m256i ev = load(e);
+	const __m256i fv = load(f);
+	const __m256i gv = load(g);
+	const __m256i hv = load(h);
     sort8cols(av, bv, cv, dv, ev, fv, gv, hv);
     // printvec(av); printvec(bv)...
     sort8colsasm(av, bv, cv, dv, ev, fv, gv, hv);

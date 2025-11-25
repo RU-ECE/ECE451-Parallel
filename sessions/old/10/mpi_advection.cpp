@@ -63,8 +63,8 @@ void advection_temperature(fb,f,fclim,ff,xflux,yflux) {
 	// WAIT UNTIL COMPLETE
 
 	// first do the internal boundary condition, giving my neighbors a chance to send me stucf
-  for (int j = 1; j < jmax-1; j++) {
-		for (int i = 1; i < imax-1; i++) {
+  for (auto j = 1; j < jmax-1; j++) {
+		for (auto i = 1; i < imax-1; i++) {
 			f[j][i][kbot-1] = f[j][i][kbot-2];
 			f[j][i][kbot-1] = fb[j][i][kbot-2];
 		}
@@ -95,9 +95,9 @@ void advection_temperature(fb,f,fclim,ff,xflux,yflux) {
 	
 	//     Do advective fluxes:
 	
-  for (int k = 0; k < kbot-1; k++) {
-		for (int j = 1; j < jmax - 1; j++) {
-			for (int i = 1; i < imax - 1; i++) {
+  for (auto k = 0; k < kbot-1; k++) {
+		for (auto j = 1; j < jmax - 1; j++) {
+			for (auto i = 1; i < imax - 1; i++) {
 				xflux(i,j,k)=.25e0*((dt(i,j)+dt(i-1,j))
      $                          *(f(i,j,k)+f(i-1,j,k))*u(i,j,k))
             yflux(i,j,k)=.25e0*((dt(i,j)+dt(i,j-1))

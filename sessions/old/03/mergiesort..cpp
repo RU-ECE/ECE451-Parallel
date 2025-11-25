@@ -10,7 +10,7 @@
                 i
 */
 void merge(const uint32_t a[], uint32_t[] b, uint32_t c[], uint32_t n) {
-  int i = 0, j = 0, k = 0;
+	auto i = 0, j = 0, k = 0;
   while (i < n && j < n) {
     if (a[i] > b[j]) {
       c[k++] = b[j++];

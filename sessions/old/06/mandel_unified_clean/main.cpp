@@ -34,7 +34,7 @@ extern void mandelbrot_serial(float x0, float y0, float x1, float y1, int width,
 
 //TODO: replace this with color and .webp or png
 /* Write a PPM image file with the image of the Mandelbrot set */
-static void writePPM(uint32_t *buf, int width, int height, const char *fn) {
+static void writePPM(uint32_t *buf, const int width, const int height, const char *fn) {
     FILE *fp = fopen(fn, "wb");
     if (!fp) {
         printf("Couldn't open a file '%s'\n", fn);
@@ -43,11 +43,11 @@ static void writePPM(uint32_t *buf, int width, int height, const char *fn) {
     fprintf(fp, "P6\n");
     fprintf(fp, "%d %d\n", width, height);
     fprintf(fp, "255\n");
-    for (int i = 0; i < width * height; ++i) {
+    for (auto i = 0; i < width * height; ++i) {
         // Map the iteration count to colors by just alternating between
         // two greys.
-        char c = (buf[i] & 0x1) ? (char)240 : 20;
-        for (int j = 0; j < 3; ++j)
+		const char c = (buf[i] & 0x1) ? (char)240 : 20;
+        for (auto j = 0; j < 3; ++j)
             fputc(c, fp);
     }
     fclose(fp);
@@ -62,8 +62,8 @@ void benchmark1(const uint32_t num_trials,
 								uint32_t width, uint32_t height,
 								uint32_t counts[],
 								Func f) {
-    double min_time = 1e100;
-		cout << msg << '\n';
+	auto min_time = 1e100;
+		cout << msg << endl;
     for (unsigned int trials = 0; trials < num_trials; ++trials) {
 			reset_and_start_timer();
 			f(x0, y0, x1, y1, width, height, max_iterations, (int*)counts);
@@ -71,7 +71,7 @@ void benchmark1(const uint32_t num_trials,
 			cout << setprecision(3) << dt << '\t';
 			min_time = std::min(min_time, dt);
     }
-		cout << "\nBest time: " << min_time << '\n';
+		cout << "\nBest time: " << min_time << endl;
 }
 
 /*
@@ -79,26 +79,25 @@ void benchmark1(const uint32_t num_trials,
 	 by comparing the numbers
 	 TODO: should print how many errors, not each one but probably everything is fine so not bothering
  */
-void verify(uint32_t counts1[], uint32_t counts2[], uint32_t n) {
+void verify(uint32_t counts1[], uint32_t counts2[], const uint32_t n) {
 	for (uint32_t i = 0; i < n; i++)
 		if (counts1[i] != counts2[i]) {
-			cout << "Error at " << i << '\n';
+			cout << "Error at " << i << endl;
 		}
 }
 
-void bench(uint32_t num_trials, uint32_t vector_size, uint32_t res,
-					 float x0, float x1, float y0,float y1, uint32_t max_iterations) {
+void bench(const uint32_t num_trials, const uint32_t vector_size, uint32_t res, const float x0, const float x1,
+		   const float y0, const float y1, const uint32_t max_iterations) {
 	if (res % vector_size != 0) {
 		res = (res + vector_size) % vector_size; // round up to next even multiple
-	}
-	float aspect_ratio = (x1-x0) / (y1-y0);
+		const float aspect_ratio = (x1-x0) / (y1-y0);
 	// right now this is 3:2, and this has to be made robust. We need a multiple of 8 for avx2, 16 for avx512
 	uint32_t width = res * aspect_ratio, height = res;
-	cout << "benchmarking Mandelbrot width=" << width << ", height=" << height << '\n';
+	cout << "benchmarking Mandelbrot width=" << width << ", height=" << height << endl;
 	// allocate integers to compute the images
 	const uint32_t num_pixels = width*height;
-	uint32_t *counts_serial = new uint32_t[num_pixels];
-	uint32_t *counts_parallel = new uint32_t[num_pixels];
+		const auto counts_serial = new uint32_t[num_pixels];
+		const auto counts_parallel = new uint32_t[num_pixels];
 	//TODO: note order of parameters is different not changing for now
 	//TODO: very sloppy intel!
 	benchmark1(num_trials, "scalar", x0, x1, y0, y1, width, height,
@@ -125,10 +124,10 @@ void bench(uint32_t num_trials, uint32_t vector_size, uint32_t res,
 
 
 int main(int argc, char *argv[]) {
-	const uint32_t num_trials = 5;
-	const uint32_t vector_size = 16; // for AVX512, let's make sure the number works for all CPUs the same for now
-	const uint32_t res = 4096;
-	const uint32_t max_iterations = 512; // the multi-task version used this number
+	constexpr uint32_t num_trials = 5;
+	constexpr uint32_t vector_size = 16; // for AVX512, let's make sure the number works for all CPUs the same for now
+	constexpr uint32_t res = 4096;
+	constexpr uint32_t max_iterations = 512; // the multi-task version used this number
 
 	/*
 		test will always compute the image with equal pixel sizes in x and y
@@ -139,8 +138,8 @@ int main(int argc, char *argv[]) {
 		benchmark to show timings and compare the three to make sure results 
 		are the same
 	*/
-	{		
-    const float x0 = -2, x1 = 1, y0 = -1, y1 = 1;
+	{
+		constexpr constexpr constexpr constexpr float x0 = -2, x1 = 1, y0 = -1, y1 = 1;
 		bench(num_trials, vector_size, res, x0, x1, y0, y1, max_iterations);
 	}
 	

@@ -3,7 +3,7 @@
 
 class Grid3D {
 public:
-    Grid3D(int nx, int ny, int nz, double lengthX, double lengthY, double lengthZ) :
+    Grid3D(const int nx, const int ny, const int nz, const double lengthX, const double lengthY, const double lengthZ) :
         nx_(nx), ny_(ny), nz_(nz), lengthX_(lengthX), lengthY_(lengthY), lengthZ_(lengthZ) {
         InitializeGrid();
     }
@@ -26,9 +26,9 @@ private:
     void InitializeGrid() {
         // Initialize the 3D grid with appropriate dimensions.
         grid_.resize(nx_);
-        for (int i = 0; i < nx_; i++) {
+        for (auto i = 0; i < nx_; i++) {
             grid_[i].resize(ny_);
-            for (int j = 0; j < ny_; j++) {
+            for (auto j = 0; j < ny_; j++) {
                 grid_[i][j].resize(nz_, 0.0); // Initialize values to 0.
             }
         }
@@ -36,12 +36,12 @@ private:
 };
 
 int main() {
-    int nx = 10;
-    int ny = 10;
-    int nz = 10;
-    double lengthX = 1.0;
-    double lengthY = 1.0;
-    double lengthZ = 1.0;
+	constexpr auto nx = 10;
+	constexpr auto ny = 10;
+	constexpr auto nz = 10;
+	constexpr auto lengthX = 1.0;
+	constexpr auto lengthY = 1.0;
+	constexpr auto lengthZ = 1.0;
 
     Grid3D grid(nx, ny, nz, lengthX, lengthY, lengthZ);
 

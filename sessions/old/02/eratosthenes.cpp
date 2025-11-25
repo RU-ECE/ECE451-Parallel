@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cstdint>
 using namespace std;
 
@@ -12,7 +11,7 @@ using namespace std;
 
 uint64_t eratosthenes(uint64_t n) {
     uint64_t count = 0;
-    bool* isPrime = new bool[n + 1];
+	auto isPrime = new bool[n + 1];
 
     // first assume all numbers are prime
     for (uint_64t i = 2; i <= n; i++)
@@ -40,7 +39,7 @@ uint64_t eratosthenes(uint64_t n) {
 
 uint64_t improved_eratosthenes(uint64_t n) {
     uint64_t count = 0;
-    bool* isPrime = new bool[n + 1];
+	auto isPrime = new bool[n + 1];
 
     // first assume all numbers are prime
     for (uint_64t i = 2; i <= n; i++)
@@ -58,7 +57,7 @@ uint64_t improved_eratosthenes(uint64_t n) {
 }
 
 
-bool isPrime(uint64_t* primes, uint64_t i) {
+bool isPrime(uint64_t* primes, const uint64_t i) {
     return primes[i/64] & (1ULL << (i & 63));
 // 8421
 // 1010
@@ -102,10 +101,10 @@ https://en.wikipedia.org/wiki/Wheel_factorization
     3rd pass: n/5
     4th pass: n/7
 */
-uint64_t improved_bitpacked_eratosthenes(uint64_t n) {
+uint64_t improved_bitpacked_eratosthenes(const uint64_t n) {
     uint64_t count = 0;
     const uint64_t SIZE = (n + 63+1) / 64;
-    uint64_t* primes =  new uint64_t[SIZE];
+	auto primes =  new uint64_t[SIZE];
     // first assume all numbers are prime
     for (uint_64t i = 2; i <= SIZE; i++)
       isPrime[i] = 0xFFFFFFFFFFFFFFFFLL; // MAX(uint64_tuint64_t

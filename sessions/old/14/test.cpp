@@ -3,8 +3,8 @@ using namespace std;
 
 int main() {
     int sum;
-  for (int i = 0; i < 10; i++)
+  for (auto i = 0; i < 10; i++)
     sum += i;
-    cout << sum << '\n';
+    cout << sum << endl;
 
 }

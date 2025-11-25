@@ -6,26 +6,26 @@ using namespace std;
 
 // load the intel intrinsics
 
-float dot(const float x[], const float y[], int n) {
+float dot(const float x[], const float y[], const int n) {
     float sum = 0;
-    for (int i = 0; i < n; i++) {
+    for (auto i = 0; i < n; i++) {
         sum += x[i] * y[i];
     }
     return sum;
 }
 
 
-float dot_product_avx2(float* a, float* b, int n) {
+float dot_product_avx2(float* a, float* b, const int n) {
     __m256 result = _mm256_setzero_ps();
 
-    for (int i = 0; i < n; i += 8) {
-        __m256 a_vec = _mm256_loadu_ps(&a[i]);
-        __m256 b_vec = _mm256_loadu_ps(&b[i]);
+    for (auto i = 0; i < n; i += 8) {
+		const __m256 a_vec = _mm256_loadu_ps(&a[i]);
+		const __m256 b_vec = _mm256_loadu_ps(&b[i]);
         result = _mm256_add_ps(result, _mm256_mul_ps(a_vec, b_vec));
     }
 
     // Horizontal addition of elements in the result vector
-    __m128 hi128 = _mm256_extractf128_ps(result, 1);
+	const auto hi128 = _mm256_extractf128_ps(result, 1);
     __m128 dotproduct = _mm_add_ps(_mm256_castps256_ps128(result), hi128);
     dotproduct = _mm_hadd_ps(dotproduct, dotproduct);
     dotproduct = _mm_hadd_ps(dotproduct, dotproduct);
@@ -36,16 +36,16 @@ float dot_product_avx2(float* a, float* b, int n) {
     return dot_product;
 }
 
-void init(float* a, float value, int n) {
-    for (int i = 0; i < n; i++) {
+void init(float* a, const float value, const int n) {
+    for (auto i = 0; i < n; i++) {
         a[i] = value;
     }
 }
 
 int main() {
-    const int n = 1'000'000'00;
-    float* a = new float[n];
-    float* b = new float[n];
+	constexpr auto n = 1'000'000'00;
+	const auto a = new float[n];
+	const auto b = new float[n];
     clock_t t0 = clock();
     init(a, 1.5, n);
     init(b, 2.3, n);

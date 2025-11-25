@@ -96,7 +96,7 @@ int main() {
     t1 = clock();
     cout << "elapsed time: " << (double)(t1 - t0) / CLOCKS_PER_SEC << " result=" << ans << endl;
 
-    for (int stride = 1; stride <= 1024; stride *= 2) {
+    for (auto stride = 1; stride <= 1024; stride *= 2) {
         t0 = clock();
         ans = testStrideSum64(a, stride, n);
         t1 = clock();

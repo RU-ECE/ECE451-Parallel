@@ -1,30 +1,32 @@
 #include <cuda.h>
 
-inline void ordswap(int* a, int i, int j) {
+inline void ordswap(int* a, const int i, const int j) {
     if (a[i] > a[j]) {
-        int t = a[i];
+		const int t = a[i];
         a[i] = a[j];
         a[j] = t;        
     }
 }
 
-inline void ordswap2(int* a, int i1, int j1, int i2, int j2) {
+inline void ordswap2(int* a, const int i1, const int j1, const int i2, const int j2) {
     ordswap(a, i1, j1);
     ordswap(a, i2, j2);
 }
 
-inline void ordswap3(int* a, int i1, int j1, int i2, int j2, int i3, int j3) {
+inline void ordswap3(int* a, const int i1, const int j1, const int i2, const int j2, const int i3, const int j3) {
     ordswap2(a, i1, j1, i2, j2);
     ordswap(a, i3, j3);
 }
 
-inline void ordswap4(int* a, int i1, int j1, int i2, int j2, int i3, int j3, int i4, int j4) {
+inline void ordswap4(int* a, const int i1, const int j1, const int i2, const int j2, const int i3, const int j3,
+					 const int i4, const int j4) {
     ordswap3(a, i1, j1, i2,j2, i3,j3);
     ordswap(a, i4, j4);
 }
 
-inline void ordswap8(int* a, int i1,int j1, int i2,int j2, int i3,int j3, int i4,int j4,
-                     int i5,int j5, int i6,int j6, int i7,int j7, int i8,int j8) {
+inline void ordswap8(int* a, const int i1, const int j1, const int i2, const int j2, const int i3, const int j3,
+					 const int i4, const int j4, const int i5, const int j5, const int i6, const int j6, const int i7,
+					 const int j7, const int i8, const int j8) {
     ordswap4(a, i1, j1, i2,j2, i3,j3, i4,j4);
     ordswap4(a, i5, j5, i6,j6, i7,j7, i8,j8);
 }
@@ -38,7 +40,7 @@ inline void ordswap8(int* a, int i1,int j1, int i2,int j2, int i3,int j3, int i4
 [(1,2),(3,4),(5,6)]
 */
 
-inline void sort8network(int* a, int i) {
+inline void sort8network(int* a, const int i) {
     ordswap4(a, i,i+2, i+1,i+3, i+4,i+6, i+5,i+7);
     ordswap4(a, i,i+4, i+1,i+5, i+2,i+6, i+3,i+7);    
     ordswap4(a, i,i+1, i+2,i+3, i+4,i+5, i+6,i+7);
@@ -50,7 +52,7 @@ inline void sort8network(int* a, int i) {
 /*
 optimal 16-way sorting network
 */
-inline void sort16network(int* a, int i) {
+inline void sort16network(int* a, const int i) {
 /*
 [(0,13),(1,12),(2,15),(3,14),(4,8),(5,6),(7,11),(9,10)]
 [(0,5),(1,7),(2,9),(3,4),(6,13),(8,14),(10,15),(11,12)]
@@ -89,9 +91,9 @@ void merge4(int dest[32],
             const int* b,
             const int* c,
             const int* d) {
-    int i = 0, j = 0, k = 0, m = 0; // index of the 4 source arrays
-    int out = 0; // index of dest
-    for (int iter = 8; iter > 0; iter--) { // first 8 times, no one can be out of elements
+	auto i = 0, j = 0, k = 0, m = 0; // index of the 4 source arrays
+	auto out = 0; // index of dest
+    for (auto iter = 8; iter > 0; iter--) { // first 8 times, no one can be out of elements
         if (a[i] < a[j]) {
             if (a[k] < a[m]) {
                 if (a[i] < a[k]) { // a[i] is smallest case
@@ -235,8 +237,8 @@ void merge2(int * dest,
             const int* a,
             const int* b,
             int n) {
-    
-    int i = 0, j = 0, k = 0;
+
+	auto i = 0, j = 0, k = 0;
     while (true)
         if (a[i] < b[j]) {
             dest[k++] = a[i++];
@@ -255,7 +257,7 @@ void merge2(int * dest,
         }
     }
 
-    for (int i = 0; i < n; i++) {
+    for (auto i = 0; i < n; i++) {
         dest[i + n] = b[i];
     }
 
@@ -275,7 +277,7 @@ __global__ void sort(int *arr, int n) {
     sort8network(loc, 24);
     // merge does not seem like it would work on SIMD processors, too many if statements
     //    merge4(loc2, loc, loc + 8, loc + 16, loc + 24);
-    for (int j = 0; j < 32; j++) {
+    for (auto j = 0; j < 32; j++) {
         arr[i+j] = loc2[j]; // copy back sorted groups into global memory
     }
 }
@@ -302,7 +304,7 @@ void init_random(int* a, int n) {
 
 int main() {
     constexpr uint32_t n = 256*1024; // 1Gb (250M 4-byte integers)
-    int* arr = new int[n];
+	auto arr = new int[n];
     init(arr, n);
     int* dev_arr;
     cudaMalloc(&dev_arr, n * sizeof(int));

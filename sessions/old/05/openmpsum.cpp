@@ -15,19 +15,19 @@ int main() {
     //    omp_set_num_threads(atoi(getenv("OMP_NUM_THREADS")));
     //    omp_set_num_threads(4); // set the number of threads manually (bad idea)
 
-    const int n = 1'000'000'000;
-    uint32_t *a = new uint32_t[n];
-    for (int i = 0; i < n; i++)
+	constexpr auto n = 1'000'000'000;
+	const auto a = new uint32_t[n];
+    for (auto i = 0; i < n; i++)
       a[i] = i;
     // known sum
 
-    high_resolution_clock::time_point t0 = high_resolution_clock::now();
+	const high_resolution_clock::time_point t0 = high_resolution_clock::now();
 
     uint64_t sum = 0;
     #pragma omp parallel for reduction(+:sum)
-    for (int i=0; i < n; i++)
+    for (auto i =0; i < n; i++)
         sum += a[i];
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+	const high_resolution_clock::time_point t1 = high_resolution_clock::now();
     cout << "Elapsed time: " << duration_cast<duration<double>>(t1 - t0).count() << endl;
 
     cout << "sum=   " << sum << endl;  

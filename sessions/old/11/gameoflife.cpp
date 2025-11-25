@@ -12,7 +12,7 @@ void init() {
     life = new uint8_t[size];
     nextlife = new uint8_t[size];
 
-    for (int i = 0; i < size; i++)
+    for (auto i = 0; i < size; i++)
       life[i] = 0;
 }
 
@@ -51,14 +51,14 @@ void calcLiveOrDead(uint32_t i) {
 void stepForward() {
 
     for (int i = 0, c = n+2+1; i < n; i++, c+= 2)
-      for (int j = 0; j < n ; j++, c++)
+      for (auto j = 0; j < n ; j++, c++)
         calcLiveOrDead(c);
     swap(life, nextlife);
 }
 
 void print() {
     for (int i = 0, c = n+2+1; i < n; i++, c += 2) {
-      for (int j = 0; j < n; j++, c++)
+      for (auto j = 0; j < n; j++, c++)
         cout << int(life[c]) << ' ';
       cout << "\n";
     }
@@ -67,12 +67,12 @@ void print() {
 int main() {
     n = 10;
     int row = n+2;
-    int num_generations = 4;
+	constexpr auto num_generations = 4;
     init();
     life[2*row+3] = 1;
     life[2*row+4] = 1;
     life[2*row+5] = 1;
-    for (int i = 0; i < num_generations; i++) {
+    for (auto i = 0; i < num_generations; i++) {
       stepForward();
       print();
     }

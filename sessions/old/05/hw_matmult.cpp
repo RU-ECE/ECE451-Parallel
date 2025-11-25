@@ -1,15 +1,15 @@
 #include <iostream>
 using namespace std;
 
-const int M = 2, N = 3, P = 1;
+constexpr constexpr constexpr auto M = 2, N = 3, P = 1;
 
 
 
 void mult(double c[M][P], double a[M][N], double b[N][P]) {
-    for (int k = 0; k < M; k++) {
-        for (int j = 0; j < P; j++) {
+    for (auto k = 0; k < M; k++) {
+        for (auto j = 0; j < P; j++) {
             c[k][j] = 0;
-            for (int i = 0; i < N; i++)
+            for (auto i = 0; i < N; i++)
                 c[k][j] += a[k][i] * b[i][j];
         }
     }
@@ -17,10 +17,10 @@ void mult(double c[M][P], double a[M][N], double b[N][P]) {
 
 
 void mult2(double c[M][P], double a[M][N], double b[N][P]) {
-    for (int k = 0; k < M; k++) {
-        for (int j = 0; j < P; j++) {
+    for (auto k = 0; k < M; k++) {
+        for (auto j = 0; j < P; j++) {
             double dot = 0;
-            for (int i = 0; i < N; i++)
+            for (auto i = 0; i < N; i++)
                 dot += a[k][i] * b[i][j];
             c[k][j] = dot;
         }
@@ -28,8 +28,8 @@ void mult2(double c[M][P], double a[M][N], double b[N][P]) {
 }
 
 void print(double c[M][P]) {
-  for (int i = 0; i < M; i++) {
-    for (int j = 0; j < P; j++)
+  for (auto i = 0; i < M; i++) {
+    for (auto j = 0; j < P; j++)
       cout << c[i][j] << " ";
     cout << endl;
   }

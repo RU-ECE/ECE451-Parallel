@@ -126,14 +126,11 @@ using namespace Concurrency;
 #include <hpx/lcos/wait_all.hpp>
 #endif // ISPC_USE_HPX
 #ifdef ISPC_IS_LINUX
-#include <stdlib.h>
 #endif // ISPC_IS_LINUX
 
-#include <algorithm>
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 // Signature of ispc-generated 'task' functions
@@ -225,19 +222,19 @@ inline TaskGroupBase::TaskGroupBase() {
     curMemBufferOffset = 0;
     memBuffers[0] = mem;
     memBufferSize[0] = sizeof(mem) / sizeof(mem[0]);
-    for (int i = 1; i < NUM_MEM_BUFFERS; ++i) {
+    for (auto i = 1; i < NUM_MEM_BUFFERS; ++i) {
         memBuffers[i] = nullptr;
         memBufferSize[i] = 0;
     }
 
-    for (int i = 0; i < MAX_TASK_QUEUE_CHUNKS; ++i)
+    for (auto i = 0; i < MAX_TASK_QUEUE_CHUNKS; ++i)
         taskInfo[i] = nullptr;
 }
 
 inline TaskGroupBase::~TaskGroupBase() {
     // Note: don't delete memBuffers[0], since it points to the start of
     // the "mem" member!
-    for (int i = 1; i < NUM_MEM_BUFFERS; ++i)
+    for (auto i = 1; i < NUM_MEM_BUFFERS; ++i)
         delete[](memBuffers[i]);
 }
 
@@ -247,15 +244,15 @@ inline void TaskGroupBase::Reset() {
     curMemBufferOffset = 0;
 }
 
-inline int TaskGroupBase::AllocTaskInfo(int count) {
-    int ret = nextTaskInfoIndex;
+inline int TaskGroupBase::AllocTaskInfo(const int count) {
+	const int ret = nextTaskInfoIndex;
     nextTaskInfoIndex += count;
     return ret;
 }
 
-inline TaskInfo *TaskGroupBase::GetTaskInfo(int index) {
-    int chunk = (index >> LOG_TASK_QUEUE_CHUNK_SIZE);
-    int offset = index & (TASK_QUEUE_CHUNK_SIZE - 1);
+inline TaskInfo *TaskGroupBase::GetTaskInfo(const int index) {
+	const int chunk = (index >> LOG_TASK_QUEUE_CHUNK_SIZE);
+	const int offset = index & (TASK_QUEUE_CHUNK_SIZE - 1);
 
     if (chunk == MAX_TASK_QUEUE_CHUNKS) {
         fprintf(stderr,
@@ -273,12 +270,12 @@ inline TaskInfo *TaskGroupBase::GetTaskInfo(int index) {
     return &taskInfo[chunk][offset];
 }
 
-inline void *TaskGroupBase::AllocMemory(int64_t size, int32_t alignment) {
+inline void *TaskGroupBase::AllocMemory(const int64_t size, const int32_t alignment) {
     char *basePtr = memBuffers[curMemBuffer];
-    intptr_t iptr = (intptr_t)(basePtr + curMemBufferOffset);
+	auto iptr = (intptr_t)(basePtr + curMemBufferOffset);
     iptr = (iptr + (alignment - 1)) & ~(alignment - 1);
 
-    int newOffset = int(iptr - (intptr_t)basePtr + size);
+	const auto newOffset = int(iptr - (intptr_t)basePtr + size);
     if (newOffset < memBufferSize[curMemBuffer]) {
         curMemBufferOffset = newOffset;
         return (char *)iptr;
@@ -290,7 +287,7 @@ inline void *TaskGroupBase::AllocMemory(int64_t size, int32_t alignment) {
 
     int allocSize = 1 << (12 + curMemBuffer);
     allocSize = std::max(int(size + alignment), allocSize);
-    char *newBuf = new char[allocSize];
+	const auto newBuf = new char[allocSize];
     memBufferSize[curMemBuffer] = allocSize;
     memBuffers[curMemBuffer] = newBuf;
     return AllocMemory(size, alignment);
@@ -320,7 +317,7 @@ static int32_t lAtomicCompareAndSwap32(volatile int32_t *v, int32_t newValue, in
 #ifdef ISPC_IS_WINDOWS
     return InterlockedCompareExchange((volatile LONG *)v, newValue, oldValue);
 #else
-    int32_t result = __sync_val_compare_and_swap(v, oldValue, newValue);
+	const int32_t result = __sync_val_compare_and_swap(v, oldValue, newValue);
     lMemFence();
     return result;
 #endif // ISPC_IS_WINDOWS
@@ -539,7 +536,7 @@ inline void TaskGroup::Sync() {
 
 #ifdef ISPC_USE_PTHREADS
 
-static volatile int32_t lock = 0;
+static volatile auto lock = 0;
 
 static int nThreads;
 static pthread_t *threads = nullptr;
@@ -549,8 +546,8 @@ static std::vector<TaskGroup *> activeTaskGroups;
 static sem_t *workerSemaphore;
 
 static void *lTaskEntry(void *arg) {
-    int threadIndex = (int)((int64_t)arg);
-    int threadCount = nThreads;
+	const auto threadIndex = (int)((int64_t)arg);
+	const int threadCount = nThreads;
 
     while (1) {
         int err;
@@ -588,7 +585,7 @@ static void *lTaskEntry(void *arg) {
         //
         TaskGroup *tg = activeTaskGroups.back();
         assert(tg->waitingTasks.size() > 0);
-        int taskNumber = tg->waitingTasks.back();
+		const int taskNumber = tg->waitingTasks.back();
         tg->waitingTasks.pop_back();
 
         if (tg->waitingTasks.size() == 0) {
@@ -607,7 +604,7 @@ static void *lTaskEntry(void *arg) {
         // And now actually run the task
         //
         DBG(fprintf(stderr, "running task %d from group %p\n", taskNumber, tg));
-        TaskInfo *myTask = tg->GetTaskInfo(taskNumber);
+		const TaskInfo *myTask = tg->GetTaskInfo(taskNumber);
         myTask->func(myTask->data, threadIndex, threadCount, myTask->taskIndex, myTask->taskCount(),
                      myTask->taskIndex0(), myTask->taskIndex1(), myTask->taskIndex2(), myTask->taskCount0(),
                      myTask->taskCount1(), myTask->taskCount2());
@@ -640,11 +637,11 @@ static void InitTaskSystem() {
                         exit(1);
                     }
 
-                    constexpr std::size_t FILENAME_MAX_LEN{1024UL};
+                    constexpr auto FILENAME_MAX_LEN{1024UL};
                     char name[FILENAME_MAX_LEN];
-                    bool success = false;
+					auto success = false;
                     srand(time(nullptr));
-                    for (int i = 0; i < 10; i++) {
+                    for (auto i = 0; i < 10; i++) {
                         // Some platforms (e.g. FreeBSD) require the name to begin with a slash
                         snprintf(name, FILENAME_MAX_LEN, "/ispc_task.%d.%d", static_cast<int>(getpid()), static_cast<int>(rand()));
                         workerSemaphore = sem_open(name, O_CREAT, S_IRUSR | S_IWUSR, 0);
@@ -666,7 +663,7 @@ static void InitTaskSystem() {
                         exit(1);
                     }
 
-                    for (int i = 0; i < nThreads; ++i) {
+                    for (auto i = 0; i < nThreads; ++i) {
                         err = pthread_create(&threads[i], nullptr, &lTaskEntry, (void *)((long long)i));
                         if (err != 0) {
                             fprintf(stderr, "Error creating pthread %d: %s\n", i, strerror(err));
@@ -687,7 +684,7 @@ static void InitTaskSystem() {
     }
 }
 
-inline void TaskGroup::Launch(int baseCoord, int count) {
+inline void TaskGroup::Launch(const int baseCoord, const int count) {
     //
     // Acquire mutex, add task
     //
@@ -704,7 +701,7 @@ inline void TaskGroup::Launch(int baseCoord, int count) {
     // only need to make sure no one else is accessing this task group's
     // waitingTasks list.  (But a small experiment in switching to a
     // per-TaskGroup mutex showed worse performance!)
-    for (int i = 0; i < count; ++i)
+    for (auto i = 0; i < count; ++i)
         waitingTasks.push_back(baseCoord + i);
 
     // Add the task group to the global active list if it isn't there
@@ -730,7 +727,7 @@ inline void TaskGroup::Launch(int baseCoord, int count) {
     // Post to the worker semaphore to wake up worker threads that are
     // sleeping waiting for tasks to show up
     //
-    for (int i = 0; i < count; ++i)
+    for (auto i = 0; i < count; ++i)
         if ((err = sem_post(workerSemaphore)) != 0) {
             fprintf(stderr, "Error from sem_post: %s\n", strerror(err));
             exit(1);
@@ -755,10 +752,10 @@ inline void TaskGroup::Sync() {
             exit(1);
         }
 
-        TaskInfo *myTask = nullptr;
-        TaskGroup *runtg = this;
+		const TaskInfo *myTask = nullptr;
+		auto runtg = this;
         if (waitingTasks.size() > 0) {
-            int taskNumber = waitingTasks.back();
+			const int taskNumber = waitingTasks.back();
             waitingTasks.pop_back();
 
             if (waitingTasks.size() == 0) {
@@ -793,7 +790,7 @@ inline void TaskGroup::Sync() {
             runtg = activeTaskGroups.back();
             assert(runtg->waitingTasks.size() > 0);
 
-            int taskNumber = runtg->waitingTasks.back();
+			const int taskNumber = runtg->waitingTasks.back();
             runtg->waitingTasks.pop_back();
             if (runtg->waitingTasks.size() == 0) {
                 // There's left to start running from this group, so remove
@@ -943,7 +940,7 @@ inline void TaskGroup::Sync() {
 static TaskGroup *freeTaskGroups[MAX_FREE_TASK_GROUPS];
 
 static inline TaskGroup *AllocTaskGroup() {
-    for (int i = 0; i < MAX_FREE_TASK_GROUPS; ++i) {
+    for (auto i = 0; i < MAX_FREE_TASK_GROUPS; ++i) {
         TaskGroup *tg = freeTaskGroups[i];
         if (tg != nullptr) {
             void *ptr = lAtomicCompareAndSwapPointer((void **)(&freeTaskGroups[i]), nullptr, tg);
@@ -959,9 +956,9 @@ static inline TaskGroup *AllocTaskGroup() {
 static inline void FreeTaskGroup(TaskGroup *tg) {
     tg->Reset();
 
-    for (int i = 0; i < MAX_FREE_TASK_GROUPS; ++i) {
+    for (auto i = 0; i < MAX_FREE_TASK_GROUPS; ++i) {
         if (freeTaskGroups[i] == nullptr) {
-            void *ptr = lAtomicCompareAndSwapPointer((void **)&freeTaskGroups[i], tg, nullptr);
+			const void *ptr = lAtomicCompareAndSwapPointer((void **)&freeTaskGroups[i], tg, nullptr);
             if (ptr == nullptr)
                 return;
         }
@@ -972,7 +969,7 @@ static inline void FreeTaskGroup(TaskGroup *tg) {
 
 ///////////////////////////////////////////////////////////////////////////
 
-void ISPCLaunch(void **taskGroupPtr, void *func, void *data, int count0, int count1, int count2) {
+void ISPCLaunch(void **taskGroupPtr, void *func, void *data, const int count0, const int count1, const int count2) {
     const int count = count0 * count1 * count2;
     TaskGroup *taskGroup;
     if (*taskGroupPtr == nullptr) {
@@ -982,8 +979,8 @@ void ISPCLaunch(void **taskGroupPtr, void *func, void *data, int count0, int cou
     } else
         taskGroup = (TaskGroup *)(*taskGroupPtr);
 
-    int baseIndex = taskGroup->AllocTaskInfo(count);
-    for (int i = 0; i < count; ++i) {
+	const int baseIndex = taskGroup->AllocTaskInfo(count);
+    for (auto i = 0; i < count; ++i) {
         TaskInfo *ti = taskGroup->GetTaskInfo(baseIndex + i);
         ti->func = (TaskFuncType)func;
         ti->data = data;
@@ -996,14 +993,14 @@ void ISPCLaunch(void **taskGroupPtr, void *func, void *data, int count0, int cou
 }
 
 void ISPCSync(void *h) {
-    TaskGroup *taskGroup = (TaskGroup *)h;
+	const auto taskGroup = (TaskGroup *)h;
     if (taskGroup != nullptr) {
         taskGroup->Sync();
         FreeTaskGroup(taskGroup);
     }
 }
 
-void *ISPCAlloc(void **taskGroupPtr, int64_t size, int32_t alignment) {
+void *ISPCAlloc(void **taskGroupPtr, const int64_t size, const int32_t alignment) {
     TaskGroup *taskGroup;
     if (*taskGroupPtr == nullptr) {
         InitTaskSystem();

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <immintrin.h>
 #include <malloc.h>
 #include <memory.h>
 using namespace std;

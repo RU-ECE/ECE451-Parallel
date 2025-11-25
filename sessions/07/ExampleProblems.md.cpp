@@ -1,24 +1,28 @@
+#include <iostream>
+#include <thread>
+
+using namespace std;
+
 void test1() {
-    thread t1(f);
-    t1.join();
-    thread t2(f);
-    t2.join();
+	std::thread t1(f);
+	t1.join();
+	thread t2(f);
+	t2.join();
 }
 
-int balance = 0;
+auto balance = 0;
 void test2() {
-    
-    Thread t1(deposit);
-    thread t2(withdraw);
-    t1.join();
-    t2.join();
+
+	thread t1(deposit);
+	thread t2(withdraw);
+	t1.join();
+	t2.join();
 }
 
-int balance = 0;
+auto balance = 0;
 void test2() {
-    
-    Thread t1(deposit);
-    thread t2(withdraw);
-    cout << balance << endl;
+
+	thread t1(deposit);
+	thread t2(withdraw);
+	cout << balance << endl;
 }
- 
