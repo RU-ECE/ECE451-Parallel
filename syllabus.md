@@ -1,5 +1,5 @@
 <a href="https://www.ece.rutgers.edu">
-<img src="assets/RUshield.png" alt="Rutgers Logo" width="100">
+<img src="images/RUshield.png" alt="Rutgers Logo" width="100">
 </a>
 
 # ECE-451/556 Parallel and Distributed Computing
@@ -7,7 +7,7 @@
 * 2024 Fall
 * **Instructor:**  [Dov Kruger](https://www.ece.rutgers.edu/Dov-Kruger)
 * **[Meeting Times and Office hours](https://bit.ly/3ObwKEr)**
-* **[Resources](ref)**
+* **[Resources](references/documents)**
 * **[Course Web Address](https://github.com/RU-ECE/ECE451-Parallel)**
 
 **Prerequisites**
@@ -86,7 +86,7 @@ There are some books that are helpful
   * Programming Massively Parallel Processors 4e, Hwu, Kirk, and Hajj, 2023.
   * 
 * [CUDA programming guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html)
-* [OpenMP Manual](ref/OpenMP-API-Specification-5.0.pdf)
+* [OpenMP Manual](references/documents/OpenMP-API-Specification-5.0.pdf)
 * [Intel ISPC Compiler](https://ispc.github.io/)
 
 * Other Readings: 	Papers available in ref directory of repo

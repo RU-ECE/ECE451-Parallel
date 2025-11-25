@@ -1,9 +1,9 @@
+#include <cstdint>
 #include <iostream>
 
 using namespace std;
 class Matrix {
-private:
-    uint32_t rows;
+	uint32_t rows;
     uint32_t cols;
     double *data;
     Matrix(uint32_t rows, uint32_t cols) : rows(rows), cols(cols), data(new double[rows*cols]) {}   
@@ -33,7 +33,7 @@ public:
         return *this;
     }
 
-    Matrix(Matrix&& orig) : rows(orig.rows), cols(orig.cols), data(orig.data) {
+    Matrix(Matrix&& orig) noexcept : rows(orig.rows), cols(orig.cols), data(orig.data) {
         orig.data = nullptr; // rob the dying object of its memory
     }
 

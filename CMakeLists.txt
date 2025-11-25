@@ -24,11 +24,11 @@ pkg_check_modules(WEBP QUIET IMPORTED_TARGET libwebp)              # WebP::webp
 
 # --- Your sources (unchanged)
 add_executable(Rutgers_ECE451_Parallel
-		cpp-reference/02Matrix.cpp
-		cpp-reference/03Matrix.cpp
-		cpp-reference/04Matrix.cpp
-		cpp-reference/Matrix.cpp
-		cpp-reference/storagespecifiers.cpp
+		references/c++/02Matrix.cpp
+		references/c++/03Matrix.cpp
+		references/c++/04Matrix.cpp
+		references/c++/Matrix.cpp
+		references/c++/storagespecifiers.cpp
 		sessions/01/00first.cpp
 		sessions/01/01threads.cpp
 		sessions/01/02account.cpp
