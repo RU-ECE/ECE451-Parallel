@@ -1,22 +1,24 @@
 # Test 2 Review
 
 ## Topics
+
 - OpenMP
 - CUDA
 
 ## OpenMP
 
 - OpenMP programming model
-  - providing additional information to automatically parallelize code
-  - optional features in compilers (works single threaded)
-  - #pragma c++ feature
-```cpp
+	- providing additional information to automatically parallelize code
+	- optional features in compilers (works single threaded)
+	- #pragma c++ feature
+
+```c++
 #pragma yak 5   // ignored if your compiler doesn't know the pragma
 ```
 
-
 - OpenMP commands
-```cpp
+
+```c++
 #pragma omp parallel
 #pragma omp critical 
 #pragma omp parallel for // split the loop, default is into num_threads chunks
@@ -30,24 +32,32 @@
 
 - `#pragma omp parallel`: Creates a parallel region where multiple threads execute the code block concurrently.
 - `#pragma omp critical`: Ensures only one thread executes the code block at a time, providing mutual exclusion.
-- `#pragma omp parallel for`: Combines parallel region creation with loop distribution, automatically dividing loop iterations among threads.
-- `#pragma omp parallel for private(var)`: Each thread gets its own private copy of the variable, initialized to undefined value.
-- `#pragma omp parallel for shared(var)`: All threads share the same variable, requiring synchronization for safe access.
-- `#pragma omp parallel for firstprivate(var)`: Each thread gets a private copy initialized with the value from before the parallel region.
-- `#pragma omp simd`: Enables SIMD vectorization for the loop, allowing multiple iterations to execute in parallel using vector instructions.
+- `#pragma omp parallel for`: Combines parallel region creation with loop distribution, automatically dividing loop
+  iterations among threads.
+- `#pragma omp parallel for private(var)`: Each thread gets its own private copy of the variable, initialized to
+  undefined value.
+- `#pragma omp parallel for shared(var)`: All threads share the same variable, requiring synchronization for safe
+  access.
+- `#pragma omp parallel for firstprivate(var)`: Each thread gets a private copy initialized with the value from before
+  the parallel region.
+- `#pragma omp simd`: Enables SIMD vectorization for the loop, allowing multiple iterations to execute in parallel using
+  vector instructions.
 - `#pragma omp sections`: Defines a block containing sections that will be distributed among threads.
 - `#pragma omp section`: Marks a section within a sections block to be executed by one thread.
 - `#pragma omp single`: Ensures the code block is executed by only one thread (not necessarily the master).
 - `#pragma omp master`: Ensures the code block is executed only by the master thread (thread 0).
 - `#pragma omp barrier`: Synchronization point where all threads must wait until every thread reaches this point.
 - `#pragma omp atomic`: Ensures atomic update of a memory location, preventing race conditions on simple operations.
-- `#pragma omp reduction(op:var)`: Performs reduction operation (e.g., +, *, max) on variable, combining results from all threads.
+- `#pragma omp reduction(op:var)`: Performs reduction operation (e.g., +, *, max) on variable, combining results from
+  all threads.
 - `#pragma omp parallel sections`: Combines parallel region creation with sections, distributing sections among threads.
-- `#pragma omp task`: Defines an independent task that can be executed by any available thread, enabling task parallelism.
+- `#pragma omp task`: Defines an independent task that can be executed by any available thread, enabling task
+  parallelism.
 
 Example of omp parallel for share()
 Why we want to share a variable
-```cpp
+
+```c++
 int a[1000], b[1000], c[1000];
 // Arrays are shared by default - all threads write to different elements
 #pragma omp parallel for shared(a, b, c)
@@ -60,10 +70,9 @@ for (int i = 0; i < 1000; i++) {
 2. Where is the best place to put omp simd
 3. Why is the combination so good? Aren't we maxing out ram?
 
-
-
 Example of omp parallel for on the outside with omp simd on the inside loop
-```cpp
+
+```c++
 void matmult(const double* A, const double* B, double* C, int n) {
     #pragma omp parallel for
     for (int i = 0; i < n; i++) {
@@ -80,7 +89,8 @@ void matmult(const double* A, const double* B, double* C, int n) {
 ```
 
 Example of omp parallel for on the outside with omp simd on the inside loop
-```cpp
+
+```c++
 void matmult(const double* A, const double* B, double* C, int n) {
     #pragma omp parallel for
     for (int i = 0; i < n; i++) {
@@ -102,17 +112,14 @@ Ahmdal's law
 2 cpu = 80%
 4 cpu = 60%
 
-primes = 4cpus = 400%                          stupid algorithm O(n sqrt(n))
-mandelbrot = 4cpus = 400%                      O(w * h * iter)
-matrix mult = 4cpus = 200%                      O(n^3)
-sorting???? TOO MUCH MEMORY, too little CPU   O(n log n)
-
-
-
-
+primes = 4cpus = 400% stupid algorithm O(n sqrt(n))
+mandelbrot = 4cpus = 400% O(w * h * iter)
+matrix mult = 4cpus = 200% O(n^3)
+sorting???? TOO MUCH MEMORY, too little CPU O(n log n)
 
 Example of omp reduction
-```cpp
+
+```c++
 float sum = 0.0;
 #pragma omp parallel for reduction(+:sum)
 for (int i = 0; i < n; i++) {
@@ -121,7 +128,8 @@ for (int i = 0; i < n; i++) {
 ```
 
 Example of omp parallel for reduction (threading only, no SIMD)
-```cpp
+
+```c++
 float sum = 0.0;
 #pragma omp parallel for reduction(+:sum)
 for (int i = 0; i < n; i++) {
@@ -130,7 +138,8 @@ for (int i = 0; i < n; i++) {
 ```
 
 Example of omp parallel for simd reduction (threading + explicit SIMD)
-```cpp
+
+```c++
 float sum = 0.0;
 #pragma omp parallel for simd reduction(+:sum)
 for (int i = 0; i < n; i++) {
@@ -139,7 +148,8 @@ for (int i = 0; i < n; i++) {
 ```
 
 Example of omp barrier
-```cpp
+
+```c++
 #pragma omp parallel
 {
     // Each thread does independent work
@@ -154,7 +164,8 @@ Example of omp barrier
 ```
 
 Example of omp task
-```cpp
+
+```c++
 #pragma omp parallel
 {
     #pragma omp single
@@ -169,29 +180,28 @@ Example of omp task
 }
 ```
 
-
 - OpenMP variables and functions
-```cpp
+
+```c++
 int id = omp_get_thread_num();
 int n = omp_get_num_threads();
 int mt = omp_get_max_threads();
 omp_set_num_threads(n);
 ```
 
-
 Why is there a maximum number of threads?
 On cuda, the max = 256 * 1024 * 1024 * 32
 
 Each thread needs:
-  PC (where to execute)
-  SP (stack pointer)
-  and a STACK. THe stack stores local variables in memory. Hopefully some are in registers for speed
-  But each stack needs memory. Lots of threads = lots of memory
-
+PC (where to execute)
+SP (stack pointer)
+and a STACK. THe stack stores local variables in memory. Hopefully some are in registers for speed
+But each stack needs memory. Lots of threads = lots of memory
 
 ## CUDA
 
 CUDA runs on two computers
+
 - Identify which computer code is running on
 
 ```cuda

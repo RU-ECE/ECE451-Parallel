@@ -95,51 +95,6 @@ add_executable(Rutgers_ECE451_Parallel
 		sessions/17/GameOfLife.cpp
 		sessions/17/GameOfLife_mpi.cpp
 		sessions/19/GameOfLife_mpi.cpp
-		sessions/old/01/countPrimesBruteForceSIngleThreaded.cpp
-		sessions/old/01/countupdown.cpp
-		sessions/old/01/countupdownmultithread.cpp
-		sessions/old/01/countupdownmultithreadmutex.cpp
-		sessions/old/01/funcs.cpp
-		sessions/old/01/hintsformultithreadedhw.cpp
-		sessions/old/02/eratosthenes.cpp
-		sessions/old/02/hwmandelbrot.cpp
-		sessions/old/02/scalar_vs_avx2.cpp
-		sessions/old/02/sorting_lookahead.cpp
-		sessions/old/03/avxhomeworkissuse.cpp
-		sessions/old/03/examining_intrinsics.cpp
-		sessions/old/03/examining_intrinsics_main.cpp
-		sessions/old/03/mergiesort..cpp
-		sessions/old/03/sortinghomework.cpp
-		sessions/old/04/memory_access.cpp
-		sessions/old/05/hw_matmult.cpp
-		sessions/old/05/openmp.cpp
-		sessions/old/05/openmpsum.cpp
-		sessions/old/06/mandel_unified_clean/main.cpp
-		sessions/old/06/mandel_unified_clean/mandelbrot_serial.cpp
-		sessions/old/06/mandel_unified_clean/mandelbrot_tasks_serial.cpp
-		sessions/old/06/mandel_unified_clean/tasksys.cpp
-		sessions/old/06/mandel_unified_clean/timing.h
-		sessions/old/06/mandelbrot/mandelbrot.cpp
-		sessions/old/06/mandelbrot/mandelbrot_serial.cpp
-		sessions/old/06/mandelbrot_tasks/mandelbrot_tasks.cpp
-		sessions/old/06/mandelbrot_tasks/mandelbrot_tasks_serial.cpp
-		sessions/old/06/mandelbrot_tasks/tasksys.cpp
-		sessions/old/06/FiniteElement.cpp
-		sessions/old/09/sort.cu
-		sessions/old/10/mpi_advection.cpp
-		sessions/old/11/gameoflife/gameoflife_mpi.cpp
-		sessions/old/11/gameoflife.cpp
-		sessions/old/11/gameoflife_bitwise.cpp
-		sessions/old/14/benchmark_threaded_memory.cc
-		sessions/old/14/test.cpp
-		sessions/reviewfinal/01_omp_parallel.cpp
-		sessions/reviewfinal/02openmp.cpp
-		sessions/reviewfinal/03final.cu
-		sessions/reviewtest1/avx_instructions_test1.cpp
-		sessions/reviewtest1/memorytimings.cpp
-		sessions/reviewtest1/simd.cpp
-		sessions/reviewtest1/unoptimized_code.cpp
-		sessions/reviewtest2/mult.cu
 		archive/sessions/01/countPrimesBruteForceSIngleThreaded.cpp
 		archive/sessions/01/countupdown.cpp
 		archive/sessions/01/countupdownmultithread.cpp
@@ -177,6 +132,14 @@ add_executable(Rutgers_ECE451_Parallel
 		archive/sessions/11/gameoflife_bitwise.cpp
 		archive/sessions/14/benchmark_threaded_memory.cc
 		archive/sessions/14/test.cpp
+		review/final/01_omp_parallel.cpp
+		review/final/02openmp.cpp
+		review/final/03final.cu
+		review/final/avx_instructions_test1.cpp
+		review/final/memorytimings.cpp
+		review/final/simd.cpp
+		review/final/unoptimized_code.cpp
+		review/final/mult.cu
 )
 
 # You previously had a global include for this folder; make it target-local:
