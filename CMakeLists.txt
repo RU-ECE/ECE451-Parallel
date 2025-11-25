@@ -33,7 +33,7 @@ add_executable(Rutgers_ECE451_Parallel
 		sessions/01/01threads.cpp
 		sessions/01/02account.cpp
 		sessions/01/03account_synchro.cpp
-		sessions/01/hw0.cpp
+		homework/HW0.cpp
 		sessions/02/00multithread_prime_brute.cpp
 		sessions/02/03eratosthenes.cpp
 		sessions/02/04_hopefullyworking_primes.cpp
