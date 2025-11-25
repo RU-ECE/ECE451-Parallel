@@ -1,0 +1,3 @@
+mand: mandelbrot.ispc mandelbrot.cpp mandelbrot_serial.cpp
+	ispc --target=avx2 mandelbrot.ispc -o mandelbrot.o -h mandelbrot.h
+	g++ -O2 mandelbrot.cpp mandelbrot.o mandelbrot_serial.cpp -o mand

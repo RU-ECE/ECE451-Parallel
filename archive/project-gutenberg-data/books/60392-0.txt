@@ -1,0 +1,1267 @@
+﻿The Project Gutenberg EBook of A Treatise on Electricity, by Francis Penrose
+
+This eBook is for the use of anyone anywhere in the United States and
+most other parts of the world at no cost and with almost no restrictions
+whatsoever.  You may copy it, give it away or re-use it under the terms
+of the Project Gutenberg License included with this eBook or online at
+www.gutenberg.org.  If you are not located in the United States, you'll
+have to check the laws of the country where you are located before using
+this ebook.
+
+
+
+Title: A Treatise on Electricity
+       Wherein its various phænomena are accounted for, and the
+       cause of the attraction and gravitation of solids, assigned.
+       To which is added, a short account, how the electrical
+       effluvia act upon the animal frame, and in what disorders
+       the same may probably be applied with success, and in what
+       not.
+
+Author: Francis Penrose
+
+Release Date: September 30, 2019 [EBook #60392]
+
+Language: English
+
+Character set encoding: UTF-8
+
+*** START OF THIS PROJECT GUTENBERG EBOOK A TREATISE ON ELECTRICITY ***
+
+
+
+
+Produced by Thiers Halliwell, MWS and the Online Distributed
+Proofreading Team at http://www.pgdp.net (This file was
+produced from images generously made available by The
+Internet Archive/American Libraries.)
+
+
+
+
+
+Transcriber’s notes:
+
+The text of this e-book has been preserved in its original form,
+including inconsistent archaic spelling and capitalisation, and use
+of italics.
+
+The cover image of the book was created by the transcriber and is
+placed in the public domain.
+
+
+
+
+  A
+
+  TREATISE
+
+  ON
+
+  ELECTRICITY:
+
+  WHEREIN
+
+  Its various _phænomena_ are accounted for, and the
+  cause of the _attraction_ and _gravitation_ of solids,
+  assigned.
+
+  TO WHICH IS ADDED,
+
+  A short account, how the electrical _effluvia_ act
+  upon the animal frame, and in what disorders
+  the same may probably be applied with success,
+  and in what not.
+
+  By FRANCIS PENROSE
+  Surgeon at _Bicester_.
+
+  They who are universally allowed the very greatest, and
+  wisest of men, have been, and still are, intent upon
+  the making of _observations_, and _experiments_: and surely
+  that must be in order to some further end. These would
+  be vain, and wholely useless, were not some reflections
+  made, some conclusions drawn, some theory or hypothesis
+  raised from them.
+
+  _Woodward_’s state of _physick_ and of _diseases_, p. 55.
+
+  _OXFORD_,
+
+  Printed at the THEATRE for SACKVILLE PARKER, Bookseller
+  at _Oxford_, and W. OWEN, at _Homer’s Head, Temple-Bar,
+  London_. MD CC LII.
+
+
+
+
+  ON
+  ELECTRICITY.
+
+
+The many surprising effects of _electricity_, and the great cures
+performed by it, one would imagine, should awaken the attention of all
+philosophers and physicians; but as these cures have been effected by
+random experiments, every body has admired, but no body seems to have
+considered how, or by what means, they were performed. Whence
+
+Notwithstanding all these surprising _phænomena_, from which many
+have entertained hopes of a great addition to the healing art; yet
+not one tolerable account has been given, how, or from what cause,
+these _phænomena_ proceeded; except what has been done by Mr. _Freke_,
+surgeon to _Bartholomew hospital_; whose admirable piece shews the
+great penetration of its worthy author, with whom I shall join in
+thinking “it may possibly be the beginning of much good.”
+
+One would think, this silence, on so interesting a subject, _in this
+enlightened age_, can proceed from nothing but a prejudice in favour
+of wrong principles of philosophy: That this is certainly the taste of
+the present age, M. _Freke_ seems very well convinced; for, at the end
+of his pamphlet, he takes notice of a show-man, who, “having published
+some experiments in electricity, and hearing that Mr. _Freke_’s piece
+was publishing, own’d, he was much affrightened, because of the hard
+fate, as he said, of his booksellers; but, before he had read two
+pages, he likewise owned he had recovered his spirits, when he found
+Mr. _Freke_ pretended to think for himself, and did not let Sr. _Isaac
+Newton_ think for him.”
+
+Now, if all persons would take the same freedom of thinking for
+themselves, as Mr. _Freke_ has done, I doubt not but we should soon
+be as much ashamed of mentioning the _attraction_ of _gravitation_,
+and the _attraction_ of _cohesion_ &c. as we now are of the _occult
+qualities_ of the ancient philosophers; and should perhaps, then
+agree with him, when, speaking of electricity, he says, that “it is a
+subject which can, with more nobleness and dignity, employ the mind of
+man, than any he can think of, relating to the sublunary part of the
+world. For by it you may be acquainted with the immediate officer of
+God Almighty, which he seems to send to all things living: Nay, this
+power, (according to his conception,) seems to be the cause, under
+HIM, both of life and death. And when it may be more fully understood,
+it may afford us means, whereby we may be better enabled to reason
+more intelligibly, than now we can, concerning various operations in
+nature.” Therefore,
+
+In the following essay, I shall endeavour to shew,
+
+I. How, and from whence, this electrical fire and force are produced;
+in doing of which I shall make some observations, in order to shew that
+we may form a more exact idea of most of the great operations of that
+complete machine, the universe, from electrical experiments, than can
+be attained by any other means: I shall also produce some experiments
+which demonstrate, that the terraqueous globe has no _attraction_;
+nor a solid body, falling towards the earth, any _gravitation_; after
+which, I shall bring other experiments to prove what is the cause of
+_solidity_, and by what means bodies _gravitate_ towards the earth.
+
+II. How this electrical fire and force act upon the animal frame, and
+in what disorders they are likely to be of benefit, and in what not.
+
+I. We are certain, that this electrical fire is produced, either from
+the glass globe, or the air that surrounds it. As to the glass globe,
+Mr. _Freke_ has fully proved it cannot proceed from that; “Because
+nothing, we know of, can send out of it a quantity of matter, but there
+must be less of that matter remaining, after it has been so discharged;
+whereas it cannot be shewn, but that the glass globe, after ever so
+many times using, remains as fit for the same use, as at first.” From
+hence we assert, that this fire must proceed from the surrounding air
+being acted upon by the glass globe; and our inquiry must be, how, and
+by what means, fire is produced by the glass globe being made to act
+upon the air by which inquiry we shall find, that _air_, _light_, and
+_fire_ are of the _same substance_, or _essence_; only differently
+modified, and appointed for performing different actions: that air (by
+being divided or broke to pieces) produces light; and, if that action
+is still encreased, it produces fire. Now as the greatest friction
+or attrition are necessary to produce fire, so fire, when it is once
+produced, having received the greatest force, of consequence _acts_
+with the greatest force; and light, with a less; so, wherever there is
+the greatest quantity of these small particles of air, (which we call
+by the name of fire) in proportion to what we call gross air, there the
+action must be the greatest; by which means the said fire or light will
+expand itself, ’till, by mixing with what we call gross air, it becomes
+of an uniformity with it. Now therefore, as experiments are the sure
+way either of proving or disproving any _hypothesis_; so, to illustrate
+this, I shall produce some experiments both from Mr. _Freke_, and other
+authors of unblemished credit, which prove that air is convertible
+into light and fire, and also that light and fire are convertible back
+again into air; and likewise, as some parts of the air are present in
+all places and things, that therefore, whenever a violent action either
+of solids or fluids is brought on, there light, fire, or heat, are
+produced.
+
+To prove this, Mr. _Freke_ has brought, two very simple, common, but
+good experiments--First, if you slide a wax thread, or small rope,
+through your fingers, it will burn them; so likewise fire is produced,
+by rubbing two hard bodies together, or two sticks; or, as is very
+often the case, a cart or coach wheel will take fire, for want of
+grease.
+
+Another no small proof of this, is what Mr. _Freke_ has mentioned,
+viz. that in the year 1703, in the night of the great hurricane and
+high wind, in the strongest part of the tempest, great quantities of
+fire were seen passing swiftly over the hills in the neighbourhood of
+_Warham_ in _Dorsetshire_. The cause of which fire seems very easily
+accounted for, according to the above theory, which might otherwise
+perhaps, elude the searches of our greatest philosophers: for in this
+phænomenon it is plain, that the attrition of the particles of the air
+was so great by the motion of the wind, as to produce fire or light.
+Mr. _Freke_ has some other observations, which much strengthen the
+above theory, viz. that in tempestuous weather, at sea, great flakes
+of fire are frequently seen passing, not only in the air, but on the
+water. The like is also observed, in the night time, when the surface
+of the water is disturbed with the feathering of oars, or by a vessel
+or boat passing swiftly through it. This light or fire _in storms_ is
+no new observation; for Mr. _Boyle_ says, it is common in storms for
+the fire called _Helena_, _Castor_, and _Pollux_, to hover about the
+masts of ships. And, indeed,
+
+To shew that fire or heat are produced in any place, or thing, where
+there is a sufficient motion, seems not to be very difficult; for water
+is the opposite to fire; and yet, by mixing water and spirit of wine
+_suddenly_ together, a heat ensues; and this will happen if they have
+been separated ever so often; but this heat vanishes again after they
+are mixed, or as soon as the _motion_ of their parts ceases. The like
+will happen by mixing salt of tartar and water. This phænomenon seems
+to proceed from the disposition and texture of the salt; whose pores
+are made of such a proper size, that, on receiving the water by the
+pressure of the atmosphere into them, the texture of the salt may be
+thereby broken, and its parts put _into motion_; which _motion_ causes
+an _attrition_ of the air, and so produces a sensible heat.
+
+_Boerhaave_ has another observation, which seems to prove to a
+demonstration, that fire or heat is caused by an _attrition_ of the
+air; which observation I shall give in his own words. “A cannon ball,
+shot in the winter time, will fly 600 feet in a minute through the cold
+air, which makes a greater resistance than any wind, the most rapid
+of which only moves 22-1/2 feet; hence it appears how much _friction_
+the ball must have undergone in its passage, which by the way did
+not proceed in a right line, but by its whirling motion continually
+describes a cycloid with every point of its body. When it falls,
+it is found quite hot; notwithstanding in its whole passage, it had
+continually met with cold air. This heat could not have arisen from
+the flaming gunpowder, whereby it was exploded, since it only remained
+in that flame, an incredible small space of time, in which it is by no
+means credible so solid a body should have acquired such a heat; which
+is much more naturally accounted for from the great attrition of the
+ball, driven with such a velocity through the air, and repelled by a
+wind, which is above 27 times swifter than the strongest wind hitherto
+observed.” _Boerhaave_’s Chym. by _Shaw_, Vol. 1. pag. 244.
+
+I shall mention one more experiment from Mr. _Boyle_, which proves that
+_air_ is not only convertible into _light_; but that it may afterwards
+be forced through glass, and thereby the same _vacuum_ be made that
+is by an air pump. “Liquid phosphorus being put into a vial, when
+it was disposed to shine in the dark, the cavity of the vial above
+the liquor seemed to be full of whitish fumes, though at other times
+transparent. The vial, when close stopped, was not luminous in the
+dark, but the light or flame appeared as soon as it was exposed to the
+air, and the vial was unstopped; and that the occasion and propagation
+of this flame depended on the contact of the air, appeared, since
+agitation would not kindle it, but when the bottle was unstopped, the
+kindled flame would gradually be propagated downwards; the flame always
+appeared most vivid the nearer the air, and when it was extinguished,
+it first disappeared in the bottom, and then expired at the top. When
+the Vial was unstopped for some time, when it was stopped again, the
+air that had leisurely insinuated itself would cherish the flame for
+an hour or two. It was observable, that when the air had been long
+pent up with this shining liquor, its resistance would be so weakened,
+that when the vial was unstopped, the external air would presently
+rush in with violence, from whence appears the interest of the air in
+propagating the shining of this liquor. The agitation before the vial
+was unstopped would not kindle the light; yet when it was opened, it
+would be increased by it, and even when it was in its dull state, if
+I poured a little of it upon my hand, and rubbed it with my finger,
+it would presently become vivid, and emit store of luminous rays, as
+well as fumes very offensive to the nostrils; and when I ceased to
+rub, and the luminous quality was lost, it would be renewed again by
+a repeated attrition; but in a little time its lucid virtue would
+decay,” _Boulton_’s Epitome of _Boyle_’s works, vol. 2. pag. 246. From
+these experiments it may be observed, that this liquid phosphorus could
+not be made to emit light, without a communication with the air, not
+even by the utmost agitation; though when it had a free communication
+with the air, a small agitation greatly increased the quantity and
+strength of the light; that, whenever the air was admitted to join it,
+a violent intestine motion came on, by which motion or attrition, light
+was not only produced, but also a great deal of the liquid was carried
+off by it; which might be perceived either by the sight, or smell.
+And when the vial had been long without a cork, by which means it was
+filled to the utmost with air, the light would continue a considerable
+time after the vial was stopped. We likewise find, that, after the vial
+has been stopped some time, and the liquor has acted upon the air as
+much as it possibly can, there is not only a less quantity of gross
+air than there was when the vial was first stopped, but that there is
+the same _vacuum_ as is made by the air pump; for as soon as ever it
+is unstopped, the air presseth in with violence, the fluid above the
+phosphorus (within the vial) being of a more subtle nature than the air
+without.
+
+This experiment seems sufficiently to prove, that air and light are
+of the same essence or substance; for we are certain that gross air
+entered the vial, and, when it was first stopped, the quantity of
+gross air was of an uniformity with the air without the vial; but at
+its being opened, we are assured, there was a less quantity than when
+it was first stopped; for the air without presseth in with the same
+violence it does into the exhausted receiver of an air-pump; by which
+we may be assured, that some parts of the air have passed the vial in
+form of _light_; and, as the pores of the glass are not big enough to
+admit gross air to return, the consequence must be, that there is a
+less quantity of gross air in the vial at the opening, than there was,
+when it was first stopped.
+
+Fire and light are easily proved to be dispersed through the whole air,
+from the immediate action of _speculums_; and that air itself is of the
+same substance with fire seems very plain; for as fire cannot subsist
+without air, (and in proportion to the quantity of air forced into the
+fire, in such proportion will be the force of the fire;) so, neither
+can fire act but on the outside of bodies next the air; for even the
+most inflammable bodies can only catch fire on their outermost surface
+contiguous to the air; and fire in action, if immerged in a body of
+the most inflammable matter, so as to leave no lighted part above such
+surface in the air, will be so far from kindling the inflammable body,
+that itself will be extinguished. Thus “if a flaming brimstone match
+be plunged into the highest rectified spirit of wine, the spirit of
+wine will extinguish it as intirely, as if dipped in cold water; it
+will also extinguish a live burning sparkling coal; but in the former
+experiment, if the least bit of the burning match remains above the
+spirit of wine, it will then catch fire, and the flame will presently
+spread over the whole surface.” This is an experiment of the great
+_Boerhaave_, in the first vol. of his chymistry, by _Shaw_, pag. 316.
+
+All these experiments, I think, prove to a certainty, that air is
+convertible into light. I shall now bring one experiment, from
+_Boerhaave_, Vol. 1. p. 998. which proves, that fire or light may be
+changed into air.
+
+“If a spherical glass vial be kept in a glass-house furnace, till ready
+to melt, and then be hermetically sealed in that heat, and suffered to
+cool; if now, it be held inverted, under cold water, and the end of the
+neck be carefully broken off, the water will be violently forced into
+it, and fill the glass, but so as to leave a bubble of true elastic
+air at the bottom.”
+
+The above experiments prove, that, whenever air is sufficiently divided
+or broken to pieces, light is produced; so that the light or heat in
+electricity, is no other than, we find, may be produced several other
+ways. For the air being violently rubbed or ground to pieces between
+your hand and the glass globe, whirled briskly about, the air between
+your hand and the globe is ground so small as to be in the form of
+_light_, which is expanded or sent off from the glass globe in the same
+manner as _light_ from a candle, or other luminous body; which emission
+is continually supplied by the common air pressing in between the rays
+of _light_, emitted from the glass ball. That this is the method, by
+which it acts, seems very clear: for you may not only hear the hissing
+noise of the air pressing towards the globe, but also plainly feel the
+air with your hand, near the globe or tube.
+
+The chief reason (and what has been our great misfortune) that we
+have not been able to discover the cause of electricity, seems to
+be the leaving that philosophy, which has been _revealed_ to us,
+and putting in its stead _theories_ of _our own invention_. For, if
+we had considered (from the _revealed_ account that is given us of
+the formation of light) the _method_ of its _first_ production, we
+should not be at such a loss to account for that light in electricity,
+as we hitherto seem to have been; for we are _there_ told, that
+the _heavens_, or airs, were created in a state of _darkness_, or
+inactivity; and that the first thing God did, was to cause a _motion_,
+or _wind_ amongst the airs; which _motion_ was to _continue_, and
+_encrease_, till it produced _light_; and, after this _light_ was
+produced, God called it _Day_, or as it is expressed in the original,
+_tumultuousness_; it being produced from the impetuous or violent
+motion of the airs: and the _darkness_ he called _night_, or, as it
+is likewise expressed, the time when this _languishes_ or _decays_;
+for the _congealing_ or _thickning_ of the air, by which _darkness_ is
+produced, is in proportion as the _force_ of the _light_ abates.
+
+By all which, I think, we may be assured, that the _light_, and all the
+_phænomena_ produced in electricity, are caused by a violent _friction_
+or _grinding_ of the grains of air between the glass globe and the hand.
+
+To illustrate and prove, that this is the method by which the
+electrical _light_ is produced, I shall bring some experiments, from
+Mr. _Hauksbee_, which, I imagine, will make it indisputable. In his
+first and second experiments, he shews us, that by dropping mercury
+on a glass in an exhausted receiver, the _action_ of the mercury
+on that subtil fluid gives the mercury the appearance of fire; but
+observes, that in all these experiments on mercury, no _light_ is to
+be obtained without _motion_, and that the same motion which produced
+this light in _vacuo_, did not produce it, when given to mercurial
+globules in _open air_. This experiment shews us, that there was a
+larger quantity of _light_ in the exhausted receiver than when it was
+filled with common air; nay farther, that the _subtil fluid_ contained
+in the exhausted receiver, was _light_; but, for want of _motion_, was
+not perceptible by our senses; but by so small a motion as that of
+the descending mercury, it was pushed forward in the same manner, as
+_light_ from a candle, or other luminous bodies. We also find, that
+the same experiments performed in an _unexhausted_ receiver, would not
+produce the _phænomenon_ of _light_; which one might easily suppose to
+be the case. For in the _exhausted_ receiver, any the least _motion_,
+that is sufficient to _push_ this subtil fluid (_light_) from one
+place to another must give us the perception of _light_; but in the
+_unexhausted_ receiver the _motion_ or _friction_ must be great enough,
+not only to _push_ the air from place to place, but also to _break
+it_ so small, as to be in form of _light_: which he shews us by his
+third, fourth, and fifth experiments to be the case; for by these
+experiments he produced _light_ in an _unexhausted_ receiver; but then
+the _motion_ or _agitation_ was required to be much _greater_ than that
+which produced _light_ in _vacuo_. The difference of these two _lights
+was very considerable_, and consisted particularly in this, that the
+luminous particles are _distinct_ and _separate_ in the experiment
+performed in the _open air_; and _united_ and _blended_ into one
+continued body of _light_, in the other experiments in _vacuo_; which
+difference proves to a demonstration, that the exhausted receiver was
+full of nothing but _light_; for, on shaking the mercury therein, the
+whole body of the receiver seemed to be _one continued body of light_;
+but on shaking the mercury with ever so great a violence in the common
+air, it seemed full only of _little_, _bright_, _twinkling sparks_;
+and not one continued body, as in _vacuo_. For, as the appearance of
+_light_ is produced in the common air, by the _friction_ of the mercury
+against the glass receiver, _breaking_ or _grinding_ the air to pieces
+(which small particles put on the form of _light_) so, when the common
+air _presses_ in between these small particles, the appearance must be,
+and cannot be otherwise than is shewn by these experiments.
+
+These many and various experiments abundantly prove, that _light_ is
+produced as above described; and not, as the generality of people have
+imagined (from that mistaken notion of _action_ being performed by
+_solids_ and not by _fluids_) that this electrical _light_ proceeded
+from the glass globe, emitting, what they call, _electrical effluvia_,
+which has been shewn before to be impossible; because if any quantity
+of matter sends off part of its own body, there must be less of that
+body remaining, than before the above matter was sent off, which we
+find is not the case of the glass globe; and to prove that it does not,
+I shall bring one experiment more from Mr. _Hauksbee_ which will put it
+beyond doubt.
+
+Pag. 27. he shews us, that by a violent _attrition_ of _woollen_
+against _woollen_ in _vacuo_, he produced _light_, as well as from
+any _hard_ or _electrical_ body; but not so vivid, nor in so large a
+quantity. Now, as woollen is reckoned by all to be a _non-electrical_
+body, it shews us that the _light_ must proceed from the _attrition_
+of the air, and not from the _electrical body_, as has been falsely
+imagined.
+
+As _light_ may be produced by other methods than have been yet
+described, as from _rotten wood_, _fish_, _meat_ &c. I shall endeavour
+to give an account, how, and in what manner, that _light_ is produced.
+Mr. _Boyle_ (in vol. 2. p. 233. of the epitome by _Boulton_) tells us,
+that by putting _rotten wood_, _fish_, _flesh_ &c. in the receiver
+of an air-pump, and then extracting the gross air, they all, in a
+little time, lost their _shining_ or _luminous_ quality; but, upon
+a re-admission of air, this _luminous_ quality returned. From which
+we may learn, that the air is essentially necessary to continue
+this _light_; and, of consequence, that this _light_ is produced by
+the _action_ and _re-action_ of the air on the body, which cause an
+_intestine motion_ of its parts; and thereby the emission of the said
+light; for when any thing begins to ferment and _putrify_ (which cannot
+be performed in any place, but where the gross air is present) the
+_intestine motion_ of its parts is thereby _increased_; which _motion_
+acting upon the air pressed into it, the air is thereby _ground_ very
+small, and by the continual pressure of the atmosphere is sent out so
+small, as to be in form of _light_.--In the common _fermentation_ of
+liquids, when it rises to any height, those particles of _light_ being
+_stopped_, and _entangled_ by the _watry parts_ of the fermenting mass,
+thereby produce _heat_; and some mixtures will produce _light_, _heat_
+and _flame_ on fermentation; as _steel_, _water_, and _sulphur_.
+
+By these experiments we have a clear idea of the means and method by
+which _fermentation_ is performed, which operation has been hitherto
+unintelligible. From hence we may likewise see the reason why, in an
+air either _too hot_ or _too cold_, _fermentation_ cannot be performed;
+for in an air _too cold_, the pressure is _too great_, and also the
+grains of air _too large_ to _enter_ and _divide_ the thing to be
+_fermented_; by which means the _motion_ of its parts requisite to
+_fermentation_ is prevented; but in air that is _too hot_, there must
+be just the contrary effect, for there the parts of the thing to be
+_fermented_ are so far _expanded_, and the air so _rarified_, as to
+pass through the body with little or no obstruction, and of consequence
+to produce little or no _intestine motion_ of its parts; and that
+there is in _fermentations an intestine motion_ of the parts of a
+_fermenting_ liquid, is easily discernible by the naked eye. This also
+gives us the reason, why the _glow-worm_ shines only in the summer
+months, when the air is greatly _rarified_, or _divided_, and then
+requires but a small _motion_ to give it the form of _light_.
+
+The _light_ proceeding from _diamonds_ &c. seems to be easily accounted
+for from the _motion_ of the _airs_; that there is a _perpetual motion_
+of the _airs_, may be proved by the following experiment. In a still
+place, suppose a close darkened room, illuminated only by one small
+hole in the window shutter; where, if a person at rest views the
+enlightened current of air sideways, as it extends along the room,
+he will perceive a _surprising motion_ of the dusty atoms therein,
+_perpetually rolling and tossing_ about _with great rapidity_. This
+_motion_ must be very _considerable_, as it is _perpetual_, and pushed
+on with the power of _gravity_ in the air equal to a column of water
+33 feet high. By this _action_ on _diamonds_, whose _pores_ are very
+_small_, and the bodies themselves of such a _make_ and _hardness_, as
+that, when the air is pressed on them with so great a _force_ as that
+of the _incumbent atmosphere_, the air is _broke exceedingly small_,
+and, by the continuance of the _pressure_, is sent off from the body
+in form of _light_. We likewise find from experiments, that where
+_diamonds_, or other bodies of that kind, have not their outward parts
+of a proper _make_, or their _substance_ of a _sufficient hardness_ or
+_closeness of parts_, to emit _light_ with no greater _force_, than the
+pressure of the _atmosphere_ only, then this deficiency may be supplied
+by _rubbing_; by which means the air is _ground_ to pieces, and emitted
+in form of _light_, as is shewn in all electrical experiments.
+
+One great property of _light_, or, as it is commonly called the
+_electrical effluvia_, is (as Mr. _Hauksbee_ has proved from many
+experiments,) that it passes _through glass_, as water does through a
+sieve, or as if no body of matter interposed. This _light_ of itself,
+when _pure_, or _simple_, hurts or destroys no material bodies;
+but when _pushed_ on by the following air with _great violence_,
+and _meeting_ with a _great resistance_ from an impeding body, the
+_conflict_ is so great, that if the following air _presses_ on with
+_sufficient violence_, it _dissolves_ or _destroys_ the _solidity_
+of any material body. As all bodies become _solid_ according to the
+_temperature_ of the surrounding air; some retaining their _solidity_
+in such a degree of _heat_, as _metals_ of most kinds; whilst others
+require a particular degree of _cold_ before they become _solid_,
+as _water_ &c. which when froze is as much a _solid_ as any thing
+else--this proves that the _solidity_ of bodies depends on the
+_temperature_ of the air, as will be more fully proved hereafter.
+
+The glass globe, with the electrical experiments, seems to give
+a very clear idea in what manner the _sun_ is _supported_, how
+this _terraqueous globe_ and the rest of the _planets_ are made to
+_move_, and _continued in motion_; and also, what is the cause of
+the _attraction_ of the _sun_, _earth_, _moon_ and the rest of the
+_planets_.
+
+That the _sun_ is the chief, material, ruling agent, is very clearly
+revealed; as are some of its chiefest actions on the planets and the
+rest of the universe. For, in the sun we find a power of melting,
+dividing and (with the assistance of the air) expanding and sending out
+the air, first in form of _fire_, and afterwards in that of _light_;
+which power seems to be so regulated, as to be able to reach the
+extremities of the universe, where it is _congealed_, _condensed_, and
+_returned_ back again to the _sun_, to be again _melted_, _divided_,
+and sent out as before. This action seems to be represented by water
+in a _still_, for there the fire, forcing its way through the water
+contained in the _still_, carries off some of the watry particles with
+it; and when it has reached the head of the _still_, if it has no
+passage into the outward air, and the _action_ of the fire is not great
+enough to break the _still_, it is by the coldness of the surrounding
+air (or as is commonly the case by the coldness of water placed thereon
+for that purpose) _condensed_ and _returned_ into the water contained
+in the body of the _still_, there to be _rarified_, _expanded_, and
+sent off in _steam_, as before.
+
+We must suppose the streams of _light_ to be always acting on one
+side of this terraqueous globe, and there _dividing_, _expanding_
+and _rarifying_ the air; the consequence of which must be a kind of
+_vacuum_, which is immediately filled by the _pressing in_ of the
+_congealed air_ from the extremities; and as the earth is placed in
+this fluid of airs, we may as easily conceive that the air pressing
+in as above, must, with it, turn round the earth, in the same manner,
+and with as much ease, as water does a common mill-wheel, or the air a
+wind-mill. By these powers also the terraqueous globe is kept _solid_
+and _entire_; for, was this force once taken off, it would soon drop
+to _atoms_, notwithstanding the pretended _attracting_ power of its
+materials.
+
+To confirm what is here advanced, I shall bring an experiment (which
+Mr. _Boyle_ has laid down as a paradox) which proves that this
+terraqueous globe has no _attraction_, nor any _solid_, falling towards
+it, any _gravitation_; but that all bodies _are forced_ to it by the
+_incumbent atmosphere_, as much as water is _forced_ up a pump by it
+(the atmosphere) which, till the time of the great Mr. _Boyle_, was
+imagined to be performed by, what they called, the _suction_ of the
+pump. But this is no more than has often happened in philosophy, where
+when we cannot well account for any thing, we put the _effect for the
+cause_.
+
+Mr. _Boyle_ found that a _solid body_, as _ponderous_ as any yet known,
+though near the top of the water it would sink by _its own weight_,
+yet if it be placed at a greater depth than twenty times its own
+thickness, it will _not sink_, if its descent be not assisted by the
+_weight_ of the _incumbent water_. To prove this, he gives us a curious
+experiment, viz. by keeping off the _pressure_ of the water, from
+the _top_ of the _sinking body_, and _sinking_ it to a proper depth,
+he found, that the _most ponderous_ body would be _buoyed up_, and
+_supported_ by the water only. See the 2d vol. of _Boulton_’s epitome,
+pag. 305. This experiment shews us beyond all contradiction, that the
+_earth_ has no power of _attraction_, nor a _descending body_ any power
+of _gravitation_; for if it had, the farther it was sunk in the water,
+the nearer it must be to the centre of the earth, and of consequence
+the _attraction_ must be the greater; but this, we find, is contrary
+to experience; so that the whole power of descending is impressed upon
+it by the _air_, or by other bodies forced upon it by the _incumbent
+air_. This experiment alone is more than sufficient to destroy the fine
+theories of _attraction_ and _gravitation_; it also shews us how, and
+by what means, two marble slabs, finely polished, are what they call
+_attracted_ to each other, and require a great force to separate them;
+a force in proportion to the breadth of the slabs; but this has been
+shewn by other experiments to be nothing but the _pressure_ of the
+_air_, or _atmosphere_; for put them into an air pump, and extract the
+_gross air_, and they will immediately separate from each other.
+
+One reason, which seems to have led us into the mistake that the
+_solidity_, or _firmness_ of bodies is not caused by the _air_, has
+been, that, for the generality, we consider the _air_, or _atmosphere_
+as _pressing_ only _downwards_; for if we had considered that it
+_presseth_ equally _every way_, as well as _downwards_, (as _Boerhaave_
+in his chym. by _Shaw_, vol. 1. p. 389. has shew by the following
+experiment) I believe we should not have overlooked that force, or have
+thought it insufficient for this operation. “Fill three glass vessels,
+the one of a cylindrical figure, the other conical, the third bellied
+with a cylindrical neck; let these be filled to the brim with fair
+water, and covered with a single piece of paper, so as to touch the
+surface of the water, and by pressing it down with the hand, prevent
+the external air insinuating between the paper and the water; if the
+glasses be now inverted, whilst the paper remains close with the palm
+of the hand, and the hand be afterwards gently withdrawn, the water
+will still remain in the glasses. The same holds true, though the
+glasses be held horizontal, or in any other position.” As the cause of
+the _solidity_ or _firmness_ of bodies is the _pressure_ of the _air_
+or _atmosphere_, so likewise it must depend on the _make_ and _size_ of
+the _pores_ of such bodies; for bodies whose _pores_ are _smallest_,
+must be acted upon with a greater power than those whose _pores_
+are _largest_, or whose _pores_ are so _large_ as not only to admit
+_light_, but also _common air_ into them. This Mr. _Hauksbee_ proves by
+a curious experiment, for having placed two brass hemispheres, of 3-1/2
+inches diameter, upon each other, and then extracting the gross air out
+of them by the air pump, and by these means taking off the _resistance_
+of the _common air_ that was _within_ the two brass hemispheres, he
+says, it required 140 pound weight to separate them; this experiment
+with that of the two marble slabs before mentioned, is a demonstration
+of the _power_ that keeps _solid bodies_ from _falling_ to _pieces_.
+And even, if these slabs are not so _perfectly smooth_, yet the weting
+them with water, which prevents the gross air from _entering_, will
+produce the like effect. That solids _expand_ themselves by _heat_ or
+_fire_, is proved by heating an iron rod in the fire: in which case,
+it is always found to be _bigger_ and _longer_ when _hot_ than _cold_;
+and it was the opinion of _Boerhaave_, that cold _consolidates_ all
+those that are called firm bodies; that is, brings that part, which
+we call _body_ in them, into a _less compass_ than before, and thus
+_unites_ the matter thereof more closely together: by which means the
+_cohesion_ of the whole mass is usually increased; which makes what we
+call, _strength_ and _firmness_ in bodies.
+
+Having shewn that _solid bodies_ have no power either of _attraction_
+or _gravitation_, and that their _firmness_ or _solidity_ depends on
+the _pressure_ of the _atmosphere_; I shall now endeavour to shew, from
+electrical experiments, how, and by what means they _descend_ towards
+the earth.
+
+What is called the _attraction_ of the _earth_ seems to be performed
+in the same manner as that of the _glass globe_ in electricity; the
+explaining of which will give us a clear idea, by what means _heavy
+bodies_ are _forced_ towards the terraqueous globe. In accounting for
+this electrical _attraction_, Mr. _Hauksbee_ seems to be very clear;
+for, says he, “if by the heat and rarefaction, consequent upon the
+attrition, the medium contiguous to the glass be made specifically
+lighter; then of course, to keep up the ballance, the remoter air,
+which is denser, must press in towards the tube, and so carry away (in
+the torrent) the little bodies lying in its way, thither also. The
+various irregularities in the excitation, or the emission and discharge
+of the electrical matter or light from the tube (which will be followed
+with proportional irregularities, in the motion and tendency of the
+denser air, towards the glass globe, by the hydrostatical laws) may
+be sufficient to account for the various uncertain motions of the
+little bodies carried towards the glass globe.” This account of Mr.
+_Hauksbee_’s being so very clear, it is a little surprising that he
+should allow the power of _attraction_ to matter, as in some places he
+does; for this is no more than in other words, telling us, that the
+air round the ball is _divided_ and _rubbed_ or _ground_ to pieces by
+the _friction_ between the glass globe and your hand, and thereby made
+to _expand_ itself; so the air pressing in to make up that deficiency,
+forces every thing towards the glass globe, that by its number of
+particles is not able to withstand the _current_ of _air_, pressing
+towards the globe. So in like manner near the surface of the earth, the
+sun-beams being _reflected_ by the terraqueous globe, must by these
+means be in a greater quantity near the surface of the earth, than at a
+distance from it; and so _divide_, _expand_ and _rarify_ the air near
+its surface, which _rarified_ or _divided_ air is forced off from the
+earth on all sides, by the _pressing_ in of the air from above, which
+must of consequence _drive_ every thing before it, towards the earth.
+By which we find, that the cause of bodies _descending_ towards the
+earth, is not from any _property_ either of the _earth_ or of the
+_descending bodies_; but that these are _forced_ towards that, by the
+surrounding _air_, in its said _motion_.
+
+To prove that this is the method by which, in electricity, bodies are
+forced towards the glass globe, I shall bring an experiment or two from
+Mr. _Hauksbee_; and as these experiments prove to a certainty, that
+this is the manner of the _attraction_ in _electricity_, it will give
+us little room to doubt, but that the _attraction_ of the _earth_ is
+performed in the same manner.
+
+Mr. _Hauksbee_ observed, that the _electrical effluvia_ were not only
+perceiveable by sight; but also, if the hand was held near the tube,
+seemed to make such sort of strokes upon the skin, as a number of fine
+limber hairs pushing against it might be supposed to do: and in order
+to find whether the electrical _attraction_ was regular and uniform,
+he made the following curious experiment, shewing that all bodies, not
+too heavy, are _forced_ (or, as is commonly supposed, _attracted_) to
+a cylindrical glass, equally all round, if these bodies are, as _they
+term it_, within the sphere of its activity.
+
+This experiment seemed to affect Mr. _Hauksbee_ so much, that (speaking
+of electricity) he says, “it affords us a sort of _representation_ of
+the _great phænomena_ of the _universe_.” Page 53.
+
+[Illustration]
+
+“For, says he, having observed (in electricity) that light bodies,
+placed near any part of the rubbed cylinder, seemed to be equally
+attracted, I contrived a semicircle of wire, which I could fasten at
+a constant distance, making it encompass the upper semi-cylindrical
+surface of the glass, at 4 or 5 inches distance. This wire had
+several pieces of woollen threads fastened to it at pretty near equal
+distances. The length of them was such, that being extended in a
+direction towards the center of that imaginary circle, on the surface
+of the glass, in the plane of which the wire was placed; they would
+then reach within an inch of the circumference of that circle: but
+if left to their own liberty, they hung in that parallel portion
+represented, fig. 1. The cylinder was placed with its axis parallel to
+the horizon; and in this posture, it was turned swiftly round; and
+then by the rapid motion and agitation of the surrounding air, the
+threads were placed into such portions, as are expressed fig. 2. viz.
+they were all lifted up and bent upwards from the axis of the cylinder.
+
+“All this while, there was only the swift motion of the cylinder
+round its axis, without any attrition, but now when I came to apply
+my hand to the lower part of the glass (so swiftly whirled about)
+and consequently to add attrition to the former motion; the threads
+presently began to change their direction, and all harmoniously pointed
+to the center of the circle, in whose plane the wire was placed, as
+in fig. 3. neither were they at all disordered or flung out of that
+position, by the wind occasioned by that violent motion (but as if
+there had been no such hurry of air about them) they still persisted
+in their central direction; I found I could by shifting the place of
+the attrition hither or thither, draw the threads towards this or that
+end of the cylinder; but yet they all still went uniformly converging
+towards some center in the axis of it; so that they formed themselves
+into a sort of conical surface.
+
+“Farther, if the wire with its loose threads was reverted, so as to
+encompass the lower part of the cylinder (as before it did the upper
+part) yet the effect still answered with the same exactness. For the
+threads were all erected into so many strait lines, still directing
+themselves towards a center in the axis of the glass.
+
+“Hitherto the axis of the cylinder was placed horizontally; in the next
+place I set it in a vertical position, so that it stood perpendicular
+to the plane of the horizon; in which case I made use of a wire hoop,
+which was necessary to be placed parallel to the horizon, that it might
+encompass the cylinder, in the same manner as the semicircular wire did
+before: only one small part of this wire was left open, to make way
+for the touch of the hand, which was to give the attrition. And the
+wire being thus placed, it was evident that the threads (without some
+external force to support them) must all flag and hang perpendicularly
+downwards. Yet, as soon as the motion and attrition were given, the
+threads presently began to be extended; and as if they were become
+stiff and hard, formed themselves into an horizontal plane; their loose
+ends pointing to a center in the axis of the glass, as before.
+
+“And thus (in all sorts of positions whatsoever, both of the wire and
+of the glass too) were the threads acted upon by a sort of centripetal
+force; to the laws of which they were always conformable.” See
+_Hauksbee_’s experiments, page 53 &c.
+
+It may be observed in this experiment, that the _attractive_ power of
+bodies does not lie in _solids_, as has been falsly imagined, neither
+have such bodies any _centripetal_ or _centrifugal_ force; but that
+this _power_ and _force_ are given them from _without_. For, on placing
+the wire with the threads round the cylinder, they were all _forced_
+(or as it is often called, _attracted_) towards the _earth_; but, on
+giving a _violent motion_ to the cylinder, they were drove from the
+cylinder, as if forced by a strong wind; but, by applying the hand to
+the glass cylinder, they were recalled, and all pointed to a center
+in the axis of the cylinder: and this _central_ direction might be
+altered at any time, by only moving the hand to different parts of
+the cylinder; the threads always pointing to the place where the
+_attrition_ was made: by which we find, that the _central_ force, both
+of the cylinder and the threads, are caused by the _attrition_ of the
+_air_ between your hand and the cylinder; whereas, at any other time,
+they are quite inactive: so we are assured that these _central_ forces
+which have been imagined to be _within_ the _solid_, are not there, but
+in the _air without it_.
+
+On putting something between any of the threads and the cylinder; then,
+those threads would return to their first and _natural position_, viz.
+point towards the center of the earth. So, as Mr. _Hauksbee_ observes,
+“in these small orbs of matter we have some little resemblances of the
+_grand phænomena_ of the _universe_.”
+
+Another thing observable was, “that by putting these threads within a
+glass, when they became extended, this position of the threads would be
+altered at any time on the approach of one’s hand, finger, or any other
+body, to the surface of the glass.” This is sufficient proof that the
+_light_, or as it is generally called, the _electrical effluvia pass_
+through the _glass_, with as much ease as water does through a sieve.
+
+One thing which seemed a little surprising to Mr. _Hauksbee_ was, that
+upon exhausting the _gross air_ out of the tube or globe made use of
+in electricity, what he called the power of _attraction_, would cease;
+but upon suffering the air again to enter, it returned as vigorous as
+before. This must be the case; for (as was before observed) whenever
+the gross air is extracted by an air pump, the fluid remaining is
+nothing but _light_. So, whenever this attrition is performed on an
+exhausted globe (for want of the resistance of the gross air within, to
+force off the particles of air ground so small as _light_, and thereby
+to make an _expansion_ or _rarefaction_ round the glass globe, which
+has been shewn to be the cause of light bodies being _forced_ towards
+the globe) these particles of _light_ do immediately enter the globe on
+one side, and _force_ out the same quantity on the other; in the same
+manner as water through a sieve, without ever making any _expansion_ or
+_rarefaction_.
+
+Having thus shewn how and by what means the _fire_ and _light_ in
+electricity are produced; our next inquiry must be, why some bodies
+communicate this _light_ to ever so great a distance, and that
+instantaneously; whilst others will not; and also, why some bodies are
+_electrical_ and others _non-electrical_.
+
+_Electrical bodies_ are those, whose _pores_ are so _fine_, as to admit
+nothing through them but _light_, or air ground to a proper fitness;
+as _metalls_, _glass_, _amber_, _wax_ &c. Bodies _non-electrical_, are
+all those, which, by the _largeness_ of their _pores_, admit, not only
+_light_ but also _gross air_.
+
+We see, when the air is _ground_ to pieces by an electrical machine,
+and _put_ into _sufficient motion_, by the _friction_ between the glass
+globe and the hand, a wire being hung from the iron barrel, so as very
+near to touch the ball, part of the _light_ issuing from the ball,
+as above described, _enters_ the wire, and is by it communicated to
+the iron barrel, and from thence _carried_ by _another wire_ to any
+distance, if not interrupted by some _non-electrical_ body: to the end
+of which, by a third wire is hung an egg; as soon as the globe is put
+in _motion_, and warm spirit of wine is placed so as to touch the egg,
+the spirit of wine will immediately take fire from the contact of the
+egg.
+
+It has been already proved, that when the globe is put in _motion_, and
+your hand is applied to it, it _grinds_ to pieces the air between the
+globe and the hand, and so _rarefies_ and _expands_ it, and sends it
+off with great force, in the same manner, as _light_ is sent from any
+body of _fire in action_; as may be seen, if the electrical machine is
+set at work in the dark; when the emission from the glass globe will
+appear lucid.
+
+The wires which are hung over the glass globe, by the _smallness_ of
+their _pores_, admitting nothing through them but _light_, and light
+being a body so _subtil_, as to penetrate the _pores_ of all other
+bodies, even to the very center of the earth; the _interstices_ of the
+_wires_ are filled with it from one end to the other.
+
+As the _light_ is one continued body, throughout the whole extent of
+the wire, the _force_ it receives at the end next the glass globe, is
+_immediately_, and at the _same instant_ of time, communicated to the
+other end, let the _length_ or _extent_ of the wire be ever so great.
+As, for example, a pipe of any length, being filled with any sort
+of fluid, as water; if you force in more water at one end, the same
+moment, and in the same quantity, it will be forced out at the other.
+
+By these experiments in electricity, we find that _fire_ and _light_
+are produced as has been before observed, only by _breaking_ the air
+to pieces, and putting it in _motion_; and that _fire_ and _light_ are
+in _all_ bodies, water and ice not excepted; for, if a piece of ice is
+hung at the end of the wire, it will set fire to spirit of wine, as
+well as an egg.
+
+The iron wire by the _closeness_ of its _pores_ prevents the
+surrounding air from entering it, and by that means at the same time
+forms a kind of _canal_ for the _light_ to pass through.
+
+Having thus as I conceive, given a tolerable clear account, and, I
+hope, a true one, how and by what means, the various _phænomena_ in
+electricity are produced; I suppose, it will not be a very difficult
+task, to form a judgment, what disorders electrical operations are
+likely to be applied to, with hopes of service; as also in what others
+they are likely to be detrimental.
+
+As the _heat_ and _redness_ of the _blood_, may be easily proved, to
+be in proportion to the _quantity_ and _motion_ of the _light_ it
+contains; so, wherever the blood is _heated_ to a great degree, as in
+_fevers_, _Inflammations_ of all kinds &c. there we are to expect the
+worst and most pernicious consequences, from the use of electricity.
+
+But, on the contrary, as the nerves have been proved to act by a
+subtil fluid that passes through them, and that they, by the closeness
+of their pores, will not admit a fluid to pass through them, whose
+particles are much larger than those of _light_; the consequences we
+must often expect from such a make, must be obstructions; and as the
+_light_ in electricity is forced through our bodies and nerves, with
+great violence, it seems very reasonable to think, that where these
+obstructions are not too violent, there they may be broken through and
+removed by its power, of which we have had many instances, especially
+in palsies.
+
+This is also confirmed by the success of the present practice of
+physick; for, the greatest relief, in these cases, is always found to
+proceed from _volatile_ and _penetrating_ medicines. But, care should
+be taken, not to administer electricity, to a person of weak and
+decayed nerves, instead of one whose nerves are obstructed.
+
+
+_FINIS._
+
+
+
+
+
+End of Project Gutenberg's A Treatise on Electricity, by Francis Penrose
+
+*** END OF THIS PROJECT GUTENBERG EBOOK A TREATISE ON ELECTRICITY ***
+
+***** This file should be named 60392-0.txt or 60392-0.zip *****
+This and all associated files of various formats will be found in:
+        http://www.gutenberg.org/6/0/3/9/60392/
+
+Produced by Thiers Halliwell, MWS and the Online Distributed
+Proofreading Team at http://www.pgdp.net (This file was
+produced from images generously made available by The
+Internet Archive/American Libraries.)
+
+
+Updated editions will replace the previous one--the old editions will
+be renamed.
+
+Creating the works from print editions not protected by U.S. copyright
+law means that no one owns a United States copyright in these works,
+so the Foundation (and you!) can copy and distribute it in the United
+States without permission and without paying copyright
+royalties. Special rules, set forth in the General Terms of Use part
+of this license, apply to copying and distributing Project
+Gutenberg-tm electronic works to protect the PROJECT GUTENBERG-tm
+concept and trademark. Project Gutenberg is a registered trademark,
+and may not be used if you charge for the eBooks, unless you receive
+specific permission. If you do not charge anything for copies of this
+eBook, complying with the rules is very easy. You may use this eBook
+for nearly any purpose such as creation of derivative works, reports,
+performances and research. They may be modified and printed and given
+away--you may do practically ANYTHING in the United States with eBooks
+not protected by U.S. copyright law. Redistribution is subject to the
+trademark license, especially commercial redistribution.
+
+START: FULL LICENSE
+
+THE FULL PROJECT GUTENBERG LICENSE
+PLEASE READ THIS BEFORE YOU DISTRIBUTE OR USE THIS WORK
+
+To protect the Project Gutenberg-tm mission of promoting the free
+distribution of electronic works, by using or distributing this work
+(or any other work associated in any way with the phrase "Project
+Gutenberg"), you agree to comply with all the terms of the Full
+Project Gutenberg-tm License available with this file or online at
+www.gutenberg.org/license.
+
+Section 1. General Terms of Use and Redistributing Project
+Gutenberg-tm electronic works
+
+1.A. By reading or using any part of this Project Gutenberg-tm
+electronic work, you indicate that you have read, understand, agree to
+and accept all the terms of this license and intellectual property
+(trademark/copyright) agreement. If you do not agree to abide by all
+the terms of this agreement, you must cease using and return or
+destroy all copies of Project Gutenberg-tm electronic works in your
+possession. If you paid a fee for obtaining a copy of or access to a
+Project Gutenberg-tm electronic work and you do not agree to be bound
+by the terms of this agreement, you may obtain a refund from the
+person or entity to whom you paid the fee as set forth in paragraph
+1.E.8.
+
+1.B. "Project Gutenberg" is a registered trademark. It may only be
+used on or associated in any way with an electronic work by people who
+agree to be bound by the terms of this agreement. There are a few
+things that you can do with most Project Gutenberg-tm electronic works
+even without complying with the full terms of this agreement. See
+paragraph 1.C below. There are a lot of things you can do with Project
+Gutenberg-tm electronic works if you follow the terms of this
+agreement and help preserve free future access to Project Gutenberg-tm
+electronic works. See paragraph 1.E below.
+
+1.C. The Project Gutenberg Literary Archive Foundation ("the
+Foundation" or PGLAF), owns a compilation copyright in the collection
+of Project Gutenberg-tm electronic works. Nearly all the individual
+works in the collection are in the public domain in the United
+States. If an individual work is unprotected by copyright law in the
+United States and you are located in the United States, we do not
+claim a right to prevent you from copying, distributing, performing,
+displaying or creating derivative works based on the work as long as
+all references to Project Gutenberg are removed. Of course, we hope
+that you will support the Project Gutenberg-tm mission of promoting
+free access to electronic works by freely sharing Project Gutenberg-tm
+works in compliance with the terms of this agreement for keeping the
+Project Gutenberg-tm name associated with the work. You can easily
+comply with the terms of this agreement by keeping this work in the
+same format with its attached full Project Gutenberg-tm License when
+you share it without charge with others.
+
+1.D. The copyright laws of the place where you are located also govern
+what you can do with this work. Copyright laws in most countries are
+in a constant state of change. If you are outside the United States,
+check the laws of your country in addition to the terms of this
+agreement before downloading, copying, displaying, performing,
+distributing or creating derivative works based on this work or any
+other Project Gutenberg-tm work. The Foundation makes no
+representations concerning the copyright status of any work in any
+country outside the United States.
+
+1.E. Unless you have removed all references to Project Gutenberg:
+
+1.E.1. The following sentence, with active links to, or other
+immediate access to, the full Project Gutenberg-tm License must appear
+prominently whenever any copy of a Project Gutenberg-tm work (any work
+on which the phrase "Project Gutenberg" appears, or with which the
+phrase "Project Gutenberg" is associated) is accessed, displayed,
+performed, viewed, copied or distributed:
+
+  This eBook is for the use of anyone anywhere in the United States and
+  most other parts of the world at no cost and with almost no
+  restrictions whatsoever. You may copy it, give it away or re-use it
+  under the terms of the Project Gutenberg License included with this
+  eBook or online at www.gutenberg.org. If you are not located in the
+  United States, you'll have to check the laws of the country where you
+  are located before using this ebook.
+
+1.E.2. If an individual Project Gutenberg-tm electronic work is
+derived from texts not protected by U.S. copyright law (does not
+contain a notice indicating that it is posted with permission of the
+copyright holder), the work can be copied and distributed to anyone in
+the United States without paying any fees or charges. If you are
+redistributing or providing access to a work with the phrase "Project
+Gutenberg" associated with or appearing on the work, you must comply
+either with the requirements of paragraphs 1.E.1 through 1.E.7 or
+obtain permission for the use of the work and the Project Gutenberg-tm
+trademark as set forth in paragraphs 1.E.8 or 1.E.9.
+
+1.E.3. If an individual Project Gutenberg-tm electronic work is posted
+with the permission of the copyright holder, your use and distribution
+must comply with both paragraphs 1.E.1 through 1.E.7 and any
+additional terms imposed by the copyright holder. Additional terms
+will be linked to the Project Gutenberg-tm License for all works
+posted with the permission of the copyright holder found at the
+beginning of this work.
+
+1.E.4. Do not unlink or detach or remove the full Project Gutenberg-tm
+License terms from this work, or any files containing a part of this
+work or any other work associated with Project Gutenberg-tm.
+
+1.E.5. Do not copy, display, perform, distribute or redistribute this
+electronic work, or any part of this electronic work, without
+prominently displaying the sentence set forth in paragraph 1.E.1 with
+active links or immediate access to the full terms of the Project
+Gutenberg-tm License.
+
+1.E.6. You may convert to and distribute this work in any binary,
+compressed, marked up, nonproprietary or proprietary form, including
+any word processing or hypertext form. However, if you provide access
+to or distribute copies of a Project Gutenberg-tm work in a format
+other than "Plain Vanilla ASCII" or other format used in the official
+version posted on the official Project Gutenberg-tm web site
+(www.gutenberg.org), you must, at no additional cost, fee or expense
+to the user, provide a copy, a means of exporting a copy, or a means
+of obtaining a copy upon request, of the work in its original "Plain
+Vanilla ASCII" or other form. Any alternate format must include the
+full Project Gutenberg-tm License as specified in paragraph 1.E.1.
+
+1.E.7. Do not charge a fee for access to, viewing, displaying,
+performing, copying or distributing any Project Gutenberg-tm works
+unless you comply with paragraph 1.E.8 or 1.E.9.
+
+1.E.8. You may charge a reasonable fee for copies of or providing
+access to or distributing Project Gutenberg-tm electronic works
+provided that
+
+* You pay a royalty fee of 20% of the gross profits you derive from
+  the use of Project Gutenberg-tm works calculated using the method
+  you already use to calculate your applicable taxes. The fee is owed
+  to the owner of the Project Gutenberg-tm trademark, but he has
+  agreed to donate royalties under this paragraph to the Project
+  Gutenberg Literary Archive Foundation. Royalty payments must be paid
+  within 60 days following each date on which you prepare (or are
+  legally required to prepare) your periodic tax returns. Royalty
+  payments should be clearly marked as such and sent to the Project
+  Gutenberg Literary Archive Foundation at the address specified in
+  Section 4, "Information about donations to the Project Gutenberg
+  Literary Archive Foundation."
+
+* You provide a full refund of any money paid by a user who notifies
+  you in writing (or by e-mail) within 30 days of receipt that s/he
+  does not agree to the terms of the full Project Gutenberg-tm
+  License. You must require such a user to return or destroy all
+  copies of the works possessed in a physical medium and discontinue
+  all use of and all access to other copies of Project Gutenberg-tm
+  works.
+
+* You provide, in accordance with paragraph 1.F.3, a full refund of
+  any money paid for a work or a replacement copy, if a defect in the
+  electronic work is discovered and reported to you within 90 days of
+  receipt of the work.
+
+* You comply with all other terms of this agreement for free
+  distribution of Project Gutenberg-tm works.
+
+1.E.9. If you wish to charge a fee or distribute a Project
+Gutenberg-tm electronic work or group of works on different terms than
+are set forth in this agreement, you must obtain permission in writing
+from both the Project Gutenberg Literary Archive Foundation and The
+Project Gutenberg Trademark LLC, the owner of the Project Gutenberg-tm
+trademark. Contact the Foundation as set forth in Section 3 below.
+
+1.F.
+
+1.F.1. Project Gutenberg volunteers and employees expend considerable
+effort to identify, do copyright research on, transcribe and proofread
+works not protected by U.S. copyright law in creating the Project
+Gutenberg-tm collection. Despite these efforts, Project Gutenberg-tm
+electronic works, and the medium on which they may be stored, may
+contain "Defects," such as, but not limited to, incomplete, inaccurate
+or corrupt data, transcription errors, a copyright or other
+intellectual property infringement, a defective or damaged disk or
+other medium, a computer virus, or computer codes that damage or
+cannot be read by your equipment.
+
+1.F.2. LIMITED WARRANTY, DISCLAIMER OF DAMAGES - Except for the "Right
+of Replacement or Refund" described in paragraph 1.F.3, the Project
+Gutenberg Literary Archive Foundation, the owner of the Project
+Gutenberg-tm trademark, and any other party distributing a Project
+Gutenberg-tm electronic work under this agreement, disclaim all
+liability to you for damages, costs and expenses, including legal
+fees. YOU AGREE THAT YOU HAVE NO REMEDIES FOR NEGLIGENCE, STRICT
+LIABILITY, BREACH OF WARRANTY OR BREACH OF CONTRACT EXCEPT THOSE
+PROVIDED IN PARAGRAPH 1.F.3. YOU AGREE THAT THE FOUNDATION, THE
+TRADEMARK OWNER, AND ANY DISTRIBUTOR UNDER THIS AGREEMENT WILL NOT BE
+LIABLE TO YOU FOR ACTUAL, DIRECT, INDIRECT, CONSEQUENTIAL, PUNITIVE OR
+INCIDENTAL DAMAGES EVEN IF YOU GIVE NOTICE OF THE POSSIBILITY OF SUCH
+DAMAGE.
+
+1.F.3. LIMITED RIGHT OF REPLACEMENT OR REFUND - If you discover a
+defect in this electronic work within 90 days of receiving it, you can
+receive a refund of the money (if any) you paid for it by sending a
+written explanation to the person you received the work from. If you
+received the work on a physical medium, you must return the medium
+with your written explanation. The person or entity that provided you
+with the defective work may elect to provide a replacement copy in
+lieu of a refund. If you received the work electronically, the person
+or entity providing it to you may choose to give you a second
+opportunity to receive the work electronically in lieu of a refund. If
+the second copy is also defective, you may demand a refund in writing
+without further opportunities to fix the problem.
+
+1.F.4. Except for the limited right of replacement or refund set forth
+in paragraph 1.F.3, this work is provided to you 'AS-IS', WITH NO
+OTHER WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PURPOSE.
+
+1.F.5. Some states do not allow disclaimers of certain implied
+warranties or the exclusion or limitation of certain types of
+damages. If any disclaimer or limitation set forth in this agreement
+violates the law of the state applicable to this agreement, the
+agreement shall be interpreted to make the maximum disclaimer or
+limitation permitted by the applicable state law. The invalidity or
+unenforceability of any provision of this agreement shall not void the
+remaining provisions.
+
+1.F.6. INDEMNITY - You agree to indemnify and hold the Foundation, the
+trademark owner, any agent or employee of the Foundation, anyone
+providing copies of Project Gutenberg-tm electronic works in
+accordance with this agreement, and any volunteers associated with the
+production, promotion and distribution of Project Gutenberg-tm
+electronic works, harmless from all liability, costs and expenses,
+including legal fees, that arise directly or indirectly from any of
+the following which you do or cause to occur: (a) distribution of this
+or any Project Gutenberg-tm work, (b) alteration, modification, or
+additions or deletions to any Project Gutenberg-tm work, and (c) any
+Defect you cause.
+
+Section 2. Information about the Mission of Project Gutenberg-tm
+
+Project Gutenberg-tm is synonymous with the free distribution of
+electronic works in formats readable by the widest variety of
+computers including obsolete, old, middle-aged and new computers. It
+exists because of the efforts of hundreds of volunteers and donations
+from people in all walks of life.
+
+Volunteers and financial support to provide volunteers with the
+assistance they need are critical to reaching Project Gutenberg-tm's
+goals and ensuring that the Project Gutenberg-tm collection will
+remain freely available for generations to come. In 2001, the Project
+Gutenberg Literary Archive Foundation was created to provide a secure
+and permanent future for Project Gutenberg-tm and future
+generations. To learn more about the Project Gutenberg Literary
+Archive Foundation and how your efforts and donations can help, see
+Sections 3 and 4 and the Foundation information page at
+www.gutenberg.org Section 3. Information about the Project Gutenberg
+Literary Archive Foundation
+
+The Project Gutenberg Literary Archive Foundation is a non profit
+501(c)(3) educational corporation organized under the laws of the
+state of Mississippi and granted tax exempt status by the Internal
+Revenue Service. The Foundation's EIN or federal tax identification
+number is 64-6221541. Contributions to the Project Gutenberg Literary
+Archive Foundation are tax deductible to the full extent permitted by
+U.S. federal laws and your state's laws.
+
+The Foundation's principal office is in Fairbanks, Alaska, with the
+mailing address: PO Box 750175, Fairbanks, AK 99775, but its
+volunteers and employees are scattered throughout numerous
+locations. Its business office is located at 809 North 1500 West, Salt
+Lake City, UT 84116, (801) 596-1887. Email contact links and up to
+date contact information can be found at the Foundation's web site and
+official page at www.gutenberg.org/contact
+
+For additional contact information:
+
+    Dr. Gregory B. Newby
+    Chief Executive and Director
+    gbnewby@pglaf.org
+
+Section 4. Information about Donations to the Project Gutenberg
+Literary Archive Foundation
+
+Project Gutenberg-tm depends upon and cannot survive without wide
+spread public support and donations to carry out its mission of
+increasing the number of public domain and licensed works that can be
+freely distributed in machine readable form accessible by the widest
+array of equipment including outdated equipment. Many small donations
+($1 to $5,000) are particularly important to maintaining tax exempt
+status with the IRS.
+
+The Foundation is committed to complying with the laws regulating
+charities and charitable donations in all 50 states of the United
+States. Compliance requirements are not uniform and it takes a
+considerable effort, much paperwork and many fees to meet and keep up
+with these requirements. We do not solicit donations in locations
+where we have not received written confirmation of compliance. To SEND
+DONATIONS or determine the status of compliance for any particular
+state visit www.gutenberg.org/donate
+
+While we cannot and do not solicit contributions from states where we
+have not met the solicitation requirements, we know of no prohibition
+against accepting unsolicited donations from donors in such states who
+approach us with offers to donate.
+
+International donations are gratefully accepted, but we cannot make
+any statements concerning tax treatment of donations received from
+outside the United States. U.S. laws alone swamp our small staff.
+
+Please check the Project Gutenberg Web pages for current donation
+methods and addresses. Donations are accepted in a number of other
+ways including checks, online payments and credit card donations. To
+donate, please visit: www.gutenberg.org/donate
+
+Section 5. General Information About Project Gutenberg-tm electronic works.
+
+Professor Michael S. Hart was the originator of the Project
+Gutenberg-tm concept of a library of electronic works that could be
+freely shared with anyone. For forty years, he produced and
+distributed Project Gutenberg-tm eBooks with only a loose network of
+volunteer support.
+
+Project Gutenberg-tm eBooks are often created from several printed
+editions, all of which are confirmed as not protected by copyright in
+the U.S. unless a copyright notice is included. Thus, we do not
+necessarily keep eBooks in compliance with any particular paper
+edition.
+
+Most people start at our Web site which has the main PG search
+facility: www.gutenberg.org
+
+This Web site includes information about Project Gutenberg-tm,
+including how to make donations to the Project Gutenberg Literary
+Archive Foundation, how to help produce our new eBooks, and how to
+subscribe to our email newsletter to hear about new eBooks.
+
