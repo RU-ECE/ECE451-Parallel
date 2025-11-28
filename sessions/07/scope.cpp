@@ -1,4 +1,4 @@
-auto x = 1; // global
+﻿auto x = 1; // global
 
 int main() {
 	auto x = 2; // auto (on stack)

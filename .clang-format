@@ -1,5 +1,5 @@
 Language: Cpp
-BasedOnStyle: LLVM
+BasedOnStyle: clang-format
 AccessModifierOffset: -4
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
@@ -39,6 +39,7 @@ IncludeCategories:
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IndentWidth: 4
 InsertNewlineAtEOF: true
+LineEnding: LF
 MacroBlockBegin: ''
 MacroBlockEnd: ''
 MaxEmptyLinesToKeep: 2

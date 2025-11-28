@@ -1,4 +1,4 @@
-#include <cstdint>
+﻿#include <cstdint>
 #include <iostream>
 #include <ranges>
 #include <unordered_map>
@@ -35,8 +35,7 @@ public:
 	void add(const uint32_t words[], const uint32_t n) {
 		node* p = &root;
 		for (uint32_t i = 0; i < n; i++) {
-			node* q = p->next[words[i]];
-			if (q == nullptr) {
+			if (node* q = p->next[words[i]]; q == nullptr) {
 				p->next[words[i]] = q = new node();
 				p = q;
 			}

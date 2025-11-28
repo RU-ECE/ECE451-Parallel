@@ -1,12 +1,12 @@
-#include <chrono>
+﻿#include <chrono>
 #include <iostream>
 
 using namespace std;
 using namespace chrono;
 
 // cannot be read from cache the first time
-//  cannot fit into cache, therefore MISS
-//  by the time you get back to the beginning, cache is remembering the end
+// cannot fit into cache, therefore MISS
+// by the time you get back to the beginning, cache is remembering the end
 
 // while it does not work with cache
 // sequential access is the fastest way RAM works

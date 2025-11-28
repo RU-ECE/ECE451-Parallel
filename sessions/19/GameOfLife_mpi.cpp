@@ -1,4 +1,4 @@
-#include <cmath>
+﻿#include <cmath>
 #include <cstdint>
 #include <iostream>
 #include <mpi.h>
@@ -15,7 +15,6 @@ int neighbor_east, neighbor_west, neighbor_north, neighbor_south;
 int neighbor_north_east, neighbor_north_west;
 int neighbor_south_east, neighbor_south_west;
 class GameOfLife {
-private:
 	uint8_t* board;
 	uint8_t* next;
 	uint8_t* leftbuffer;
@@ -202,10 +201,10 @@ n=6
 
 n = 16
 
-	0   1   2   3
-	4   5   6   7
-	8   9   10  11
-	12  13  14  15
+	0  1  2  3
+	4  5  6  7
+	8  9  10 11
+	12 13 14 15
 
 */
 
@@ -239,8 +238,8 @@ int main() {
 		game.print();
 	}
 	/*
-	n=10   n^2 = 100   n = 10
-	n = 1000 n^2 10^6  n = 1000
+	n=10 n^2 = 100 n = 10
+	n = 1000 n^2 10^6 n = 1000
 	n = 10,000 n^2 10^8
 	*/
 	MPI_Finalize();

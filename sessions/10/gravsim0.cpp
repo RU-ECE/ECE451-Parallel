@@ -1,4 +1,4 @@
-#include <cmath>
+﻿#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <vector>
@@ -23,33 +23,32 @@ constexpr auto G = 5.67E-11; // universal gravitational constant
 // suggested: Structure of arrays instead of array of structures
 	class Body {
 private:
-	std::vector<std::string> names;
-	std::vector<double> masses; // rest mass
+	vector<string> names;
+	vector<double> masses; // rest mass
 	double x,y,z; // location
 	double vx, vy, vz; // velocity
 #endif
 
-class Body {
-private:
-	std::string name;
+class Body final {
+	string name;
 	double m; // rest mass
 	double x, y, z; // location
 	double vx, vy, vz; // velocity
 public:
-	Body([[maybe_unused]] string name, const double m, const double x, const double y, const double z, const double vx, const double vy,
-		 const double vz) : m(m), x(x), y(y), z(z), vx(vx), vy(vy), vz(vz) {}
-	virtual ~Body();
+	Body([[maybe_unused]] string name, const double m, const double x, const double y, const double z, const double vx,
+		 const double vy, const double vz) : m(m), x(x), y(y), z(z), vx(vx), vy(vy), vz(vz) {}
+	~Body();
 	friend void step_forward(double dt);
 	friend ostream& operator<<(ostream& s, const Body& b) {
 		return s << setw(14) << b.name << setw(14) << b.x << setw(14) << b.y << setw(14) << b.vx << setw(14) << b.vy;
 	}
-	virtual double dist(const Body* b) const;
+	double dist(const Body* b) const;
 
 	// given the acceleration, calculate the component in the x, y, z direction
-	virtual double d2x(const Body* other, double a) const;
-	virtual double d2y(const Body* other, double a) const;
-	virtual double d2z(const Body* other, double a) const;
-	virtual void step_forward(double dt);
+	double d2x(const Body* other, double a) const;
+	double d2y(const Body* other, double a) const;
+	double d2z(const Body* other, double a) const;
+	void step_forward(double dt);
 };
 
 Body::~Body() {}

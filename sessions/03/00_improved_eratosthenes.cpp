@@ -1,4 +1,4 @@
-/*
+﻿/*
 n      n sqrt(n)        n log n
 1      1                1
 10     30               33
@@ -25,11 +25,12 @@ n      n sqrt(n)        n log n
 
 
 // O(n log log n)
+
 #include <cmath>
 #include <cstdint>
 #include <iostream>
 
-void improved_eratosthenes(bool primes[], uint64_t n) {
+void improved_eratosthenes(bool primes[], const uint64_t n) {
 	auto count = 1UL;
 	for (auto i = 3UL; i <= n; i += 2)
 		primes[i] = true;

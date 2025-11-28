@@ -1,4 +1,4 @@
-// matmul_kernels.cu
+﻿// matmul_kernels.cu
 // Multiple kernels in one file for teaching/comparison
 // Compile: nvcc -O3 matmul.cu
 
@@ -32,18 +32,15 @@ __global__ void set_matrix(float* A, const int N, const float k) {
 		A[i] = k;
 }
 /*
-suppose memory row size = 8k
-N=1024
-a[0] a[1] ...     a[1023]  (4096 bytes)
-a[1024] = 4k
-a[2048] = 8k (on a new page?)
-
-
-
-*/
+ * suppose memory row size = 8k
+ * N=1024
+ * a[0], a[1], ..., a[1023] (4096 bytes)
+ * a[1024] = 4k
+ * a[2048] = 8k (on a new page?)
+ */
 // ------------------------ TRANSPOSE KERNELS ------------------------
 
-// 1 Naive transpose: each thread writes one element: ans[col*N + row] = a[row * N + col]
+// 1	Naive transpose: each thread writes one element: ans[col*N + row] = a[row * N + col]
 __global__ void transpose_naive(const float a[], float ans[], const int N) {
 	const int row = blockIdx.y * blockDim.y + threadIdx.y;
 	const int col = blockIdx.x * blockDim.x + threadIdx.x;
@@ -51,17 +48,17 @@ __global__ void transpose_naive(const float a[], float ans[], const int N) {
 		ans[col * N + row] = a[row * N + col];
 }
 
-// 2 Shared-memory tiled transpose with padding to avoid bank conflicts
+// 2	Shared-memory tiled transpose with padding to avoid bank conflicts
 __global__ void transpose_shared(const float a[], float ans[], const int N) {
-	//    __shared__ float tile[TILE][TILE]; // this has bank conflicts
+	// __shared__ float tile[TILE][TILE]; // this has bank conflicts
 	__shared__ float tile[TILE][TILE + 1]; // +1 avoids bank conflicts
 	const int x = blockIdx.x * TILE + threadIdx.x; // Global column for input 'a'
 	const int y = blockIdx.y * TILE + threadIdx.y; // Global row for input 'a'
 
 	if (x < N && y < N)
 		tile[threadIdx.y][threadIdx.x] = a[y * N + x];
-	// else
-	// S    tile[threadIdx.y][threadIdx.x] = 0.0f;
+	/*else
+		tile[threadIdx.y][threadIdx.x] = 0.0f;*/
 
 	__syncthreads();
 
@@ -75,20 +72,19 @@ __global__ void transpose_shared(const float a[], float ans[], const int N) {
 }
 
 /*
-1 2 3 4
-5 6 7 8
-9 10 11 12
-13 14 15 16
-
-
-becomes
-1 5 9 13
-2 6 10 14
-3 7 11 15
-4 8 12 16
-
-*/
-// 2b Shared-memory transpose with coalesced writes
+ * 1 2 3 4
+ * 5 6 7 8
+ * 9 10 11 12
+ * 13 14 15 16
+ *
+ *
+ * becomes
+ * 1 5 9 13
+ * 2 6 10 14
+ * 3 7 11 15
+ * 4 8 12 16
+ */
+// 2b	Shared-memory transpose with coalesced writes
 __global__ void transpose_shared_coalesced(const float a[], float ans[], const int N) {
 	__shared__ float tile[TILE][TILE + 1];
 
@@ -107,9 +103,9 @@ __global__ void transpose_shared_coalesced(const float a[], float ans[], const i
 		ans[y_out * N + x_out] = tile[threadIdx.x][threadIdx.y];
 }
 
-// 3 Register/unrolled tile transpose: each thread copies multiple elements using regs.
-//    Good for moderate tile sizes; demonstrates using registers to hold temporaries.
-//    This version treats block as TILE x TILE and each thread loops over a small stride in y.
+// 3	Register/unrolled tile transpose: each thread copies multiple elements using regs.
+//		Good for moderate tile sizes; demonstrates using registers to hold temporaries.
+//		This version treats block as TILE x TILE and each thread loops over a small stride in y.
 __global__ void transpose_register_tile(const float a[], float ans[], const int N) {
 	const int bx = blockIdx.x * TILE;
 	const int by = blockIdx.y * TILE;
@@ -126,10 +122,7 @@ __global__ void transpose_register_tile(const float a[], float ans[], const int 
 	// load into regs
 	for (auto u = 0; u < UNROLL; ++u) {
 		const int y = baseY + u;
-		if (x < N && y < N)
-			regs[u] = a[y * N + x];
-		else
-			regs[u] = 0.0f;
+		regs[u] = x < N && y < N ? a[y * N + x] : 0.0f;
 	}
 
 	// write transposed: position becomes (x,y) -> (y,x)
@@ -142,7 +135,7 @@ __global__ void transpose_register_tile(const float a[], float ans[], const int 
 
 // ------------------------ MATRIX MULTIPLICATION ------------------------
 
-// 3a Naive matmul: one thread per output element C[row*N + col]
+// 3a	Naive matmul: one thread per output element C[row*N + col]
 __global__ void matmul_naive(const float* A, const float* B, float* C, const int N) {
 	const int row = blockIdx.y * blockDim.y + threadIdx.y;
 	const int col = blockIdx.x * blockDim.x + threadIdx.x;
@@ -154,7 +147,7 @@ __global__ void matmul_naive(const float* A, const float* B, float* C, const int
 	C[row * N + col] = sum;
 }
 
-// 3b) Tiled matmul using shared memory (classic)
+// 3b	Tiled matmul using shared memory (classic)
 __global__ void matmul_tiled(const float* A, const float* B, float* C, const int N) {
 	__shared__ float sA[TILE][TILE];
 	__shared__ float sB[TILE][TILE];
@@ -185,8 +178,8 @@ __global__ void matmul_tiled(const float* A, const float* B, float* C, const int
 		C[row * N + col] = sum;
 }
 
-// 3c) Tiled with register tiling: each thread computes a small block (say 2x2) of C using registers
-//      This demonstrates broadcasting/prefetch to registers for low-level optimization.
+// 3c	Tiled with register tiling: each thread computes a small block (say 2x2) of C using registers
+//		This demonstrates broadcasting/prefetch to registers for low-level optimization.
 template <int UNROLL_COLS, int UNROLL_ROWS>
 __global__ void matmul_tiled_register(const float* A, const float* B, float* C, const int N) {
 	__shared__ float sA[TILE][TILE];
@@ -249,8 +242,8 @@ __global__ void matmul_tiled_register(const float* A, const float* B, float* C, 
 	}
 }
 
-// 3d) Matmul assuming B is stored transposed (i.e., we pass Bt where Bt[col*N + k] = B[k*N + col])
-//      This often improves locality because both accesses A[row*N + k] and Bt[col*N + k] are coalesced along k.
+// 3d	Matmul assuming B is stored transposed (i.e., we pass Bt where Bt[col*N + k] = B[k*N + col])
+//		This often improves locality because both accesses A[row*N + k] and Bt[col*N + k] are coalesced along k.
 __global__ void matmul_Bt(const float* A, const float* Bt, float* C, const int N) {
 	const int row = blockIdx.y * blockDim.y + threadIdx.y;
 	const int col = blockIdx.x * blockDim.x + threadIdx.x;
@@ -405,7 +398,7 @@ int main(const int argc, char** argv) {
 
 	benchmark_and_report(
 		"transpose_naive",
-		[&]() {
+		[&] {
 			transpose_naive<<<grid, block>>>(dA, d_tmp, N);
 			CHECK_CUDA(cudaPeekAtLastError());
 		},
@@ -413,7 +406,7 @@ int main(const int argc, char** argv) {
 
 	benchmark_and_report(
 		"transpose_shared",
-		[&]() {
+		[&] {
 			transpose_shared<<<grid, block>>>(dA, d_tmp, N);
 			CHECK_CUDA(cudaPeekAtLastError());
 		},
@@ -421,7 +414,7 @@ int main(const int argc, char** argv) {
 
 	benchmark_and_report(
 		"transpose_shared_coalesced",
-		[&]() {
+		[&] {
 			transpose_shared_coalesced<<<grid, block>>>(dA, d_tmp, N);
 			CHECK_CUDA(cudaPeekAtLastError());
 		},
@@ -429,7 +422,7 @@ int main(const int argc, char** argv) {
 
 	benchmark_and_report(
 		"transpose_register_tile",
-		[&]() {
+		[&] {
 			transpose_register_tile<<<grid, regBlock>>>(dA, d_tmp, N);
 			CHECK_CUDA(cudaPeekAtLastError());
 		},
@@ -438,13 +431,14 @@ int main(const int argc, char** argv) {
 	// --- Test matmul kernels ---
 	// Reference: simple CPU matmul into hCref
 	// For speed, since matrices are constant we can compute analytically: A all ones, B all twos => C entries = 1*2*N =
-	// 2*N but keep general host multiply for clarity (only for small N — be careful)
+	// 2*N but keep general host multiply for clarity (only for small N â€” be careful)
 	for (auto i = 0; i < N * N; ++i)
 		hCref[i] = 0.0f;
-	for (auto r = 0; r < N; ++r)
+	for (auto r = 0; r < N; ++r) {
 		for (auto k = 0; k < N; ++k)
 			for (auto c = 0; c < N; ++c)
 				hCref[r * N + c] += hA[r * N + k] * hB[k * N + c];
+	}
 
 	// 3a naive matmul
 	matmul_naive<<<grid, block>>>(dA, dB, dC, N);
@@ -480,7 +474,7 @@ int main(const int argc, char** argv) {
 
 	benchmark_and_report(
 		"matmul_naive",
-		[&]() {
+		[&] {
 			matmul_naive<<<matmulGrid, matmulBlock>>>(dA, dB, dC, N);
 			CHECK_CUDA(cudaPeekAtLastError());
 		},
@@ -488,7 +482,7 @@ int main(const int argc, char** argv) {
 
 	benchmark_and_report(
 		"matmul_tiled",
-		[&]() {
+		[&] {
 			matmul_tiled<<<matmulGrid, matmulBlock>>>(dA, dB, dC, N);
 			CHECK_CUDA(cudaPeekAtLastError());
 		},
@@ -496,7 +490,7 @@ int main(const int argc, char** argv) {
 
 	benchmark_and_report(
 		"matmul_tiled_register",
-		[&]() {
+		[&] {
 			matmul_tiled_register<MATMUL_UC, MATMUL_UR><<<matmulGrid, matmulRegBlock>>>(dA, dB, dC, N);
 			CHECK_CUDA(cudaPeekAtLastError());
 		},

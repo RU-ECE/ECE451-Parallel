@@ -1,4 +1,4 @@
-#include <immintrin.h>
+﻿#include <immintrin.h>
 
 float dot_simd(const float a[], const float b[], const int n) {
 	auto sum = 0.0f;

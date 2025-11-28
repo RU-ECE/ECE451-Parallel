@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <mutex>
 #include <thread>
 
@@ -12,16 +12,16 @@ void deposit(const int count, const int amount) {
 		m.lock();
 		balance += amount;
 		m.unlock();
-		//        cout << "deposit: " << balance << " amt=" << amount << endl;
+		// cout << "deposit: " << balance << " amt=" << amount << endl;
 	}
-	//    cout << "Deposit: " << balance << endl;
+	// cout << "Deposit: " << balance << endl;
 }
 void withdraw(const int count, const int amount) {
 	for (auto i = 0; i < count; i++) {
 		m.lock();
 		balance -= amount;
 		m.unlock();
-		//        cout << "withdraw: " << balance << " amt=" << amount << endl;
+		// cout << "withdraw: " << balance << " amt=" << amount << endl;
 	}
 }
 int main() {

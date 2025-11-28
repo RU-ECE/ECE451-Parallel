@@ -1,18 +1,18 @@
-#include <cstdint>
+﻿#include <cstdint>
 
 typedef uint32_t u32;
 
 auto prime_count = 0;
 
-__global__ void eratosthenes(u32* primes, u32 n) {
+__global__ void eratosthenes(u32* primes, const u32 n) {
 	const int tid = threadIdx.x; // each thread handles one element
 	u32 count = 0; // where is this?? Who owns this?
 
 	// 65, 67, 69, 71, 73, 75, 77, 79, 81, 83
 	// t0 = 1..63, t1 = 65..127, ...
 
-	// 3,   3*3,  3*5, 3*7, ...
-	// 5,   5*5,  5*7, 5*9, ...
+	// 3, 3*3, 3*5, 3*7, ...
+	// 5, 5*5, 5*7, 5*9, ...
 
 
 	// here's a potentially better idea:

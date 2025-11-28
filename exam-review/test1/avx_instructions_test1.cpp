@@ -1,4 +1,4 @@
-#include <chrono>
+﻿#include <chrono>
 #include <immintrin.h>
 #include <iostream>
 
@@ -51,8 +51,8 @@ uint32_t parallel_sum_avx2(uint32_t* arr, const uint32_t n) {
 
 	// Extract the final sum
 	return _mm_cvtsi128_si32(result128);
-	//    return _mm512_reduce_add_epi32(sum);
-	//    return _mm256_reduce_add_epi32(sum); // check out this cool convenience function!
+	// return _mm512_reduce_add_epi32(sum);
+	// return _mm256_reduce_add_epi32(sum); // check out this cool convenience function!
 }
 
 float dot_product_scalar(const float* a, const float* b, const uint32_t n) {
@@ -108,18 +108,24 @@ float vector_sumit(float* arr, const uint32_t n) {
 	__m256 sum = _mm256_setzero_ps();
 	constexpr float k[] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f};
 	constexpr float eightarr[] = {8.0f, 8.0f, 8.0f, 8.0f, 8.0f, 8.0f, 8.0f, 8.0f};
-	__m256 eightarr_vec = _mm256_loadu_ps(eightarr);
-	__m256 eight = _m256_broadcast_ps(8.0f); // 8,8,8,8,8,8,8,8
-	__m256 one = _mm256_broadcast_ps(1.0f); // 1,1,1,1,1,1,1,1
+	const __m256 eightarr_vec = _mm256_loadu_ps(eightarr);
+	const __m256 eight = _mm256_set1_ps(8.0f); // broadcast scalar 8.0f
+	const __m256 one = _mm256_set1_ps(1.0f); // broadcast scalar 1.0f
 	__m256 delta = _mm256_loadu_ps(k);
-	// 1 2 3 4 5 6 7 8     9 10 11 12 13 14 15 16
+
 	for (uint32_t i = 0; i < n; i += 8) {
-		sum = _mm256_add_ps(sum, _mm256_mul_ps(one, delta)); // 1/1, 1/2, 1/3 ... 1/8
-		delta = _mm256_add_ps(delta, eightarr_vec); // 9,10,11,12,13,14,15,16
+		// sum += 1.0f / delta (reciprocals)
+		sum = _mm256_add_ps(sum, _mm256_div_ps(one, delta));
+		delta = _mm256_add_ps(delta, eightarr_vec);
 	}
 
-	// horizontal summation
-	return sum;
+	// horizontal sum of the 8 floats in 'sum'
+	const __m128 low = _mm256_castps256_ps128(sum);
+	const auto high = _mm256_extractf128_ps(sum, 1);
+	__m128 s128 = _mm_add_ps(low, high);
+	s128 = _mm_hadd_ps(s128, s128);
+	s128 = _mm_hadd_ps(s128, s128);
+	return _mm_cvtss_f32(s128);
 }
 
 

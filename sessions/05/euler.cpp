@@ -1,4 +1,4 @@
-#include <cmath>
+﻿#include <cmath>
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
@@ -45,7 +45,7 @@ float euler2(const uint64_t n) {
 }
 
 int main() {
-	for (uint64_t n = 1; n <= 1000000; n *= 10) {
+	for (uint64_t n = 1; n <= 1'000'000; n *= 10) {
 		cout << setw(12) << n << "\t" << setprecision(8) << sqrt(6 * euler1(n)) << "\t" << setprecision(8)
 			 << sqrt(6 * euler2(n)) << endl;
 	}

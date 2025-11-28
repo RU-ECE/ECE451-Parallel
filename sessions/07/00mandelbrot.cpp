@@ -1,8 +1,9 @@
-#include <cmath>
+﻿#include <cmath>
 #include <complex>
 #include <fstream>
 #include <iostream>
 #include <webp/encode.h>
+
 /*
 	C = (0,0)
 	f(z) = z^2 + C
@@ -19,8 +20,8 @@
 			because all numbers in the vector are processed the same
 */
 
-
 using namespace std;
+
 void mandelbrot(uint32_t count_arr[], const uint32_t w, const uint32_t h, const uint32_t max_count, const float xmin,
 				const float xmax, const float ymin, const float ymax) {
 	auto out = 0; // sequentially write each count to array
@@ -59,13 +60,13 @@ void convert_mandelbrot_count_to_rgb(uint32_t pixels[], uint32_t mandelbrot_coun
 void build_color_table(uint32_t colors[], const uint32_t count) {
 	for (uint32_t i = 0; i < count; i++) {
 		// Generate a color based on the position in the palette
-		const uint8_t r = (i * 5) % 256; // Adjust values to create a gradient
-		const uint8_t g = (i * 7) % 256; // Feel free to tweak the multipliers
-		const uint8_t b = (i * 11) % 256; // to achieve different patterns
+		const uint8_t r = i * 5 % 256; // Adjust values to create a gradient
+		const uint8_t g = i * 7 % 256; // Feel free to tweak the multipliers
+		const uint8_t b = i * 11 % 256; // to achieve different patterns
 		constexpr uint8_t a = 0xFF; // Set transparency to opaque
 
 		// Combine color components into a single 32-bit value
-		colors[i] = (a << 24) | (r << 16) | (g << 8) | b;
+		colors[i] = a << 24 | r << 16 | g << 8 | b;
 	}
 }
 
@@ -76,14 +77,14 @@ bool save_webp(const char* filename, uint32_t* pixels, const uint32_t w, const u
 	const size_t webp_size = WebPEncodeRGBA(reinterpret_cast<uint8_t*>(pixels), w, h, w * 4, quality, &webp_data);
 
 	if (webp_size == 0) {
-		std::cerr << "Error encoding WebP image!" << std::endl;
+		cerr << "Error encoding WebP image!" << endl;
 		return false; // Encoding failed
 	}
 
 	// Save the WebP-encoded buffer to a file
-	std::ofstream file(filename, std::ios::binary);
+	ofstream file(filename, ios::binary);
 	if (!file) {
-		std::cerr << "Error opening file for writing!" << std::endl;
+		cerr << "Error opening file for writing!" << endl;
 		WebPFree(webp_data); // Free the WebP data in case of error
 		return false;
 	}

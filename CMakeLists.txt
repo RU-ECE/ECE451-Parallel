@@ -24,6 +24,52 @@ pkg_check_modules(WEBP QUIET IMPORTED_TARGET libwebp)              # WebP::webp
 
 # --- Your sources (unchanged)
 add_executable(Rutgers_ECE451_Parallel
+		archive/sessions/01/countPrimesBruteForceSIngleThreaded.cpp
+		archive/sessions/01/countupdown.cpp
+		archive/sessions/01/countupdownmultithread.cpp
+		archive/sessions/01/countupdownmultithreadmutex.cpp
+		archive/sessions/01/funcs.cpp
+		archive/sessions/01/hintsformultithreadedhw.cpp
+		archive/sessions/02/eratosthenes.cpp
+		archive/sessions/02/hwmandelbrot.cpp
+		archive/sessions/02/scalar_vs_avx2.cpp
+		archive/sessions/02/sorting_lookahead.cpp
+		archive/sessions/03/avxhomeworkissuse.cpp
+		archive/sessions/03/examining_intrinsics.cpp
+		archive/sessions/03/examining_intrinsics_main.cpp
+		archive/sessions/03/mergesort.cpp
+		archive/sessions/03/sortinghomework.cpp
+		archive/sessions/04/memory_access.cpp
+		archive/sessions/05/hw_matmult.cpp
+		archive/sessions/05/openmp.cpp
+		archive/sessions/05/openmpsum.cpp
+		archive/sessions/06/FiniteElement.cpp
+		archive/sessions/06/mandel_unified_clean/main.cpp
+		archive/sessions/06/mandel_unified_clean/mandelbrot_serial.cpp
+		archive/sessions/06/mandel_unified_clean/mandelbrot_tasks_serial.cpp
+		archive/sessions/06/mandel_unified_clean/tasksys.cpp
+		archive/sessions/06/mandel_unified_clean/timing.h
+		archive/sessions/06/mandelbrot/mandelbrot.cpp
+		archive/sessions/06/mandelbrot/mandelbrot_serial.cpp
+		archive/sessions/06/mandelbrot_tasks/mandelbrot_tasks.cpp
+		archive/sessions/06/mandelbrot_tasks/mandelbrot_tasks_serial.cpp
+		archive/sessions/06/mandelbrot_tasks/tasksys.cpp
+		archive/sessions/09/sort.cu
+		archive/sessions/10/mpi_advection.cpp
+		archive/sessions/11/gameoflife.cpp
+		archive/sessions/11/gameoflife/gameoflife_mpi.cpp
+		archive/sessions/11/gameoflife_bitwise.cpp
+		archive/sessions/14/benchmark_threaded_memory.cc
+		archive/sessions/14/test.cpp
+		exam-review/final/01_omp_parallel.cpp
+		exam-review/final/02openmp.cpp
+		exam-review/final/03final.cu
+		exam-review/test1/avx_instructions_test1.cpp
+		exam-review/test1/memorytimings.cpp
+		exam-review/test1/simd.cpp
+		exam-review/test1/unoptimized_code.cpp
+		exam-review/test2/mult.cu
+		homework/HW0.cpp
 		references/c++/02Matrix.cpp
 		references/c++/03Matrix.cpp
 		references/c++/04Matrix.cpp
@@ -33,7 +79,6 @@ add_executable(Rutgers_ECE451_Parallel
 		sessions/01/01threads.cpp
 		sessions/01/02account.cpp
 		sessions/01/03account_synchro.cpp
-		homework/HW0.cpp
 		sessions/02/00multithread_prime_brute.cpp
 		sessions/02/03eratosthenes.cpp
 		sessions/02/04_hopefullyworking_primes.cpp
@@ -53,7 +98,7 @@ add_executable(Rutgers_ECE451_Parallel
 		sessions/05/00simd.cpp
 		sessions/05/01_dotproduct.cpp
 		sessions/05/euler.cpp
-		"sessions/05/void mandel_ex.cpp"
+		sessions/05/void_mandel_ex.cpp
 		sessions/06/benchmark_assembler_mem.cpp
 		sessions/06/benchmarks.cpp
 		sessions/07/00b_mandelbrot_hw_hints.cpp
@@ -70,8 +115,11 @@ add_executable(Rutgers_ECE451_Parallel
 		sessions/10/benchmark.hpp
 		sessions/10/gravsim0.cpp
 		sessions/12/demo_omp.cpp
-		sessions/13/solar_system.cpp
 		sessions/13/SolarSystem2.cpp
+		sessions/13/solar_system.cpp
+		sessions/14/cplusplus_naming_rules.cpp
+		sessions/14/floating_point.cpp
+		sessions/14/merge.cpp
 		sessions/14/src/01parallel_block.cpp
 		sessions/14/src/01parallel_block_threadsafe.cpp
 		sessions/14/src/02_sum_simd.cpp
@@ -79,11 +127,8 @@ add_executable(Rutgers_ECE451_Parallel
 		sessions/14/src/05_displayopenmp.cpp
 		sessions/14/src/06_scheduling_control.cpp
 		sessions/14/src/benchmark.hpp
-		sessions/14/src/threadreview.cpp
 		sessions/14/src/simplesort.cu
-		sessions/14/cplusplus_naming_rules.cpp
-		sessions/14/floating_point.cpp
-		sessions/14/merge.cpp
+		sessions/14/src/threadreview.cpp
 		sessions/15/03_cuda.cu
 		sessions/15/04_eratosthenes_bad.cu
 		sessions/15/blur.cu
@@ -95,51 +140,6 @@ add_executable(Rutgers_ECE451_Parallel
 		sessions/17/GameOfLife.cpp
 		sessions/17/GameOfLife_mpi.cpp
 		sessions/19/GameOfLife_mpi.cpp
-		archive/sessions/01/countPrimesBruteForceSIngleThreaded.cpp
-		archive/sessions/01/countupdown.cpp
-		archive/sessions/01/countupdownmultithread.cpp
-		archive/sessions/01/countupdownmultithreadmutex.cpp
-		archive/sessions/01/funcs.cpp
-		archive/sessions/01/hintsformultithreadedhw.cpp
-		archive/sessions/02/eratosthenes.cpp
-		archive/sessions/02/hwmandelbrot.cpp
-		archive/sessions/02/scalar_vs_avx2.cpp
-		archive/sessions/02/sorting_lookahead.cpp
-		archive/sessions/03/avxhomeworkissuse.cpp
-		archive/sessions/03/examining_intrinsics.cpp
-		archive/sessions/03/examining_intrinsics_main.cpp
-		archive/sessions/03/mergiesort..cpp
-		archive/sessions/03/sortinghomework.cpp
-		archive/sessions/04/memory_access.cpp
-		archive/sessions/05/hw_matmult.cpp
-		archive/sessions/05/openmp.cpp
-		archive/sessions/05/openmpsum.cpp
-		archive/sessions/06/mandel_unified_clean/main.cpp
-		archive/sessions/06/mandel_unified_clean/mandelbrot_serial.cpp
-		archive/sessions/06/mandel_unified_clean/mandelbrot_tasks_serial.cpp
-		archive/sessions/06/mandel_unified_clean/tasksys.cpp
-		archive/sessions/06/mandel_unified_clean/timing.h
-		archive/sessions/06/mandelbrot/mandelbrot.cpp
-		archive/sessions/06/mandelbrot/mandelbrot_serial.cpp
-		archive/sessions/06/mandelbrot_tasks/mandelbrot_tasks.cpp
-		archive/sessions/06/mandelbrot_tasks/mandelbrot_tasks_serial.cpp
-		archive/sessions/06/mandelbrot_tasks/tasksys.cpp
-		archive/sessions/06/FiniteElement.cpp
-		archive/sessions/09/sort.cu
-		archive/sessions/10/mpi_advection.cpp
-		archive/sessions/11/gameoflife/gameoflife_mpi.cpp
-		archive/sessions/11/gameoflife.cpp
-		archive/sessions/11/gameoflife_bitwise.cpp
-		archive/sessions/14/benchmark_threaded_memory.cc
-		archive/sessions/14/test.cpp
-		review/final/01_omp_parallel.cpp
-		review/final/02openmp.cpp
-		review/final/03final.cu
-		review/final/avx_instructions_test1.cpp
-		review/final/memorytimings.cpp
-		review/final/simd.cpp
-		review/final/unoptimized_code.cpp
-		review/final/mult.cu
 )
 
 # You previously had a global include for this folder; make it target-local:

@@ -1,4 +1,4 @@
-#include <chrono>
+﻿#include <chrono>
 #include <cmath>
 #include <iostream>
 #include <thread>
@@ -40,7 +40,7 @@ double double_math(const double a, const double b) {
 	const double q = a - b;
 	const double r = a * b;
 	const double s = a / b;
-	//    double w = a % b; // no mod in floating point, there is fmod
+	// double w = a % b; // no mod in floating point, there is fmod
 	const double x = -a;
 	const double y = abs(a);
 	const double z = sqrt(a);
@@ -60,7 +60,7 @@ inline bool isPrime(const uint64_t n) {
 // do the counting in a register, do not write to memory
 void countPrimesMultithreaded(uint64_t a, const uint64_t b, uint64_t* pcount) {
 	cout << "countPrimesMultithreaded: " << a << "," << b << endl;
-	uint64_t count = (a == 2 ? 1 : 0);
+	uint64_t count = a == 2 ? 1 : 0;
 	a |= 1; // 10101010101010101010101010100001
 	// THE ABOVE GUARANTEES THAT a IS odd
 	for (int i = a; i <= b; i += 2) // O(n)

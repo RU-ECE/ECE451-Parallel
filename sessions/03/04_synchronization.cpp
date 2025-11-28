@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <mutex>
 #include <thread>
 #include <unistd.h>
@@ -36,13 +36,13 @@ void processWithdrawals(const int n) {
 
 int main() {
 #if 0
-    processDeposits(10000);
-    processWithdrawals(10000);
+	processDeposits(10'000);
+	processWithdrawals(10'000);
 #endif
 
 	constexpr auto n = 100'000'000;
 	thread t1(processDeposits, n);
-	usleep(10000);
+	usleep(10'000);
 	thread t2(processWithdrawals, n);
 	t1.join();
 	t2.join();

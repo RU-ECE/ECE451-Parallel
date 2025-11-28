@@ -1,4 +1,4 @@
-#include <chrono>
+﻿#include <chrono>
 #include <cstring>
 #include <immintrin.h>
 #include <iostream>
@@ -42,7 +42,7 @@ int main() {
 	cout << "memcopy4 took " << duration_cast<microseconds>(t1 - t0).count() << " microseconds" << endl;
 
 	t0 = high_resolution_clock::now();
-	memcpy((void*)dest, (const void*)src, n);
+	memcpy(dest, src, n);
 	t1 = high_resolution_clock::now();
 	cout << "memcpy took " << duration_cast<microseconds>(t1 - t0).count() << " microseconds" << endl;
 

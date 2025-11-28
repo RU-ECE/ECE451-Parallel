@@ -1,5 +1,8 @@
-#include <iostream>
+﻿#include <iostream>
 #include <omp.h>
+
+using namespace std;
+
 int main() {
 	omp_set_num_threads(4);
 #pragma omp parallel
@@ -7,7 +10,7 @@ int main() {
 		const int threadid = omp_get_thread_num();
 #pragma omp critical
 		{
-			std::cout << "Thread id : " << threadid << std::endl;
+			cout << "Thread id : " << threadid << endl;
 		}
 	}
 	return 0;

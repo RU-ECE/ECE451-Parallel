@@ -1,10 +1,10 @@
-#include <iostream>
+﻿#include <iostream>
 #include <thread>
 
 using namespace std;
 
 void test1() {
-	std::thread t1(f);
+	thread t1(f);
 	t1.join();
 	thread t2(f);
 	t2.join();

@@ -1,4 +1,4 @@
-#include <cmath>
+﻿#include <cmath>
 #include <complex.h>
 #include <cstdint>
 
@@ -10,7 +10,7 @@ void mandel(uint32_t rgba[], const uint32_t w, const uint32_t h, const uint64_t 
 	for (uint32_t i = 0; i < h; i++) {
 		const float y = ymin + dy * i;
 		for (uint32_t j = 0; j < w; j++) {
-			float x = xmin + dx * j;
+			const float x = xmin + dx * j;
 			// C =(x, y)
 			// Z = C
 			// f(Z) = Z^2 + C

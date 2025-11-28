@@ -1,10 +1,12 @@
-// blur3x3_bench.cu
+﻿// blur3x3_bench.cu
 // Compile: nvcc -O3 blur3x3_bench.cu -o blur3x3_bench
 // Run: ./blur3x3_bench [width] [height] [iters]
 
 #include <cmath>
 #include <cstdio>
 #include <cuda_runtime.h>
+
+using namespace std;
 
 #define CHECK(call)                                                                                                    \
 	do {                                                                                                               \
@@ -19,19 +21,19 @@ static constexpr float KERNEL_3x3[3][3] = {
 	{1 / 9.f, 1 / 9.f, 1 / 9.f}, {1 / 9.f, 1 / 9.f, 1 / 9.f}, {1 / 9.f, 1 / 9.f, 1 / 9.f}};
 
 /*
-	P  P  P
-	P  C  P
-	P  P  P
-	C is the center pixel
-
-	1 2 3 4           1+2+3+2+3+5+3+5+8 = 32 / 9 = 3.55
-	2 3 5 6           2+3+5+3+5+8+5+8+9 = 48 / 9 = 5.333333333333333
-	3 5 8 9
-	4 6 5 1
-
-
-	 3.55
-*/
+ * P P P
+ * P C P
+ * P P P
+ * C is the center pixel
+ *
+ * 1 2 3 4				1+2+3+2+3+5+3+5+8 = 32 / 9 = 3.55
+ * 2 3 5 6				2+3+5+3+5+8+5+8+9 = 48 / 9 = 5.333333333333333
+ * 3 5 8 9
+ * 4 6 5 1
+ *
+ *
+ * 3.55
+ */
 
 
 // -----------------------------
@@ -39,20 +41,15 @@ static constexpr float KERNEL_3x3[3][3] = {
 // Each thread computes one output pixel reading 9 global loads
 // -----------------------------
 __global__ void blur3x3_naive(const float* __restrict__ in, float* __restrict__ out, const int W, const int H) {
-	const int x = blockIdx.x * blockDim.x + threadIdx.x;
-	const int y = blockIdx.y * blockDim.y + threadIdx.y;
+	const int x = blockIdx.x * blockDim.x + threadIdx.x, y = blockIdx.y * blockDim.y + threadIdx.y;
 	if (x >= W || y >= H)
 		return;
 
 	auto sum = 0.0f;
 	// 3x3 kernel centered on (x,y). Use clamp at borders.
-	for (int ky = -1; ky <= 1; ++ky) {
-		const int yy = min(max(y + ky, 0), H - 1);
-		for (int kx = -1; kx <= 1; ++kx) {
-			const int xx = min(max(x + kx, 0), W - 1);
-			sum += in[yy * W + xx] * KERNEL_3x3[ky + 1][kx + 1];
-		}
-	}
+	for (int ky = -1; ky <= 1; ++ky)
+		for (int kx = -1; kx <= 1; ++kx)
+			sum += in[min(max(y + ky, 0), H - 1) * W + min(max(x + kx, 0), W - 1)] * KERNEL_3x3[ky + 1][kx + 1];
 	out[y * W + x] = sum;
 }
 
@@ -397,9 +394,9 @@ void cpu_blur_reference(const float* in, float* out, const int W, const int H) {
 		for (auto x = 0; x < W; ++x) {
 			auto sum = 0.0f;
 			for (int ky = -1; ky <= 1; ++ky) {
-				const int yy = std::min(std::max(y + ky, 0), H - 1);
+				const int yy = min(max(y + ky, 0), H - 1);
 				for (int kx = -1; kx <= 1; ++kx) {
-					const int xx = std::min(std::max(x + kx, 0), W - 1);
+					const int xx = min(max(x + kx, 0), W - 1);
 					sum += in[yy * W + xx] * KERNEL_3x3[ky + 1][kx + 1];
 				}
 			}
@@ -465,7 +462,7 @@ int main(const int argc, char** argv) {
 
 	printf("\nAverage times (ms): naive=%.3f, smem=%.3f, smem_reg=%.3f\n", avg_naive, avg_smem, avg_smemr);
 	printf("Image size: %.3f GB\n", GB);
-	// Note: these "bandwidth" numbers are very approximate
+	// Note: these â€œbandwidthâ€ numbers are very approximate
 	printf("Bandwidth (approx): naive: %.2f GB/s, smem: %.2f GB/s, smem_reg: %.2f GB/s\n", GB / (avg_naive / 1000.0),
 		   GB / (avg_smem / 1000.0), GB / (avg_smemr / 1000.0));
 

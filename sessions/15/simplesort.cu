@@ -1,28 +1,29 @@
-#include <iostream>
+﻿#include <iostream>
 #include <random>
 
 #include "../14/src/benchmark.hpp"
+
 using namespace std;
 
 /*
-  Progressive sorting demo
-  Author: Dov Kruger
-  quiksort on the CPU
-  mergsort brute force on the GPU
-  mergesort trying to do more exotic optimizations
-*/
+ * Progressive sorting demo
+ * Author: Dov Kruger
+ * quicksort on the CPU
+ * mergesort brute force on the GPU
+ * mergesort trying to do more exotic optimizations
+ */
 
 
 typedef unsigned int u32;
 
 /*
- imagine we have records:
-
- 0: 12510 Dov Kruger 999
- 1: 12012 ....
- 2: 3     ...
-
-*/
+ * imagine we have records:
+ *
+ * 0: 12510 Dov Kruger 999
+ * 1: 12012	....
+ * 2: 3		...
+ *
+ */
 struct rec {
 	u32 key;
 	u32 recid;
@@ -32,19 +33,19 @@ struct rec {
 	Using standard C++ random, generate high quality random order of random
 */
 
-void gen_sequential(rec x[], u32 n) {
+void gen_sequential(rec x[], const u32 n) {
 	for (u32 i = 0; i < n; i++) {
 		x[i].key = i;
 		x[i].recid = n - i;
 	}
 }
 
-std::mt19937 gen(0);
+mt19937 gen(0);
 
 /*
 	host-side high quality Fischer-Yates shuffle of the array
 */
-void shuffle(rec x[], u32 n) {
+void shuffle(rec x[], const u32 n) {
 	for (u32 i = n - 1; i > 0; i--) {
 		uniform_int_distribution<u32> dist(0, i);
 		const u32 r = dist(gen);
@@ -57,7 +58,7 @@ void shuffle(rec x[], u32 n) {
 /*
 	Quicksort using Lomuto partition scheme
 */
-void quiksort(rec x[], u32 L, u32 R) {
+void quicksort(rec x[], const u32 L, const u32 R) {
 	const u32 pivot = x[R].key;
 	u32 i = L;
 
@@ -74,14 +75,14 @@ void quiksort(rec x[], u32 L, u32 R) {
 	x[R] = tmp;
 
 	if (i > L)
-		quiksort(x, L, i - 1);
+		quicksort(x, L, i - 1);
 	if (i + 1 < R)
-		quiksort(x, i + 1, R);
+		quicksort(x, i + 1, R);
 }
 
-void quiksort_wrapper(void* ptr, unsigned int n) {
+void quicksort_wrapper(void* ptr, const unsigned int n) {
 	const auto x = static_cast<rec*>(ptr);
-	quiksort(x, 0, n - 1);
+	quicksort(x, 0, n - 1);
 }
 
 /*
@@ -89,7 +90,7 @@ void quiksort_wrapper(void* ptr, unsigned int n) {
 	2 sorted groups into one in the output array y[].
 	The result is an array with groups of size 2*sorted_size.
 */
-__global__ void merge(rec x[], rec y[], u32 n, u32 sorted_size) {
+__global__ void merge(rec x[], rec y[], const u32 n, const u32 sorted_size) {
 	const u32 thread_id = blockIdx.x * blockDim.x + threadIdx.x;
 	const u32 num_pairs = n / (2 * sorted_size);
 
@@ -101,7 +102,7 @@ __global__ void merge(rec x[], rec y[], u32 n, u32 sorted_size) {
 	const u32 output_start = left_start;
 
 	const u32 left_end = right_start;
-	const u32 right_end = (right_start + sorted_size < n) ? right_start + sorted_size : n;
+	const u32 right_end = right_start + sorted_size < n ? right_start + sorted_size : n;
 
 	if (right_start >= n) {
 		// Only left side exists, just copy it
@@ -112,7 +113,7 @@ __global__ void merge(rec x[], rec y[], u32 n, u32 sorted_size) {
 
 	u32 i = left_start, j = right_start, k = output_start;
 	while (i < left_end && j < right_end)
-		y[k++] = (x[i].key < x[j].key) ? x[i++] : x[j++];
+		y[k++] = x[i].key < x[j].key ? x[i++] : x[j++];
 	while (i < left_end)
 		y[k++] = x[i++];
 	while (j < right_end)
@@ -135,13 +136,13 @@ __forceinline__ __device__ void sort2(rec& a, rec& b) {
 	}
 }
 
-/*
-	sortingnetwork8 is an optimal sorting network that will read each group of 8 elements into registers, sort them,
-	and write them back. This is much more efficient than the first few passes of merge sort.
-	Once we see how this works, we can do this in bigger groups (16, 32, 64). We could also try to have multiple threads
-   working on the same optimal sorting network.
-*/
-__global__ void sortingnetwork8(rec* x, rec* y, u32 n) {
+/**
+ * sortingnetwork8 is an optimal sorting network that will read each group of 8 elements into registers, sort them,
+ * and write them back. This is much more efficient than the first few passes of merge sort.
+ * Once we see how this works, we can do this in bigger groups (16, 32, 64). We could also try to have multiple threads
+ * working on the same optimal sorting network.
+ */
+__global__ void sortingnetwork8(rec* x, rec* y, const u32 n) {
 	const u32 thread_id = blockIdx.x * blockDim.x + threadIdx.x;
 	const u32 num_groups = n / 8;
 
@@ -195,26 +196,29 @@ __global__ void sortingnetwork8(rec* x, rec* y, u32 n) {
 }
 
 /*
-	Given an array x[] of size n elements with sorted groups of size sorted_size, merge each 4 groups
-	into one in the output array y[].
-	The result is an  array with groups of size 4*sorted_size.
-	This skips one pass of merge sort, and more importantly, we are going to try to use local registers to merge.
-	The if statements are still going to diverge though.
-	At the moment, local blocks of size 8, but 16 is probably optimal because CUDA uses
-	blocks of 32-32bit values for cache line. We are only using 16.
-*/
-__global__ void merge4(rec x[], rec y[], u32 n, u32 sorted_size) {
+ * Given an array x[] of size n elements with sorted groups of size sorted_size, merge each 4 groups into one in the
+ * output array y[].
+ *
+ * The result is an array with groups of size 4 * sorted_size.
+ *
+ * This skips one pass of merge sort, and more importantly, we are going to try to use local registers to merge.
+ *
+ * The if statements are still going to diverge though.
+ *
+ * At the moment, local blocks of size 8, but 16 is probably optimal because CUDA uses blocks of 32 32-bit values for
+ * cache line. We are only using 16.
+ */
+__global__ void merge4(rec x[], rec y[], const u32 n, const u32 sorted_size) {
 	const u32 thread_id = blockIdx.x * blockDim.x + threadIdx.x;
-	const u32 num_quads = n / (4 * sorted_size);
 
-	if (thread_id >= num_quads)
+	if (thread_id >= n / (4 * sorted_size))
 		return;
 
 	const u32 g0 = thread_id * 4 * sorted_size;
 	const u32 g1 = g0 + sorted_size;
 	const u32 g2 = g1 + sorted_size;
 	const u32 g3 = g2 + sorted_size;
-	const u32 g_end = (g3 + sorted_size < n) ? g3 + sorted_size : n;
+	const u32 g_end = g3 + sorted_size < n ? g3 + sorted_size : n;
 
 	u32 i = g0, j = g1, k = g2, m = g3, out = g0;
 
@@ -239,72 +243,62 @@ __global__ void merge4(rec x[], rec y[], u32 n, u32 sorted_size) {
 			min_key = x[m].key;
 			min_idx = 3;
 		}
-		if (min_idx == 0)
+		switch (min_idx) {
+		case 0:
 			y[out++] = x[i++];
-		else if (min_idx == 1)
+			break;
+		case 1:
 			y[out++] = x[j++];
-		else if (min_idx == 2)
+			break;
+		case 2:
 			y[out++] = x[k++];
-		else
+			break;
+		default:
 			y[out++] = x[m++];
+			break;
+		}
 	}
 	// finish remaining elements
-	while (i < i_end && j < j_end && k < k_end) {
+	while (i < i_end && j < j_end && k < k_end)
 		if (x[i].key < x[j].key)
-			if (x[i].key < x[k].key)
-				y[out++] = x[i++];
-			else
-				y[out++] = x[k++];
+			y[out++] = x[(x[i].key < x[k].key ? i : k)++];
 		else if (x[j].key < x[k].key)
 			y[out++] = x[j++];
 		else
 			y[out++] = x[k++];
-	}
-	while (i < i_end && j < j_end && m < m_end) {
+	while (i < i_end && j < j_end && m < m_end)
 		if (x[i].key < x[j].key)
-			if (x[i].key < x[m].key)
-				y[out++] = x[i++];
-			else
-				y[out++] = x[m++];
+			y[out++] = x[(x[i].key < x[m].key ? i : m)++];
 		else if (x[j].key < x[m].key)
 			y[out++] = x[j++];
 		else
 			y[out++] = x[m++];
-	}
-	while (i < i_end && k < k_end && m < m_end) {
+	while (i < i_end && k < k_end && m < m_end)
 		if (x[i].key < x[k].key)
-			if (x[i].key < x[m].key)
-				y[out++] = x[i++];
-			else
-				y[out++] = x[m++];
+			y[out++] = x[(x[i].key < x[m].key ? i : m)++];
 		else if (x[k].key < x[m].key)
 			y[out++] = x[k++];
 		else
 			y[out++] = x[m++];
-	}
-	while (j < j_end && k < k_end && m < m_end) {
+	while (j < j_end && k < k_end && m < m_end)
 		if (x[j].key < x[k].key)
-			if (x[j].key < x[m].key)
-				y[out++] = x[j++];
-			else
-				y[out++] = x[m++];
+			y[out++] = x[(x[j].key < x[m].key ? j : m)++];
 		else if (x[k].key < x[m].key)
 			y[out++] = x[k++];
 		else
 			y[out++] = x[m++];
-	}
 	while (i < i_end && j < j_end)
-		y[out++] = (x[i].key < x[j].key) ? x[i++] : x[j++];
+		y[out++] = x[i].key < x[j].key ? x[i++] : x[j++];
 	while (i < i_end && k < k_end)
-		y[out++] = (x[i].key < x[k].key) ? x[i++] : x[k++];
+		y[out++] = x[i].key < x[k].key ? x[i++] : x[k++];
 	while (i < i_end && m < m_end)
-		y[out++] = (x[i].key < x[m].key) ? x[i++] : x[m++];
+		y[out++] = x[i].key < x[m].key ? x[i++] : x[m++];
 	while (j < j_end && k < k_end)
-		y[out++] = (x[j].key < x[k].key) ? x[j++] : x[k++];
+		y[out++] = x[j].key < x[k].key ? x[j++] : x[k++];
 	while (j < j_end && m < m_end)
-		y[out++] = (x[j].key < x[m].key) ? x[j++] : x[m++];
+		y[out++] = x[j].key < x[m].key ? x[j++] : x[m++];
 	while (k < k_end && m < m_end)
-		y[out++] = (x[k].key < x[m].key) ? x[k++] : x[m++];
+		y[out++] = x[k].key < x[m].key ? x[k++] : x[m++];
 	while (i < i_end)
 		y[out++] = x[i++];
 	while (j < j_end)
@@ -322,12 +316,12 @@ __global__ void merge4(rec x[], rec y[], u32 n, u32 sorted_size) {
 	NOTE: Kernel launches must be done from host, not from within a kernel.
 */
 
-__global__ void initial_sort(rec x[], u32 n, u32 block_size) {
+__global__ void initial_sort(rec x[], const u32 n, const u32 block_size) {
 	const u32 thread_id = blockIdx.x * blockDim.x + threadIdx.x;
 	const u32 start = thread_id * block_size;
 	if (start >= n)
 		return;
-	const u32 end = (start + block_size < n) ? start + block_size : n;
+	const u32 end = start + block_size < n ? start + block_size : n;
 
 	// Simple bubble sort variant for small blocks (better for GPU than insertion sort)
 	for (u32 i = start; i < end - 1; i++) {
@@ -341,7 +335,7 @@ __global__ void initial_sort(rec x[], u32 n, u32 block_size) {
 	}
 }
 
-void merge_sort_wrapper(void* ptr, unsigned int n) {
+void merge_sort_wrapper(void* ptr, const unsigned int n) {
 	const auto x_gpu = static_cast<rec*>(ptr);
 	extern rec* y_gpu_global;
 	extern u32 num_threads_global;
@@ -374,12 +368,11 @@ void merge_sort_wrapper(void* ptr, unsigned int n) {
 		cudaMemcpy(x_gpu, a, n * sizeof(rec), cudaMemcpyDeviceToDevice);
 }
 
-void merge_sort2_wrapper(void* ptr, unsigned int n) {
+void merge_sort2_wrapper(void* ptr, const unsigned int n) {
 	const auto x_gpu = static_cast<rec*>(ptr);
 	extern rec* y_gpu_global;
 	extern u32 num_threads_global;
-	const u32 num_groups = n / 8;
-	if (num_groups > 0) {
+	if (const u32 num_groups = n / 8; num_groups > 0) {
 		u32 num_blocks_sort = (num_groups + num_threads_global - 1) / num_threads_global;
 		if (num_blocks_sort == 0)
 			num_blocks_sort = 1;
@@ -408,33 +401,29 @@ void merge_sort2_wrapper(void* ptr, unsigned int n) {
 #if 0
 // forget this
 __global__ void copySlice(const u32 inputArray[], int startIndex, int length) {
-    // Allocate shared memory for the local array
-    __shared__ int localArray[1024]; // Assuming a maximum slice length of 256
+	// Allocate shared memory for the local array
+	__shared__ int localArray[1024]; // Assuming a maximum slice length of 256
 
-    // Calculate the global index for this thread
-    int globalIndex = blockIdx.x * blockDim.x + threadIdx.x;
+	// Calculate the global index for this thread
+	int globalIndex = blockIdx.x * blockDim.x + threadIdx.x;
 
-    // Calculate the local index for this thread
-    int localIndex = threadIdx.x;
+	// Calculate the local index for this thread
+	int localIndex = threadIdx.x;
 
-    // Copy the slice from global memory to shared memory
-    if (globalIndex >= startIndex && globalIndex < startIndex + length)
-    {
-        localArray[localIndex] = inputArray[globalIndex];
-    }
+	// Copy the slice from global memory to shared memory
+	if (globalIndex >= startIndex && globalIndex < startIndex + length)
+		localArray[localIndex] = inputArray[globalIndex];
 
-    // Wait for all threads to finish copying to shared memory
-    __syncthreads();
+	// Wait for all threads to finish copying to shared memory
+	__syncthreads();
 
-    // Copy the local array to output memory
-    if (globalIndex >= startIndex && globalIndex < startIndex + length)
-    {
-        outputArray[globalIndex] = localArray[localIndex];
-    }
+	// Copy the local array to output memory
+	if (globalIndex >= startIndex && globalIndex < startIndex + length)
+		outputArray[globalIndex] = localArray[localIndex];
 }
 #endif
 
-void check_sorted(const rec* x, u32 n) {
+void check_sorted(const rec* x, const u32 n) {
 	u32 error = 0;
 	vector<u32> errors;
 	for (u32 i = 0; i < n; i++) {
@@ -455,14 +444,14 @@ void check_sorted(const rec* x, u32 n) {
 
 
 /**
-	Generate an array from 0 to n-1. Randomly shuffle it.
-	Copy to preserve the master copy
-	Benchmark quicksort on the CPU. then make sure the original values are there.
-	Benchmark mergesort using a brute-force, not particularly efficient threading on the GPU
-	copy the results back and make sure the original values are there.
-	Benchmark mergesort2 using a more efficient threading on the GPU
-	copy the results back and make sure the original values are there.
-*/
+ * Generate an array from 0 to n-1. Randomly shuffle it.
+ * Copy to preserve the master copy
+ * Benchmark quicksort on the CPU. then make sure the original values are there.
+ * Benchmark mergesort using a brute-force, not particularly efficient threading on the GPU
+ * copy the results back and make sure the original values are there.
+ * Benchmark mergesort2 using a more efficient threading on the GPU
+ * copy the results back and make sure the original values are there.
+ */
 constexpr u32 n = 16 * 1024 * 1024; // 64M elements, 512MB data (each element is 8 bytes)
 rec* y_gpu_global;
 u32 num_threads_global;
@@ -511,7 +500,7 @@ int main() {
 	auto x = new rec[n];
 	memcpy(x, orig, n * sizeof(rec));
 
-	benchmark("quicksort", quiksort_wrapper, x, n); // sort the array on the CPU
+	benchmark("quicksort", quicksort_wrapper, x, n); // sort the array on the CPU
 	check_sorted(x, n); // check that the array is sorted back into sequential order
 
 	// copy the array to the GPU

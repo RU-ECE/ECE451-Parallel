@@ -1,15 +1,15 @@
-#include <cstdint>
+﻿#include <cstdint>
 #include <iostream>
 
 using namespace std;
+
 class Matrix {
-private:
 	uint32_t rows;
 	uint32_t cols;
 	double* data;
 
 public:
-	Matrix(uint32_t r, uint32_t c, const double v) :
+	Matrix(const uint32_t r, const uint32_t c, const double v) :
 		rows(r), cols(c), data(new double[rows * cols]) { // initializer list
 		for (auto i = 0; i < rows * cols; i++)
 			data[i] = v;
@@ -35,7 +35,7 @@ public:
 
 	friend Matrix operator+(const Matrix& a, const Matrix& b) {
 		if (a.rows != b.rows || a.cols != b.cols)
-			throw std::invalid_argument("Matrix sizes don't match");
+			throw invalid_argument("Matrix sizes don't match");
 		Matrix ans(a.rows, a.cols, 0.0); // this is inefficient, creates matrix of all zeros
 		for (auto i = 0; i < a.rows * a.cols; i++)
 			ans.data[i] = a.data[i] + b.data[i];
@@ -52,8 +52,8 @@ public:
 	}
 };
 int main() {
-	//    int a = 2, b = 3, c = 4;
-	//    a = b = c;
+	// int a = 2, b = 3, c = 4;
+	// a = b = c;
 	const Matrix m1(4, 3, 0.0);
 	Matrix m2(4, 3, 0.0);
 	Matrix m9(2, 2, 0.0);

@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <random>
 
 #include "benchmark.hpp"
@@ -6,12 +6,12 @@
 using namespace std;
 
 /*
-  Progressive sorting demo
-  Author: Dov Kruger
-  quiksort on the CPU
-  mergsort brute force on the GPU
-  mergesort trying to do more exotic optimizations
-*/
+ * Progressive sorting demo
+ * Author: Dov Kruger
+ * quicksort on the CPU
+ * mergesort brute force on the GPU
+ * mergesort trying to do more exotic optimizations
+ */
 
 
 typedef unsigned int u32;
@@ -32,7 +32,7 @@ void gen_sequential(rec x[], const u32 n) {
 	}
 }
 
-std::mt19937 gen(0);
+mt19937 gen(0);
 
 /*
 	host-side high quality Fischer-Yates shuffle of the array
@@ -50,7 +50,7 @@ void shuffle(rec x[], const u32 n) {
 /*
 	Quicksort using Lomuto partition scheme
 */
-void quiksort(rec x[], const u32 L, const u32 R) {
+void quicksort(rec x[], const u32 L, const u32 R) {
 	const u32 pivot = x[R].key;
 	u32 i = L;
 
@@ -67,14 +67,14 @@ void quiksort(rec x[], const u32 L, const u32 R) {
 	x[R] = tmp;
 
 	if (i > L)
-		quiksort(x, L, i - 1);
+		quicksort(x, L, i - 1);
 	if (i + 1 < R)
-		quiksort(x, i + 1, R);
+		quicksort(x, i + 1, R);
 }
 
-void quiksort_wrapper(void* ptr, const unsigned int n) {
+void quicksort_wrapper(void* ptr, const unsigned int n) {
 	const auto x = static_cast<rec*>(ptr);
-	quiksort(x, 0, n - 1);
+	quicksort(x, 0, n - 1);
 }
 
 /*
@@ -84,9 +84,8 @@ void quiksort_wrapper(void* ptr, const unsigned int n) {
 */
 __global__ void merge(rec x[], rec y[], const u32 n, const u32 sorted_size) {
 	const u32 thread_id = blockIdx.x * blockDim.x + threadIdx.x;
-	const u32 num_pairs = n / (2 * sorted_size);
 
-	if (thread_id >= num_pairs)
+	if (thread_id >= n / (2 * sorted_size))
 		return;
 
 	const u32 left_start = thread_id * 2 * sorted_size;
@@ -94,7 +93,7 @@ __global__ void merge(rec x[], rec y[], const u32 n, const u32 sorted_size) {
 	const u32 output_start = left_start;
 
 	const u32 left_end = right_start;
-	const u32 right_end = (right_start + sorted_size < n) ? right_start + sorted_size : n;
+	const u32 right_end = right_start + sorted_size < n ? right_start + sorted_size : n;
 
 	if (right_start >= n) {
 		// Only left side exists, just copy it
@@ -105,7 +104,7 @@ __global__ void merge(rec x[], rec y[], const u32 n, const u32 sorted_size) {
 
 	u32 i = left_start, j = right_start, k = output_start;
 	while (i < left_end && j < right_end)
-		y[k++] = (x[i].key < x[j].key) ? x[i++] : x[j++];
+		y[k++] = x[i].key < x[j].key ? x[i++] : x[j++];
 	while (i < left_end)
 		y[k++] = x[i++];
 	while (j < right_end)
@@ -136,9 +135,8 @@ __forceinline__ __device__ void sort2(rec& a, rec& b) {
 */
 __global__ void sortingnetwork8(rec* x, rec* y, const u32 n) {
 	const u32 thread_id = blockIdx.x * blockDim.x + threadIdx.x;
-	const u32 num_groups = n / 8;
 
-	if (thread_id >= num_groups)
+	if (thread_id >= n / 8)
 		return; // we only need this many threads
 
 	rec a = x[thread_id * 8];
@@ -198,16 +196,15 @@ __global__ void sortingnetwork8(rec* x, rec* y, const u32 n) {
 */
 __global__ void merge4(rec x[], rec y[], const u32 n, const u32 sorted_size) {
 	const u32 thread_id = blockIdx.x * blockDim.x + threadIdx.x;
-	const u32 num_quads = n / (4 * sorted_size);
 
-	if (thread_id >= num_quads)
+	if (thread_id >= n / (4 * sorted_size))
 		return;
 
 	const u32 g0 = thread_id * 4 * sorted_size;
 	const u32 g1 = g0 + sorted_size;
 	const u32 g2 = g1 + sorted_size;
 	const u32 g3 = g2 + sorted_size;
-	const u32 g_end = (g3 + sorted_size < n) ? g3 + sorted_size : n;
+	const u32 g_end = g3 + sorted_size < n ? g3 + sorted_size : n;
 
 	u32 i = g0, j = g1, k = g2, m = g3, out = g0;
 
@@ -287,17 +284,17 @@ __global__ void merge4(rec x[], rec y[], const u32 n, const u32 sorted_size) {
 			y[out++] = x[m++];
 	}
 	while (i < i_end && j < j_end)
-		y[out++] = (x[i].key < x[j].key) ? x[i++] : x[j++];
+		y[out++] = x[i].key < x[j].key ? x[i++] : x[j++];
 	while (i < i_end && k < k_end)
-		y[out++] = (x[i].key < x[k].key) ? x[i++] : x[k++];
+		y[out++] = x[i].key < x[k].key ? x[i++] : x[k++];
 	while (i < i_end && m < m_end)
-		y[out++] = (x[i].key < x[m].key) ? x[i++] : x[m++];
+		y[out++] = x[i].key < x[m].key ? x[i++] : x[m++];
 	while (j < j_end && k < k_end)
-		y[out++] = (x[j].key < x[k].key) ? x[j++] : x[k++];
+		y[out++] = x[j].key < x[k].key ? x[j++] : x[k++];
 	while (j < j_end && m < m_end)
-		y[out++] = (x[j].key < x[m].key) ? x[j++] : x[m++];
+		y[out++] = x[j].key < x[m].key ? x[j++] : x[m++];
 	while (k < k_end && m < m_end)
-		y[out++] = (x[k].key < x[m].key) ? x[k++] : x[m++];
+		y[out++] = x[k].key < x[m].key ? x[k++] : x[m++];
 	while (i < i_end)
 		y[out++] = x[i++];
 	while (j < j_end)
@@ -320,7 +317,7 @@ __global__ void initial_sort(rec x[], const u32 n, const u32 block_size) {
 	const u32 start = thread_id * block_size;
 	if (start >= n)
 		return;
-	const u32 end = (start + block_size < n) ? start + block_size : n;
+	const u32 end = start + block_size < n ? start + block_size : n;
 
 	// Simple bubble sort variant for small blocks (better for GPU than insertion sort)
 	for (u32 i = start; i < end - 1; i++) {
@@ -371,8 +368,7 @@ void merge_sort2_wrapper(void* ptr, const unsigned int n) {
 	const auto x_gpu = static_cast<rec*>(ptr);
 	extern rec* y_gpu_global;
 	extern u32 num_threads_global;
-	const u32 num_groups = n / 8;
-	if (num_groups > 0) {
+	if (const u32 num_groups = n / 8; num_groups > 0) {
 		u32 num_blocks_sort = (num_groups + num_threads_global - 1) / num_threads_global;
 		if (num_blocks_sort == 0)
 			num_blocks_sort = 1;
@@ -401,29 +397,25 @@ void merge_sort2_wrapper(void* ptr, const unsigned int n) {
 #if 0
 // forget this
 __global__ void copySlice(const u32 inputArray[], int startIndex, int length) {
-    // Allocate shared memory for the local array
-    __shared__ int localArray[1024]; // Assuming a maximum slice length of 256
+	// Allocate shared memory for the local array
+	__shared__ int localArray[1024]; // Assuming a maximum slice length of 256
 
-    // Calculate the global index for this thread
-    int globalIndex = blockIdx.x * blockDim.x + threadIdx.x;
+	// Calculate the global index for this thread
+	int globalIndex = blockIdx.x * blockDim.x + threadIdx.x;
 
-    // Calculate the local index for this thread
-    int localIndex = threadIdx.x;
+	// Calculate the local index for this thread
+	int localIndex = threadIdx.x;
 
-    // Copy the slice from global memory to shared memory
-    if (globalIndex >= startIndex && globalIndex < startIndex + length)
-    {
-        localArray[localIndex] = inputArray[globalIndex];
-    }
+	// Copy the slice from global memory to shared memory
+	if (globalIndex >= startIndex && globalIndex < startIndex + length)
+		localArray[localIndex] = inputArray[globalIndex];
 
-    // Wait for all threads to finish copying to shared memory
-    __syncthreads();
+	// Wait for all threads to finish copying to shared memory
+	__syncthreads();
 
-    // Copy the local array to output memory
-    if (globalIndex >= startIndex && globalIndex < startIndex + length)
-    {
-        outputArray[globalIndex] = localArray[localIndex];
-    }
+	// Copy the local array to output memory
+	if (globalIndex >= startIndex && globalIndex < startIndex + length)
+		outputArray[globalIndex] = localArray[localIndex];
 }
 #endif
 
@@ -504,7 +496,7 @@ int main() {
 	auto x = new rec[n];
 	memcpy(x, orig, n * sizeof(rec));
 
-	benchmark("quicksort", quiksort_wrapper, x, n); // sort the array on the CPU
+	benchmark("quicksort", quicksort_wrapper, x, n); // sort the array on the CPU
 	check_sorted(x, n); // check that the array is sorted back into sequential order
 
 	// copy the array to the GPU

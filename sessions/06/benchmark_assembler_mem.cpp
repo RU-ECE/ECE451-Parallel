@@ -1,9 +1,9 @@
-#include <chrono>
+﻿#include <chrono>
 #include <immintrin.h>
 #include <iostream>
 
 using namespace std;
-using namespace std::chrono;
+using namespace chrono;
 
 extern "C" {
 void read_one(uint64_t* data, int n);
@@ -27,12 +27,12 @@ void write_memory_avx(uint64_t* data, int n);
 
 template <typename Func, typename... Args>
 void benchmark(const char name[], Func read_memory, uint64_t* p, int n, Args... args) {
-	const auto start = std::chrono::high_resolution_clock::now();
+	const auto start = high_resolution_clock::now();
 	read_memory(p, n, args...);
-	const auto end = std::chrono::high_resolution_clock::now();
-	const std::chrono::duration<double> elapsed = end - start;
-	std::cout << name << " took " << elapsed.count() << " seconds " << elapsed.count() / n * 1e9 << " ns per element"
-			  << std::endl;
+	const auto end = high_resolution_clock::now();
+	const duration<double> elapsed = end - start;
+	cout << name << " took " << elapsed.count() << " seconds " << elapsed.count() / n * 1e9 << " ns per element"
+		 << endl;
 }
 
 int main() {

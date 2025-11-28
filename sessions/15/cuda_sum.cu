@@ -1,5 +1,7 @@
-#include <cuda_runtime.h>
+﻿#include <cuda_runtime.h>
 #include <iostream>
+
+using namespace std;
 
 __global__ void prod(const float* a, const float* b, float* c, const int N) {
 	if (const int idx = threadIdx.x + blockIdx.x * blockDim.x; idx < N) // overhead check out of bounds
@@ -26,7 +28,7 @@ __global__ float dot(const float* a, const float* b, const int N) {
 int main() {
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties(&prop, 0);
-	std::cout << prop.major << "." << prop.minor << std::endl;
+	cout << prop.major << "." << prop.minor << endl;
 
 	constexpr int N = 1 << 20;
 	size_t size = N * sizeof(float);
@@ -56,8 +58,8 @@ int main() {
 	cudaMemcpy(h_c, d_c, size, cudaMemcpyDeviceToHost); // copy the memory back TO CPU
 
 	for (auto i = 0; i < N; i++)
-		std::cout << h_c[i] << " ";
-	std::cout << std::endl;
+		cout << h_c[i] << " ";
+	cout << endl;
 
 	free(h_a);
 	free(h_b);

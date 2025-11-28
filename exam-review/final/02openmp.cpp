@@ -1,4 +1,4 @@
-// default is sequential partitions
+﻿// default is sequential partitions
 void product(const float a[], const float b[], float c[], const int n) {
 #pragma omp parallel for
 	for (auto i = 0; i < n; ++i)
@@ -19,7 +19,7 @@ float sum_array(const float arr[], const int n) {
 // factor 8 speedup
 void multiply_by_scalar(const float a[], const float b, float c[], const int n) {
 #pragma omp parallel for simd
-	for (auto i = 0; i < n; ++i) // load %Ymm0=  (b, b, b, b, b, b, b, b)
+	for (auto i = 0; i < n; ++i) // load %Ymm0 = (b, b, b, b, b, b, b, b)
 		c[i] = a[i] * b;
 }
 
@@ -35,7 +35,7 @@ float mandelbrot_point(const float x, const float y, const int max_iter) {
 		zi = 2.0 * zr * zi + y;
 		zr = zr2 - zi2 + x;
 	}
-	return (float)iter / max_iter;
+	return static_cast<float>(iter) / max_iter;
 }
 
 

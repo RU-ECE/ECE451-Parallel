@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <thread>
 #include <unistd.h>
 
@@ -14,7 +14,7 @@ void deposit(const int count, const int amount) {
 		sleep(1);
 		balance = tmp;
 	}
-	//    cout << "Deposit: " << balance << endl;
+	// cout << "Deposit: " << balance << endl;
 }
 void withdraw(const int count, const int amount) {
 	for (auto i = 0; i < count; i++) {
@@ -25,7 +25,7 @@ void withdraw(const int count, const int amount) {
 		sleep(1);
 		balance = tmp;
 	}
-	//    cout << "Withdraw: " << balance << endl;
+	// cout << "Withdraw: " << balance << endl;
 }
 int main() {
 	thread t1(deposit, 10, 1);

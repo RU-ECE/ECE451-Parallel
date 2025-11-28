@@ -1,4 +1,4 @@
-#include <cmath>
+﻿#include <cmath>
 #include <iostream>
 #include <stdexcept>
 #include <thread>
@@ -21,15 +21,15 @@ bool isPrime(const uint64_t n) {
 void f() {
 	for (;;) { // infinite loop
 		cout << "hello" << flush;
-		usleep(100000);
+		usleep(100'000);
 	}
 }
 
 void g() {
 	while (true) {
-		//        int* p = new int[1024L*1024*1024 * 16];
+		// int* p = new int[1024L * 1024 * 1024 * 16];
 		cout << "bye" << flush;
-		usleep(200000);
+		usleep(200'000);
 	}
 }
 

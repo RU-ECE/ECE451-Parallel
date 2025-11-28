@@ -1,4 +1,4 @@
-#include <cstdint>
+﻿#include <cstdint>
 #include <iostream>
 #include <mpi.h>
 
@@ -27,26 +27,26 @@ public:
 		delete[] board;
 		delete[] next;
 	}
+
 	GameOfLife(const GameOfLife& other) = delete;
 	GameOfLife& operator=(const GameOfLife& other) = delete;
 
 	/*
-	0 0 0 0 0 0
-	0 x x x x 0
-	0 x x x x 0
-	0 x x x x 0
-	0 x x x x 0
-	0 0 0 0 0 0
-
-	board               next
-	0 0 0 0 0 0         0 0 0 0 0 0
-	0 0 1 0 0 0         0 0 0 0 0 0
-	0 0 1 0 0 0         0 1 1 1 0 0
-	0 0 1 0 0 0         0 0 0 0 0 0
-	0 0 0 0 0 0         0 0 0 0 0 0
-	0 0 0 0 0 0         0 0 0 0 0 0
-
-	*/
+	 * 0 0 0 0 0 0
+	 * 0 x x x x 0
+	 * 0 x x x x 0
+	 * 0 x x x x 0
+	 * 0 x x x x 0
+	 * 0 0 0 0 0 0
+	 *
+	 * board				next
+	 * 0 0 0 0 0 0			0 0 0 0 0 0
+	 * 0 0 1 0 0 0			0 0 0 0 0 0
+	 * 0 0 1 0 0 0			0 1 1 1 0 0
+	 * 0 0 1 0 0 0			0 0 0 0 0 0
+	 * 0 0 0 0 0 0			0 0 0 0 0 0
+	 * 0 0 0 0 0 0			0 0 0 0 0 0
+	 */
 	void print() const {
 		for (int i = 1, c = width2 + 1; i < height2 - 1; i++) {
 			for (auto j = 1; j < width2 - 1; j++, c++)
@@ -56,6 +56,7 @@ public:
 		}
 		cout << "===========================\n";
 	}
+
 	void step() {
 		const int NORTH = -width;
 		constexpr int EAST = +1;
@@ -79,6 +80,7 @@ public:
 		}
 		swap(board, next); // just swap the pointers
 	}
+
 	void set(const int x, const int y) const { board[y * width + x] = 1; }
 };
 
@@ -88,7 +90,6 @@ int main() {
 	game.set(7, 6);
 	game.set(8, 5);
 	game.set(8, 6);
-
 
 	game.set(2, 2);
 	game.set(2, 3);

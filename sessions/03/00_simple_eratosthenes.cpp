@@ -1,4 +1,4 @@
-#include <cmath>
+﻿#include <cmath>
 #include <cstdint>
 #include <iostream>
 
@@ -10,12 +10,13 @@ uint64_t eratosthenes(bool primes[], const uint64_t n) {
 	for (uint64_t i = 2; i <= n; i++)
 		primes[i] = true;
 
-	for (uint64_t i = 2; i <= n; i++)
+	for (uint64_t i = 2; i <= n; i++) {
 		if (primes[i]) {
 			count++;
 			for (uint64_t j = 2 * i; j <= n; j += i)
 				primes[j] = false;
 		}
+	}
 	return count;
 }
 

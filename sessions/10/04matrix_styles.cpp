@@ -1,4 +1,4 @@
-#include <immintrin.h>
+﻿#include <immintrin.h>
 #include <vector>
 
 #include "benchmark.hpp"
@@ -100,7 +100,7 @@ void multiply_matrices_omp_simd_unroll(const float* a, const float* b, float* c,
 			__m256 sum0 = _mm256_setzero_ps();
 			__m256 sum1 = _mm256_setzero_ps();
 			for (auto k = 0; k < n; k++) {
-				__m256 a_vec = _mm256_set1_ps(a[i * n + k]);
+				const __m256 a_vec = _mm256_set1_ps(a[i * n + k]);
 				sum0 = _mm256_fmadd_ps(a_vec, _mm256_loadu_ps(&b[k * n + j]), sum0);
 				sum1 = _mm256_fmadd_ps(a_vec, _mm256_loadu_ps(&b[k * n + j + 8]), sum1);
 			}
@@ -116,15 +116,15 @@ void multiply_matrices_omp_simd_unroll_2(const float* a, const float* b, float* 
 		for (auto j = 0; j < n; j += 2) {
 			float sum[4] = {0, 0, 0, 0};
 			for (auto k = 0; k < n; k++) {
-				const float a0 = a[(i)*n + k];
+				const float a0 = a[i * n + k];
 				const float a1 = a[(i + 1) * n + k];
 				sum[0] += a0 * b[k * n + j];
 				sum[1] += a0 * b[k * n + j + 1];
 				sum[2] += a1 * b[k * n + j];
 				sum[3] += a1 * b[k * n + j + 1];
 			}
-			c[(i)*n + j] = sum[0];
-			c[(i)*n + j + 1] = sum[1];
+			c[i * n + j] = sum[0];
+			c[i * n + j + 1] = sum[1];
 			c[(i + 1) * n + j] = sum[2];
 			c[(i + 1) * n + j + 1] = sum[3];
 		}

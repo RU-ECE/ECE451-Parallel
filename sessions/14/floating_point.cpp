@@ -1,5 +1,6 @@
-#include <iomanip>
+﻿#include <iomanip>
 #include <iostream>
+
 using namespace std;
 /*
   1.23

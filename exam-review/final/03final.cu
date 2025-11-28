@@ -1,4 +1,4 @@
-__device__ void order(float& a, float& b) { // theoretically should be a register
+﻿__device__ void order(float& a, float& b) { // theoretically should be a register
 	if (a > b) { // but pass by reference is not good, this does not work on CPU
 		const float temp = a;
 		a = b;
@@ -76,7 +76,7 @@ __global__ void fast_merge_early_passes(float arr[], int n) {
 /*
 	What's wrong with this code? Can you spot the inefficiencies due to memory?
 */
-__global__ void dft(float* arr, float* real_out, float* imag_out, const int n) {
+__global__ void dft(const float* arr, float* real_out, float* imag_out, const int n) {
 	const int k = blockIdx.x * blockDim.x + threadIdx.x; // Index for the output element
 	if (k < n) {
 		float real_sum = 0.0;
@@ -91,16 +91,13 @@ __global__ void dft(float* arr, float* real_out, float* imag_out, const int n) {
 	}
 }
 
-/*
-  Is this better?
-*/
-__global__ void dft_with_precomputation(float* arr, float* real_out, float* imag_out, const int n) {
+// Is this better?
+__global__ void dft_with_precomputation(const float* arr, float* real_out, float* imag_out, const int n) {
 	extern __shared__ float shared_mem[]; // Shared memory for precomputed values
 	float* cos_vals = shared_mem;
 	float* sin_vals = shared_mem + n;
 
-	const int t = threadIdx.x;
-	if (t < n) {
+	if (const int t = threadIdx.x; t < n) {
 		const float angle = 2.0 * M_PI * t / n;
 		cos_vals[t] = cos(angle);
 		sin_vals[t] = -sin(angle);
@@ -112,18 +109,17 @@ __global__ void dft_with_precomputation(float* arr, float* real_out, float* imag
 		float real_sum = 0.0;
 		float imag_sum = 0.0;
 		for (auto t = 0; t < n; ++t) {
-			real_sum += arr[t] * cos_vals[(t * k) % n];
-			imag_sum += arr[t] * sin_vals[(t * k) % n];
+			real_sum += arr[t] * cos_vals[t * k % n];
+			imag_sum += arr[t] * sin_vals[t * k % n];
 		}
 		real_out[k] = real_sum;
 		imag_out[k] = imag_sum;
 	}
 }
 
-__global__ void fast_dft_into_registers(float* arr, float* real_out, float* imag_out, const int n) {
+__global__ void fast_dft_into_registers(const float* arr, float* real_out, float* imag_out, const int n) {
 	const int t = threadIdx.x;
-	const int k = blockIdx.x * blockDim.x + t;
-	if (k < n) {
+	if (const int k = blockIdx.x * blockDim.x + t; k < n) {
 		float real_sum = 0.0;
 		float imag_sum = 0.0;
 	}
@@ -139,7 +135,7 @@ __global__ void fast_dft_into_registers(float* arr, float* real_out, float* imag
 	float h = arr[t + 7];
 }
 
-__global__ void dft_shared_memory(float* arr, float* real_out, float* imag_out, const int n) {
+__global__ void dft_shared_memory(const float* arr, float* real_out, float* imag_out, const int n) {
 	__shared__ float shared_arr[1024]; // Shared memory for input elements
 
 	const int t = threadIdx.x;
@@ -164,7 +160,7 @@ __global__ void dft_shared_memory(float* arr, float* real_out, float* imag_out, 
 	}
 }
 
-__global__ void dft_optimized(float* arr, float* real_out, float* imag_out, const int n) {
+__global__ void dft_optimized(const float* arr, float* real_out, float* imag_out, const int n) {
 	__shared__ float shared_arr[1024]; // Shared memory for input elements
 	__shared__ float shared_real[1024]; // Shared memory for real part of output
 	__shared__ float shared_imag[1024]; // Shared memory for imaginary part of output

@@ -1,4 +1,4 @@
-#include <chrono>
+﻿#include <chrono>
 #include <cmath>
 #include <immintrin.h>
 #include <iostream>
@@ -6,12 +6,12 @@
 using namespace std;
 using namespace chrono;
 
-//	0x7e92ed659b4b3490
-//  last 4 digits  0011 0100 1001 0000
-//  first number 1..127
-// seconds  128..255
-// third   256..38
-// 3*5*7 = 105  *   64
+// 0x7e92ed659b4b3490
+// last 4 digits  0011 0100 1001 0000
+// first number 1..127
+// seconds 128..255
+// third 256..38
+// 3 * 5 * 7 = 105 * 64
 constexpr uint64_t wheel[] = {
 	0x7e92ed659b4b3490, 0xde697df279b5b3cd, 0x5b769edfa5fbcb36, 0xf7cb66decdbdbfcf, 0xf7cb66decdbdbfcf,
 	0xeb75b77bbddaf9b4, 0xf4bf4bf793cfbdfa, 0x7fedbb697fb3cf67, 0x7fedbb697fb3cf67, 0x3fdefb36beedbdde,
@@ -288,22 +288,24 @@ public:
 	void clear_prime(const uint64_t i) const {
 		// this is storing only odd numbers in each mask!
 		// note 1LL is crucial. If you write just 1 it's an int.
-		// (1 << 40) would be 0   (1LL << 40) is 10000000000000000000000000....
-		p[i / 128] |= (1LL << ((i % 128) >> 1));
+		// (1 << 40) would be 0
+		// (1LL << 40) is 10000000000000000000000000...
+		p[i / 128] |= 1LL << ((i % 128) >> 1);
 	}
-	bool is_prime(const uint64_t i) const { return (p[i / 128] & (1LL << ((i % 128) >> 1))) == 0; }
+	bool is_prime(const uint64_t i) const { return (p[i / 128] & 1LL << ((i % 128) >> 1)) == 0; }
 
 	// passing in size so we can use this to initialize subsections
 	uint64_t eratosthenes(const uint64_t size) const {
 		uint64_t count = 1; // 2 is a special case
 		const uint64_t lim = sqrt(size);
-		for (uint64_t i = 3; i <= lim; i += 2)
+		for (uint64_t i = 3; i <= lim; i += 2) {
 			if (is_prime(i)) {
 				count++;
 				for (uint64_t j = i * i; j <= size; j += 2 * i)
 					clear_prime(j);
 			}
-		for (uint64_t i = (lim + 1) | 1; i <= size; i += 2)
+		}
+		for (uint64_t i = lim + 1 | 1; i <= size; i += 2)
 			if (is_prime(i))
 				count++;
 		return count;
@@ -312,18 +314,19 @@ public:
 	uint64_t fast_eratosthenes() const {
 		uint64_t count = 1; // 2 is a special case
 		uint64_t lim = sqrt(n);
-		for (uint64_t i = 3; i <= lim; i += 2)
+		for (uint64_t i = 3; i <= lim; i += 2) {
 			if (is_prime(i)) {
 				count++;
 				for (uint64_t j = i * i; j <= n; j += 2 * i)
 					clear_prime(j);
 			}
+		}
 		/*
 			TODO: check if this this boundary condition is right.
 			handle the few primes between sqrt(n) and the next 64-bit word boundary
 		*/
 		const uint64_t word_index = (lim + 127) / 128;
-		for (uint64_t i = (lim + 1) | 1; i < word_index * 128; i++)
+		for (uint64_t i = lim + 1 | 1; i < word_index * 128; i++)
 			clear_prime(i);
 
 		lim = (lim + 127) / 128; // round up to next even word boundary
@@ -344,21 +347,22 @@ public:
 			if (k >= 105) // 1154 for wheel11
 				k = 0;
 		}
-		// 11*11 = 121  + 11*2 = 143   + 11*2 = 165
+		// 11*11 = 121 + 11*2 = 143 + 11*2 = 165
 		// 11, 13, 17, 19, 23, 29, 31
 
-		for (uint64_t i = 11; i <= lim; i += 2)
+		for (uint64_t i = 11; i <= lim; i += 2) {
 			if (is_prime(i)) {
 				count++;
 				for (uint64_t j = i * i; j <= n; j += 2 * i)
 					clear_prime(j);
 			}
+		}
 		/*
 			TODO: check if this this boundary condition is right.
 			handle the few primes between sqrt(n) and the next 64-bit word boundary
 		*/
 		const uint64_t word_index = (lim + 127) / 128;
-		for (uint64_t i = (lim + 1) | 1; i < word_index * 128; i++)
+		for (uint64_t i = lim + 1 | 1; i < word_index * 128; i++)
 			clear_prime(i);
 
 		lim = (lim + 127) / 128; // round up to next even word boundary
@@ -382,18 +386,19 @@ public:
 				k = 0;
 		}
 
-		for (uint64_t i = 13; i <= lim; i += 2)
+		for (uint64_t i = 13; i <= lim; i += 2) {
 			if (is_prime(i)) {
 				count++;
 				for (uint64_t j = i * i; j <= n; j += 2 * i)
 					clear_prime(j);
 			}
+		}
 		/*
 			TODO: check if this this boundary condition is right.
 			handle the few primes between sqrt(n) and the next 64-bit word boundary
 		*/
 		const uint64_t word_index = (lim + 127) / 128;
-		for (uint64_t i = (lim + 2) | 1; i < word_index * 128; i++)
+		for (uint64_t i = lim + 2 | 1; i < word_index * 128; i++)
 			clear_prime(i);
 
 		lim = (lim + 127) / 128; // round up to next even word boundary
@@ -407,10 +412,11 @@ public:
 	// use bitcounting to avoid counting each one separately
 	void build_wheel(const uint64_t s) const { // 3*5*7 = 105
 		const uint64_t size = 128 * s;
-		for (uint64_t i = 3; i <= size; i += 2)
+		for (uint64_t i = 3; i <= size; i += 2) {
 			if (is_prime(i))
 				for (uint64_t j = i * i; j <= size; j += 2 * i)
 					clear_prime(j);
+		}
 		cout << "const uint64_t wheel[] = {\n" << hex;
 		for (uint64_t i = 0; i < s; i += 4) {
 			for (uint64_t j = i; j < i + 3; j++)
@@ -428,7 +434,7 @@ int main(const int argc, char* argv[]) {
 	}
 	const uint64_t n = atol(argv[1]);
 
-	prime_bits primes(n);
+	const prime_bits primes(n);
 	// COPYING prime_bits objects is ILLEGAL (no copy constructor)
 	// see me if you have questions
 	//	prime_bits p2 = primes;

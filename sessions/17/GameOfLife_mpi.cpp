@@ -1,4 +1,4 @@
-#include <cstdint>
+﻿#include <cstdint>
 #include <iostream>
 #include <mpi.h>
 
@@ -67,26 +67,24 @@ public:
 		cout << "===========================\n";
 	}
 	/*
-	board               next
-
-	BOARD 1
-	0 0 0 0 0 0         0 0 0 0 0 0
-	0 0 1 0 0 0         0 0 0 0 0 0
-	0 0 1 0 0 0         0 1 1 1 0 0
-	0 0 1 0 0 0         0 0 0 0 0 0
-	0 0 y 0 0 0         0 0 0 0 0 0
-	0 0 x 0 0 0         0 0 0 0 0 0
-
-	0 0 y 0 0 0         0 0 0 0 0 0
-	0 0 x 0 0 0         0 0 0 0 0 0
-	0 0 1 0 0 0         0 1 1 1 0 0
-	0 0 1 0 0 0         0 0 0 0 0 0
-	0 0 0 0 0 0         0 0 0 0 0 0
-	0 0 0 0 0 0         0 0 0 0 0 0
-	BOARD 0
-	*/
-
-
+	 * board				next
+	 *
+	 * BOARD 1
+	 * 0 0 0 0 0 0			0 0 0 0 0 0
+	 * 0 0 1 0 0 0			0 0 0 0 0 0
+	 * 0 0 1 0 0 0			0 1 1 1 0 0
+	 * 0 0 1 0 0 0			0 0 0 0 0 0
+	 * 0 0 y 0 0 0			0 0 0 0 0 0
+	 * 0 0 x 0 0 0			0 0 0 0 0 0
+	 *
+	 * 0 0 y 0 0 0			0 0 0 0 0 0
+	 * 0 0 x 0 0 0			0 0 0 0 0 0
+	 * 0 0 1 0 0 0			0 1 1 1 0 0
+	 * 0 0 1 0 0 0			0 0 0 0 0 0
+	 * 0 0 0 0 0 0			0 0 0 0 0 0
+	 * 0 0 0 0 0 0			0 0 0 0 0 0
+	 * BOARD 0
+	 */
 	void step() {
 		const int NORTH = -width2;
 		constexpr int EAST = +1;
@@ -96,7 +94,7 @@ public:
 		const int NORTHWEST = NORTH + WEST;
 		const int SOUTHEAST = SOUTH + EAST;
 		const int SOUTHWEST = SOUTH + WEST;
-		// #define NOMPI
+// #define NOMPI
 #if NOMPI
 		if (world_rank == 0) {
 			const int other = 1;
@@ -117,23 +115,21 @@ public:
 			for (auto i = 0; i < width; i++, c++) {
 				const int neighbors = board[c + EAST] + board[c + SOUTH] + board[c + WEST] + board[c + NORTH] +
 					board[c + NORTHEAST] + board[c + NORTHWEST] + board[c + SOUTHEAST] + board[c + SOUTHWEST];
-				if (board[c])
-					next[c] = neighbors < 2 || neighbors > 3 ? 0 : 1;
-				else
-					next[c] = neighbors == 3 ? 1 : 0;
+				next[c] = board[c] ? neighbors < 2 || neighbors > 3 ? 0 : 1 : neighbors == 3 ? 1 : 0;
 			}
 			c += 2;
 		}
 		swap(board, next); // just swap the pointers
 	}
-	void set(const int x, const int y) { board[y * width2 + x] = 1; }
 
-	void set1();
-	void set2(int x, int y);
+	void set(const int x, const int y) const { board[y * width2 + x] = 1; }
+
+	void set1() const;
+	void set2(int x, int y) const;
 };
 
 
-void GameOfLife::set1() {
+void GameOfLife::set1() const {
 	set(7, 5);
 	set(7, 6);
 	set(8, 5);
@@ -152,7 +148,7 @@ void GameOfLife::set1() {
  */
 
 // create a glider at x,y
-void GameOfLife::set2(const int x, const int y) {
+void GameOfLife::set2(const int x, const int y) const {
 	set(x + 1, y);
 	set(x + 2, y + 1);
 	set(x, y + 2);
@@ -160,7 +156,7 @@ void GameOfLife::set2(const int x, const int y) {
 	set(x + 2, y + 2);
 }
 int main() {
-	MPI_Init(NULL, NULL); // initialize MPI
+	MPI_Init(nullptr, nullptr); // initialize MPI
 	MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 	// initialize with 2 computers sharing NORTH/SOUTH border

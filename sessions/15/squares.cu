@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 
 __global__ void square(int* array, const int n) {
 	const int tid = blockDim.x * blockIdx.x + threadIdx.x;
@@ -43,13 +43,13 @@ int main() {
 
 // is the kernel call syncronized automatically?
 #if 0
-    // Synchronize to make sure kernel execution is finished
-    err = cudaDeviceSynchronize();
-    if (err != cudaSuccess) {
-        printf("Error in kernel execution: %s\n", cudaGetErrorString(err));
-        cudaFree(dev_a);
-        return 1;
-    }
+	// Synchronize to make sure kernel execution is finished
+	err = cudaDeviceSynchronize();
+	if (err != cudaSuccess) {
+		printf("Error in kernel execution: %s\n", cudaGetErrorString(err));
+		cudaFree(dev_a);
+		return 1;
+	}
 #endif
 	// Copy the results back to host
 	err = cudaMemcpy(a, dev_a, size, cudaMemcpyDeviceToHost);

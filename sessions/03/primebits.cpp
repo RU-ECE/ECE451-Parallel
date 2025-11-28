@@ -1,4 +1,4 @@
-#include <cstdint>
+﻿#include <cstdint>
 
 class PrimeBits {
 	uint64_t n;
@@ -17,7 +17,7 @@ public:
 	}
 
 	void init() const {
-		//                                            ... 13 11 9 7 5 3 1
+		// ... 13 11 9 7 5 3 1
 		for (uint64_t i = 0; i < num_words; i++)
 			p[i] = 0xaaaaaaaaAAAAAAAAAL; // 1010
 		for (uint64_t i = 0; i < num_words; i++) {
@@ -31,11 +31,11 @@ public:
 		// i >> 6
 		// 000000000000000000000000001010x11000000
 		// 000000000000000000000000000000000000001
-		// 000000000000000000000000000000100000000   1 << pos
-		// 111111111111111111111111111111011111111   ~(1 << pos)
+		// 000000000000000000000000000000100000000 1 << pos
+		// 111111111111111111111111111111011111111 ~(1 << pos)
 		p[i / 64] &= ~(1LL << (i % 64));
 	}
-	bool isPrime(const int i) const { return p[i / 64] & (1LL << (i % 64)); }
+	bool isPrime(const int i) const { return p[i / 64] & 1LL << (i % 64); }
 	uint64_t getCount() const { return count; }
 	~PrimeBits() { delete[] p; }
 };

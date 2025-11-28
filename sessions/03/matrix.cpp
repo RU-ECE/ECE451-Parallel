@@ -1,8 +1,10 @@
-#include <chrono>
+﻿#include <chrono>
 #include <iostream>
 #include <memory.h>
 
 using namespace std;
+using namespace chrono;
+
 class matrix {
 	uint32_t rows, cols;
 	float* m;
@@ -97,26 +99,26 @@ void test_correctness() {
 	c = a * b;
 	cout << c << endl;
 	/*
-		1 2 0 0           1 0 0 0         9 2 0 0
-	A = 0 1 0 0       B = 4 1 0 0     C = 4 1 0 0
-		0 0 3 0           0 5 1 0         0 0 3 0
-		0 0 0 3           0 0 0 1         0 0 0 3
-	*/
+	 *		1 2 0 0			1 0 0 0			9 2 0 0
+	 * A =	0 1 0 0		B = 4 1 0 0		C = 4 1 0 0
+	 *		0 0 3 0			0 5 1 0			0 0 3 0
+	 *		0 0 0 3			0 0 0 1			0 0 0 3
+	 */
 }
 
 void benchmark() {
-	auto t0 = std::chrono::high_resolution_clock::now();
+	auto t0 = high_resolution_clock::now();
 	const matrix a = matrix::ident(1024);
 	const matrix b = matrix::ident(1024);
 	matrix c = a * b;
-	auto t1 = std::chrono::high_resolution_clock::now();
-	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0);
+	auto t1 = high_resolution_clock::now();
+	auto elapsed = duration_cast<microseconds>(t1 - t0);
 	cout << "redundant elapsed: " << elapsed.count() << "usec\n";
 
-	t0 = std::chrono::high_resolution_clock::now();
+	t0 = high_resolution_clock::now();
 	c = mult(a, b);
-	t1 = std::chrono::high_resolution_clock::now();
-	elapsed = std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0);
+	t1 = high_resolution_clock::now();
+	elapsed = duration_cast<microseconds>(t1 - t0);
 	cout << "optimized elapsed: " << elapsed.count() << "usec\n";
 }
 
