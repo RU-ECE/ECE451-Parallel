@@ -1,0 +1,23 @@
+*.c      text eol=lf
+*.cc     text eol=lf
+*.cpp    text eol=lf
+*.cxx    text eol=lf
+*.h      text eol=lf
+*.hh     text eol=lf
+*.hpp    text eol=lf
+*.hxx    text eol=lf
+*.s      text eol=lf
+
+# CUDA
+*.cu     text eol=lf
+*.cuh    text eol=lf
+
+# Markdown
+*.md        text eol=lf
+*.markdown  text eol=lf
+
+# Shell scripts
+*.sh     text eol=lf
+
+# Text files
+*.txt    text eol=lf
