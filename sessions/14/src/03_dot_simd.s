@@ -1,612 +1,492 @@
-	.file	"03_dot_simd.cpp"
-	.text
-	.p2align 4
-	.type	_Z9dot_simd2PKfS0_i._omp_fn.0, @function
-_Z9dot_simd2PKfS0_i._omp_fn.0:
-.LFB7773:
-	.cfi_startproc
-	endbr64
-	pushq	%r13
-	.cfi_def_cfa_offset 16
-	.cfi_offset 13, -16
-	pushq	%r12
-	.cfi_def_cfa_offset 24
-	.cfi_offset 12, -24
-	pushq	%rbp
-	.cfi_def_cfa_offset 32
-	.cfi_offset 6, -32
-	pushq	%rbx
-	.cfi_def_cfa_offset 40
-	.cfi_offset 3, -40
-	movq	%rdi, %rbx
-	subq	$8, %rsp
-	.cfi_def_cfa_offset 48
-	movq	8(%rdi), %rbp
-	movq	(%rdi), %r12
-	call	omp_get_num_threads@PLT
-	movl	%eax, %r13d
-	call	omp_get_thread_num@PLT
-	movl	%eax, %ecx
-	movl	16(%rbx), %eax
-	cltd
-	idivl	%r13d
-	cmpl	%edx, %ecx
-	jl	.L2
-.L6:
-	imull	%eax, %ecx
-	vxorps	%xmm1, %xmm1, %xmm1
-	addl	%ecx, %edx
-	addl	%edx, %eax
-	cmpl	%eax, %edx
-	jge	.L3
-	movslq	%edx, %rdx
-	.p2align 4,,10
-	.p2align 3
-.L4:
-	vmovss	(%r12,%rdx,4), %xmm0
-	vmulss	0(%rbp,%rdx,4), %xmm0, %xmm0
-	addq	$1, %rdx
-	vaddss	%xmm0, %xmm1, %xmm1
-	cmpl	%edx, %eax
-	jg	.L4
-.L3:
-	movl	20(%rbx), %edx
-	leaq	20(%rbx), %rcx
+dot_simd2(float const*, float const*, int) (._omp_fn.0):
+        pushq   %rbp
+        movq    %rsp, %rbp
+        pushq   %r14
+        pushq   %r13
+        pushq   %r12
+        pushq   %rbx
+        movq    %rdi, %rbx
+        movq    8(%rdi), %r13
+        movq    (%rdi), %r14
+        andq    $-32, %rsp
+        call    omp_get_num_threads
+        movl    %eax, %r12d
+        call    omp_get_thread_num
+        movl    %eax, %esi
+        movl    16(%rbx), %eax
+        cltd
+        idivl   %r12d
+        cmpl    %edx, %esi
+        jl      .L2
+.L11:
+        imull   %eax, %esi
+        vxorps  %xmm0, %xmm0, %xmm0
+        leal    (%rdx,%rsi), %r8d
+        leal    (%rax,%r8), %r9d
+        cmpl    %r9d, %r8d
+        jge     .L3
+        leal    -1(%rax), %ecx
+        cmpl    $6, %ecx
+        jbe     .L13
+        movslq  %esi, %rcx
+        movslq  %edx, %rdi
+        movl    %eax, %r10d
+        addq    %rcx, %rdi
+        shrl    $3, %r10d
+        xorl    %ecx, %ecx
+        salq    $2, %rdi
+        salq    $5, %r10
+        leaq    (%r14,%rdi), %r11
+        addq    %r13, %rdi
 .L5:
-	vmovd	%edx, %xmm3
-	movl	%edx, %eax
-	vaddss	%xmm3, %xmm1, %xmm2
-	vmovd	%xmm2, %esi
-	lock cmpxchgl	%esi, (%rcx)
-	jne	.L14
-	addq	$8, %rsp
-	.cfi_remember_state
-	.cfi_def_cfa_offset 40
-	popq	%rbx
-	.cfi_def_cfa_offset 32
-	popq	%rbp
-	.cfi_def_cfa_offset 24
-	popq	%r12
-	.cfi_def_cfa_offset 16
-	popq	%r13
-	.cfi_def_cfa_offset 8
-	ret
-	.p2align 4,,10
-	.p2align 3
+        vmovups (%r11,%rcx), %ymm4
+        vmulps  (%rdi,%rcx), %ymm4, %ymm1
+        addq    $32, %rcx
+        vaddss  %xmm1, %xmm0, %xmm0
+        vshufps $85, %xmm1, %xmm1, %xmm3
+        vshufps $255, %xmm1, %xmm1, %xmm2
+        vaddss  %xmm3, %xmm0, %xmm0
+        vunpckhps       %xmm1, %xmm1, %xmm3
+        vextractf128    $0x1, %ymm1, %xmm1
+        vaddss  %xmm3, %xmm0, %xmm0
+        vaddss  %xmm2, %xmm0, %xmm0
+        vshufps $85, %xmm1, %xmm1, %xmm2
+        vaddss  %xmm1, %xmm0, %xmm0
+        vaddss  %xmm2, %xmm0, %xmm0
+        vunpckhps       %xmm1, %xmm1, %xmm2
+        vshufps $255, %xmm1, %xmm1, %xmm1
+        vaddss  %xmm2, %xmm0, %xmm0
+        vaddss  %xmm1, %xmm0, %xmm0
+        cmpq    %rcx, %r10
+        jne     .L5
+        movl    %eax, %ecx
+        andl    $-8, %ecx
+        addl    %ecx, %r8d
+        cmpl    %eax, %ecx
+        je      .L24
+        vzeroupper
+.L4:
+        subl    %ecx, %eax
+        leal    -1(%rax), %edi
+        cmpl    $2, %edi
+        jbe     .L8
+        movslq  %edx, %rdx
+        movslq  %esi, %rsi
+        addq    %rsi, %rdx
+        addq    %rcx, %rdx
+        vmovups (%r14,%rdx,4), %xmm7
+        vmulps  0(%r13,%rdx,4), %xmm7, %xmm1
+        movl    %eax, %edx
+        andl    $-4, %edx
+        addl    %edx, %r8d
+        vaddss  %xmm1, %xmm0, %xmm0
+        vshufps $85, %xmm1, %xmm1, %xmm2
+        vaddss  %xmm2, %xmm0, %xmm0
+        vunpckhps       %xmm1, %xmm1, %xmm2
+        vshufps $255, %xmm1, %xmm1, %xmm1
+        vaddss  %xmm2, %xmm0, %xmm0
+        vaddss  %xmm1, %xmm0, %xmm0
+        testb   $3, %al
+        je      .L3
+.L8:
+        movslq  %r8d, %rdx
+        vmovss  (%r14,%rdx,4), %xmm7
+        leaq    0(,%rdx,4), %rax
+        vfmadd231ss     0(%r13,%rdx,4), %xmm7, %xmm0
+        leal    1(%r8), %edx
+        cmpl    %edx, %r9d
+        jle     .L3
+        addl    $2, %r8d
+        vmovss  4(%r14,%rax), %xmm5
+        vfmadd231ss     4(%r13,%rax), %xmm5, %xmm0
+        cmpl    %r8d, %r9d
+        jle     .L3
+        vmovss  8(%r14,%rax), %xmm6
+        vfmadd231ss     8(%r13,%rax), %xmm6, %xmm0
+.L3:
+        movl    20(%rbx), %edx
+        leaq    20(%rbx), %rcx
+.L10:
+        vmovd   %edx, %xmm6
+        movl    %edx, %eax
+        vaddss  %xmm6, %xmm0, %xmm5
+        vmovd   %xmm5, %esi
+        lock cmpxchgl   %esi, (%rcx)
+        jne     .L25
+        leaq    -32(%rbp), %rsp
+        popq    %rbx
+        popq    %r12
+        popq    %r13
+        popq    %r14
+        popq    %rbp
+        ret
 .L2:
-	.cfi_restore_state
-	addl	$1, %eax
-	xorl	%edx, %edx
-	jmp	.L6
-.L14:
-	movl	%eax, %edx
-	jmp	.L5
-	.cfi_endproc
-.LFE7773:
-	.size	_Z9dot_simd2PKfS0_i._omp_fn.0, .-_Z9dot_simd2PKfS0_i._omp_fn.0
-	.p2align 4
-	.type	_Z9dot_simd3PKfS0_i._omp_fn.0, @function
-_Z9dot_simd3PKfS0_i._omp_fn.0:
-.LFB7774:
-	.cfi_startproc
-	endbr64
-	pushq	%rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	pushq	%r14
-	pushq	%r13
-	pushq	%r12
-	pushq	%rbx
-	.cfi_offset 14, -24
-	.cfi_offset 13, -32
-	.cfi_offset 12, -40
-	.cfi_offset 3, -48
-	movq	%rdi, %rbx
-	andq	$-32, %rsp
-	subq	$64, %rsp
-	movq	8(%rdi), %r12
-	movq	(%rdi), %r13
-	movq	%fs:40, %rax
-	movq	%rax, 56(%rsp)
-	xorl	%eax, %eax
-	call	omp_get_num_threads@PLT
-	movl	%eax, %r14d
-	call	omp_get_thread_num@PLT
-	movl	%eax, %ecx
-	movl	16(%rbx), %eax
-	cltd
-	idivl	%r14d
-	cmpl	%edx, %ecx
-	jl	.L16
-.L27:
-	imull	%eax, %ecx
-	vxorps	%xmm0, %xmm0, %xmm0
-	movslq	%ecx, %rdi
-	leal	(%rdx,%rdi), %ecx
-	leal	(%rax,%rcx), %r8d
-	cmpl	%r8d, %ecx
-	jge	.L17
-	vpxor	%xmm0, %xmm0, %xmm0
-	leal	-1(%rax), %esi
-	vmovdqa	%xmm0, (%rsp)
-	vmovdqa	%xmm0, 16(%rsp)
-	cmpl	$6, %esi
-	jbe	.L24
-	movslq	%edx, %rsi
-	vxorps	%xmm1, %xmm1, %xmm1
-	xorl	%edx, %edx
-	addq	%rdi, %rsi
-	movl	%eax, %edi
-	salq	$2, %rsi
-	shrl	$3, %edi
-	leaq	0(%r13,%rsi), %r9
-	salq	$5, %rdi
-	addq	%r12, %rsi
-	.p2align 4,,10
-	.p2align 3
-.L20:
-	vmovups	(%r9,%rdx), %ymm2
-	vmulps	(%rsi,%rdx), %ymm2, %ymm0
-	addq	$32, %rdx
-	vaddps	%ymm0, %ymm1, %ymm1
-	cmpq	%rdx, %rdi
-	jne	.L20
-	movl	%eax, %edx
-	vmovaps	%ymm1, (%rsp)
-	andl	$-8, %edx
-	addl	%edx, %ecx
-	cmpl	%edx, %eax
-	je	.L38
-	vzeroupper
+        addl    $1, %eax
+        xorl    %edx, %edx
+        jmp     .L11
+.L13:
+        xorl    %ecx, %ecx
+        jmp     .L4
 .L24:
-	vmovss	(%rsp), %xmm1
-	movslq	%ecx, %rax
-	.p2align 4,,10
-	.p2align 3
-.L22:
-	vmovss	0(%r13,%rax,4), %xmm0
-	vmulss	(%r12,%rax,4), %xmm0, %xmm0
-	addq	$1, %rax
-	vaddss	%xmm0, %xmm1, %xmm1
-	cmpl	%eax, %r8d
-	jg	.L22
-	vmovss	%xmm1, (%rsp)
-.L21:
-	movq	%rsp, %rax
-	leaq	32(%rsp), %rdx
-	vxorps	%xmm0, %xmm0, %xmm0
-	.p2align 4,,10
-	.p2align 3
-.L19:
-	vaddss	(%rax), %xmm0, %xmm0
-	addq	$4, %rax
-	cmpq	%rax, %rdx
-	jne	.L19
-.L17:
-	movl	20(%rbx), %edx
-	leaq	20(%rbx), %rcx
-.L26:
-	vmovd	%edx, %xmm4
-	movl	%edx, %eax
-	vaddss	%xmm4, %xmm0, %xmm3
-	vmovd	%xmm3, %esi
-	lock cmpxchgl	%esi, (%rcx)
-	jne	.L41
-	movq	56(%rsp), %rax
-	subq	%fs:40, %rax
-	jne	.L42
-	leaq	-32(%rbp), %rsp
-	popq	%rbx
-	popq	%r12
-	popq	%r13
-	popq	%r14
-	popq	%rbp
-	.cfi_remember_state
-	.cfi_def_cfa 7, 8
-	ret
-	.p2align 4,,10
-	.p2align 3
-.L16:
-	.cfi_restore_state
-	addl	$1, %eax
-	xorl	%edx, %edx
-	jmp	.L27
-	.p2align 4,,10
-	.p2align 3
-.L38:
-	vzeroupper
-	jmp	.L21
+        vzeroupper
+        jmp     .L3
+.L25:
+        movl    %eax, %edx
+        jmp     .L10
+dot_simd3(float const*, float const*, int) (._omp_fn.0):
+        pushq   %rbp
+        movq    %rsp, %rbp
+        pushq   %r12
+        pushq   %rbx
+        movq    %rdi, %rbx
+        andq    $-32, %rsp
+        subq    $32, %rsp
+        call    omp_get_num_threads
+        movl    %eax, %r12d
+        call    omp_get_thread_num
+        movl    %eax, %ecx
+        movl    16(%rbx), %eax
+        cltd
+        idivl   %r12d
+        cmpl    %edx, %ecx
+        jl      .L27
+.L35:
+        movl    %ecx, %esi
+        vxorps  %xmm0, %xmm0, %xmm0
+        imull   %eax, %esi
+        leal    (%rdx,%rsi), %edi
+        leal    (%rax,%rdi), %r8d
+        cmpl    %r8d, %edi
+        jge     .L28
+        vpxor   %xmm0, %xmm0, %xmm0
+        leal    -1(%rax), %ecx
+        movq    8(%rbx), %r9
+        movq    (%rbx), %r10
+        vmovdqa %xmm0, (%rsp)
+        vmovdqa %xmm0, 16(%rsp)
+        cmpl    $6, %ecx
+        jbe     .L32
+        movslq  %edx, %rcx
+        movslq  %esi, %rsi
+        vxorps  %xmm0, %xmm0, %xmm0
+        xorl    %edx, %edx
+        addq    %rsi, %rcx
+        movl    %eax, %esi
+        salq    $2, %rcx
+        shrl    $3, %esi
+        leaq    (%r10,%rcx), %r11
+        salq    $5, %rsi
+        addq    %r9, %rcx
+.L30:
+        vmovups (%r11,%rdx), %ymm1
+        vfmadd231ps     (%rcx,%rdx), %ymm1, %ymm0
+        addq    $32, %rdx
+        cmpq    %rdx, %rsi
+        jne     .L30
+        movl    %eax, %edx
+        vmovaps %ymm0, (%rsp)
+        andl    $-8, %edx
+        addl    %edx, %edi
+        cmpl    %edx, %eax
+        je      .L42
+        vzeroupper
+.L32:
+        movslq  %edi, %rdx
+        vmovss  (%rsp), %xmm4
+        vmovss  (%r10,%rdx,4), %xmm0
+        vfmadd132ss     (%r9,%rdx,4), %xmm4, %xmm0
+        leaq    0(,%rdx,4), %rax
+        leal    1(%rdi), %edx
+        vmovss  %xmm0, (%rsp)
+        cmpl    %edx, %r8d
+        jle     .L31
+        vmovss  4(%r10,%rax), %xmm5
+        vfmadd231ss     4(%r9,%rax), %xmm5, %xmm0
+        leal    2(%rdi), %edx
+        vmovss  %xmm0, (%rsp)
+        cmpl    %edx, %r8d
+        jle     .L31
+        vmovss  8(%r10,%rax), %xmm6
+        vfmadd231ss     8(%r9,%rax), %xmm6, %xmm0
+        leal    3(%rdi), %edx
+        vmovss  %xmm0, (%rsp)
+        cmpl    %edx, %r8d
+        jle     .L31
+        vmovss  12(%r10,%rax), %xmm7
+        vfmadd231ss     12(%r9,%rax), %xmm7, %xmm0
+        leal    4(%rdi), %edx
+        vmovss  %xmm0, (%rsp)
+        cmpl    %edx, %r8d
+        jle     .L31
+        vmovss  16(%r10,%rax), %xmm7
+        vfmadd231ss     16(%r9,%rax), %xmm7, %xmm0
+        leal    5(%rdi), %edx
+        vmovss  %xmm0, (%rsp)
+        cmpl    %edx, %r8d
+        jle     .L31
+        vmovss  20(%r10,%rax), %xmm6
+        vfmadd231ss     20(%r9,%rax), %xmm6, %xmm0
+        addl    $6, %edi
+        vmovss  %xmm0, (%rsp)
+        cmpl    %edi, %r8d
+        jle     .L31
+        vmovss  24(%r10,%rax), %xmm5
+        vfmadd231ss     24(%r9,%rax), %xmm5, %xmm0
+        vmovss  %xmm0, (%rsp)
+.L31:
+        vxorps  %xmm0, %xmm0, %xmm0
+        vaddss  (%rsp), %xmm0, %xmm0
+        vaddss  4(%rsp), %xmm0, %xmm0
+        vaddss  8(%rsp), %xmm0, %xmm0
+        vaddss  12(%rsp), %xmm0, %xmm0
+        vaddss  16(%rsp), %xmm0, %xmm0
+        vaddss  20(%rsp), %xmm0, %xmm0
+        vaddss  24(%rsp), %xmm0, %xmm0
+        vaddss  28(%rsp), %xmm0, %xmm0
+.L28:
+        movl    20(%rbx), %edx
+        leaq    20(%rbx), %rcx
+.L34:
+        vmovd   %edx, %xmm3
+        movl    %edx, %eax
+        vaddss  %xmm3, %xmm0, %xmm2
+        vmovd   %xmm2, %esi
+        lock cmpxchgl   %esi, (%rcx)
+        jne     .L45
+        leaq    -16(%rbp), %rsp
+        popq    %rbx
+        popq    %r12
+        popq    %rbp
+        ret
+.L27:
+        addl    $1, %eax
+        xorl    %edx, %edx
+        jmp     .L35
 .L42:
-	call	__stack_chk_fail@PLT
-.L41:
-	movl	%eax, %edx
-	jmp	.L26
-	.cfi_endproc
-.LFE7774:
-	.size	_Z9dot_simd3PKfS0_i._omp_fn.0, .-_Z9dot_simd3PKfS0_i._omp_fn.0
-	.p2align 4
-	.type	_Z4prodPKfi._omp_fn.0, @function
-_Z4prodPKfi._omp_fn.0:
-.LFB7775:
-	.cfi_startproc
-	endbr64
-	pushq	%r12
-	.cfi_def_cfa_offset 16
-	.cfi_offset 12, -16
-	movq	(%rdi), %r12
-	pushq	%rbp
-	.cfi_def_cfa_offset 24
-	.cfi_offset 6, -24
-	pushq	%rbx
-	.cfi_def_cfa_offset 32
-	.cfi_offset 3, -32
-	movq	%rdi, %rbx
-	call	omp_get_num_threads@PLT
-	movl	%eax, %ebp
-	call	omp_get_thread_num@PLT
-	movl	%eax, %ecx
-	movl	8(%rbx), %eax
-	cltd
-	idivl	%ebp
-	cmpl	%edx, %ecx
-	jl	.L44
-.L48:
-	imull	%eax, %ecx
-	vmovss	.LC1(%rip), %xmm0
-	addl	%ecx, %edx
-	leal	(%rax,%rdx), %ecx
-	cmpl	%ecx, %edx
-	jge	.L45
-	movslq	%edx, %rdx
-	subl	$1, %eax
-	addq	%rdx, %rax
-	leaq	(%r12,%rdx,4), %rcx
-	leaq	4(%r12,%rax,4), %rax
-	.p2align 4,,10
-	.p2align 3
-.L46:
-	vmulss	(%rcx), %xmm0, %xmm0
-	addq	$4, %rcx
-	cmpq	%rax, %rcx
-	jne	.L46
+        vzeroupper
+        jmp     .L31
 .L45:
-	movl	12(%rbx), %edx
-	leaq	12(%rbx), %rcx
+        movl    %eax, %edx
+        jmp     .L34
+prod(float const*, int) (._omp_fn.0):
+        pushq   %r12
+        movq    (%rdi), %r12
+        pushq   %rbp
+        pushq   %rbx
+        movq    %rdi, %rbx
+        call    omp_get_num_threads
+        movl    %eax, %ebp
+        call    omp_get_thread_num
+        movl    %eax, %ecx
+        movl    8(%rbx), %eax
+        cltd
+        idivl   %ebp
+        cmpl    %edx, %ecx
+        jl      .L47
+.L51:
+        imull   %eax, %ecx
+        vmovss  .LC2(%rip), %xmm0
+        addl    %ecx, %edx
+        leal    (%rax,%rdx), %ecx
+        cmpl    %ecx, %edx
+        jge     .L48
+        movslq  %edx, %rdx
+        movl    %eax, %eax
+        addq    %rdx, %rax
+        leaq    (%r12,%rdx,4), %rcx
+        leaq    (%r12,%rax,4), %rax
+        movq    %rax, %rdx
+        subq    %rcx, %rdx
+        andl    $4, %edx
+        je      .L49
+        vmulss  (%rcx), %xmm0, %xmm0
+        addq    $4, %rcx
+        cmpq    %rcx, %rax
+        je      .L48
+.L49:
+        vmulss  (%rcx), %xmm0, %xmm0
+        addq    $8, %rcx
+        vmulss  -4(%rcx), %xmm0, %xmm0
+        cmpq    %rcx, %rax
+        jne     .L49
+.L48:
+        movl    12(%rbx), %edx
+        leaq    12(%rbx), %rcx
+.L50:
+        vmovd   %edx, %xmm2
+        movl    %edx, %eax
+        vmulss  %xmm2, %xmm0, %xmm1
+        vmovd   %xmm1, %esi
+        lock cmpxchgl   %esi, (%rcx)
+        jne     .L63
+        popq    %rbx
+        popq    %rbp
+        popq    %r12
+        ret
 .L47:
-	vmovd	%edx, %xmm2
-	movl	%edx, %eax
-	vmulss	%xmm2, %xmm0, %xmm1
-	vmovd	%xmm1, %esi
-	lock cmpxchgl	%esi, (%rcx)
-	jne	.L55
-	popq	%rbx
-	.cfi_remember_state
-	.cfi_def_cfa_offset 24
-	popq	%rbp
-	.cfi_def_cfa_offset 16
-	popq	%r12
-	.cfi_def_cfa_offset 8
-	ret
-	.p2align 4,,10
-	.p2align 3
-.L44:
-	.cfi_restore_state
-	addl	$1, %eax
-	xorl	%edx, %edx
-	jmp	.L48
-.L55:
-	movl	%eax, %edx
-	jmp	.L47
-	.cfi_endproc
-.LFE7775:
-	.size	_Z4prodPKfi._omp_fn.0, .-_Z4prodPKfi._omp_fn.0
-	.p2align 4
-	.globl	_Z8dot_simdPKfS0_i
-	.type	_Z8dot_simdPKfS0_i, @function
-_Z8dot_simdPKfS0_i:
-.LFB7285:
-	.cfi_startproc
-	endbr64
-	movq	%rdi, %rcx
-	testl	%edx, %edx
-	jle	.L65
-	leal	-1(%rdx), %r8d
-	cmpl	$6, %r8d
-	jbe	.L66
-	movl	%edx, %edi
-	xorl	%eax, %eax
-	vxorps	%xmm0, %xmm0, %xmm0
-	shrl	$3, %edi
-	salq	$5, %rdi
-	.p2align 4,,10
-	.p2align 3
-.L59:
-	vmovups	(%rcx,%rax), %ymm4
-	vmulps	(%rsi,%rax), %ymm4, %ymm1
-	addq	$32, %rax
-	vaddss	%xmm1, %xmm0, %xmm0
-	vshufps	$85, %xmm1, %xmm1, %xmm3
-	vshufps	$255, %xmm1, %xmm1, %xmm2
-	vaddss	%xmm3, %xmm0, %xmm0
-	vunpckhps	%xmm1, %xmm1, %xmm3
-	vextractf128	$0x1, %ymm1, %xmm1
-	vaddss	%xmm3, %xmm0, %xmm0
-	vaddss	%xmm2, %xmm0, %xmm0
-	vshufps	$85, %xmm1, %xmm1, %xmm2
-	vaddss	%xmm1, %xmm0, %xmm0
-	vaddss	%xmm2, %xmm0, %xmm0
-	vunpckhps	%xmm1, %xmm1, %xmm2
-	vshufps	$255, %xmm1, %xmm1, %xmm1
-	vaddss	%xmm2, %xmm0, %xmm0
-	vaddss	%xmm1, %xmm0, %xmm0
-	cmpq	%rax, %rdi
-	jne	.L59
-	movl	%edx, %edi
-	andl	$-8, %edi
-	movl	%edi, %eax
-	cmpl	%edi, %edx
-	je	.L70
-	vzeroupper
-.L58:
-	movl	%edx, %r9d
-	subl	%edi, %r8d
-	subl	%edi, %r9d
-	cmpl	$2, %r8d
-	jbe	.L62
-	vmovups	(%rcx,%rdi,4), %xmm5
-	vmulps	(%rsi,%rdi,4), %xmm5, %xmm1
-	movl	%r9d, %edi
-	andl	$-4, %edi
-	addl	%edi, %eax
-	vaddss	%xmm1, %xmm0, %xmm0
-	vshufps	$85, %xmm1, %xmm1, %xmm2
-	vaddss	%xmm2, %xmm0, %xmm0
-	vunpckhps	%xmm1, %xmm1, %xmm2
-	vshufps	$255, %xmm1, %xmm1, %xmm1
-	vaddss	%xmm2, %xmm0, %xmm0
-	vaddss	%xmm1, %xmm0, %xmm0
-	cmpl	%edi, %r9d
-	je	.L56
-.L62:
-	cltq
-	.p2align 4,,10
-	.p2align 3
-.L64:
-	vmovss	(%rcx,%rax,4), %xmm1
-	vmulss	(%rsi,%rax,4), %xmm1, %xmm1
-	addq	$1, %rax
-	vaddss	%xmm1, %xmm0, %xmm0
-	cmpl	%eax, %edx
-	jg	.L64
-	ret
-	.p2align 4,,10
-	.p2align 3
-.L65:
-	vxorps	%xmm0, %xmm0, %xmm0
-.L56:
-	ret
-	.p2align 4,,10
-	.p2align 3
-.L70:
-	vzeroupper
-	ret
-	.p2align 4,,10
-	.p2align 3
+        addl    $1, %eax
+        xorl    %edx, %edx
+        jmp     .L51
+.L63:
+        movl    %eax, %edx
+        jmp     .L50
+dot_simd(float const*, float const*, int):
+        movq    %rsi, %rcx
+        testl   %edx, %edx
+        jle     .L72
+        leal    -1(%rdx), %eax
+        cmpl    $6, %eax
+        jbe     .L73
+        movl    %edx, %esi
+        xorl    %eax, %eax
+        vxorps  %xmm0, %xmm0, %xmm0
+        shrl    $3, %esi
+        salq    $5, %rsi
+.L67:
+        vmovups (%rdi,%rax), %ymm4
+        vmulps  (%rcx,%rax), %ymm4, %ymm1
+        addq    $32, %rax
+        vaddss  %xmm1, %xmm0, %xmm0
+        vshufps $85, %xmm1, %xmm1, %xmm3
+        vshufps $255, %xmm1, %xmm1, %xmm2
+        vaddss  %xmm3, %xmm0, %xmm0
+        vunpckhps       %xmm1, %xmm1, %xmm3
+        vextractf128    $0x1, %ymm1, %xmm1
+        vaddss  %xmm3, %xmm0, %xmm0
+        vaddss  %xmm2, %xmm0, %xmm0
+        vshufps $85, %xmm1, %xmm1, %xmm2
+        vaddss  %xmm1, %xmm0, %xmm0
+        vaddss  %xmm2, %xmm0, %xmm0
+        vunpckhps       %xmm1, %xmm1, %xmm2
+        vshufps $255, %xmm1, %xmm1, %xmm1
+        vaddss  %xmm2, %xmm0, %xmm0
+        vaddss  %xmm1, %xmm0, %xmm0
+        cmpq    %rax, %rsi
+        jne     .L67
+        movl    %edx, %eax
+        andl    $-8, %eax
+        movl    %eax, %esi
+        cmpl    %eax, %edx
+        je      .L79
+        vzeroupper
 .L66:
-	xorl	%edi, %edi
-	xorl	%eax, %eax
-	vxorps	%xmm0, %xmm0, %xmm0
-	jmp	.L58
-	.cfi_endproc
-.LFE7285:
-	.size	_Z8dot_simdPKfS0_i, .-_Z8dot_simdPKfS0_i
-	.p2align 4
-	.globl	_Z9dot_simd2PKfS0_i
-	.type	_Z9dot_simd2PKfS0_i, @function
-_Z9dot_simd2PKfS0_i:
-.LFB7286:
-	.cfi_startproc
-	endbr64
-	subq	$40, %rsp
-	.cfi_def_cfa_offset 48
-	xorl	%ecx, %ecx
-	movq	%fs:40, %rax
-	movq	%rax, 24(%rsp)
-	xorl	%eax, %eax
-	movl	%edx, 16(%rsp)
-	xorl	%edx, %edx
-	movq	%rsi, 8(%rsp)
-	movq	%rsp, %rsi
-	movq	%rdi, (%rsp)
-	leaq	_Z9dot_simd2PKfS0_i._omp_fn.0(%rip), %rdi
-	movl	$0x00000000, 20(%rsp)
-	call	GOMP_parallel@PLT
-	vmovss	20(%rsp), %xmm0
-	movq	24(%rsp), %rax
-	subq	%fs:40, %rax
-	jne	.L74
-	addq	$40, %rsp
-	.cfi_remember_state
-	.cfi_def_cfa_offset 8
-	ret
-.L74:
-	.cfi_restore_state
-	call	__stack_chk_fail@PLT
-	.cfi_endproc
-.LFE7286:
-	.size	_Z9dot_simd2PKfS0_i, .-_Z9dot_simd2PKfS0_i
-	.p2align 4
-	.globl	_Z9dot_simd3PKfS0_i
-	.type	_Z9dot_simd3PKfS0_i, @function
-_Z9dot_simd3PKfS0_i:
-.LFB7287:
-	.cfi_startproc
-	endbr64
-	subq	$40, %rsp
-	.cfi_def_cfa_offset 48
-	xorl	%ecx, %ecx
-	movq	%fs:40, %rax
-	movq	%rax, 24(%rsp)
-	xorl	%eax, %eax
-	movl	%edx, 16(%rsp)
-	xorl	%edx, %edx
-	movq	%rsi, 8(%rsp)
-	movq	%rsp, %rsi
-	movq	%rdi, (%rsp)
-	leaq	_Z9dot_simd3PKfS0_i._omp_fn.0(%rip), %rdi
-	movl	$0x00000000, 20(%rsp)
-	call	GOMP_parallel@PLT
-	vmovss	20(%rsp), %xmm0
-	movq	24(%rsp), %rax
-	subq	%fs:40, %rax
-	jne	.L78
-	addq	$40, %rsp
-	.cfi_remember_state
-	.cfi_def_cfa_offset 8
-	ret
-.L78:
-	.cfi_restore_state
-	call	__stack_chk_fail@PLT
-	.cfi_endproc
-.LFE7287:
-	.size	_Z9dot_simd3PKfS0_i, .-_Z9dot_simd3PKfS0_i
-	.p2align 4
-	.globl	_Z4prodPKfi
-	.type	_Z4prodPKfi, @function
-_Z4prodPKfi:
-.LFB7288:
-	.cfi_startproc
-	endbr64
-	subq	$40, %rsp
-	.cfi_def_cfa_offset 48
-	xorl	%ecx, %ecx
-	xorl	%edx, %edx
-	movq	%fs:40, %rax
-	movq	%rax, 24(%rsp)
-	xorl	%eax, %eax
-	movl	%esi, 8(%rsp)
-	movq	%rsp, %rsi
-	movq	%rdi, (%rsp)
-	leaq	_Z4prodPKfi._omp_fn.0(%rip), %rdi
-	movl	$0x3f800000, 12(%rsp)
-	call	GOMP_parallel@PLT
-	vmovss	12(%rsp), %xmm0
-	movq	24(%rsp), %rax
-	subq	%fs:40, %rax
-	jne	.L82
-	addq	$40, %rsp
-	.cfi_remember_state
-	.cfi_def_cfa_offset 8
-	ret
-.L82:
-	.cfi_restore_state
-	call	__stack_chk_fail@PLT
-	.cfi_endproc
-.LFE7288:
-	.size	_Z4prodPKfi, .-_Z4prodPKfi
-	.p2align 4
-	.globl	_Z14horizontal_sumDv8_f
-	.type	_Z14horizontal_sumDv8_f, @function
-_Z14horizontal_sumDv8_f:
-.LFB7289:
-	.cfi_startproc
-	endbr64
-	vhaddps	%ymm0, %ymm0, %ymm1
-	vmovaps	%xmm1, %xmm0
-	vextractf128	$0x1, %ymm1, %xmm1
-	vaddps	%xmm1, %xmm0, %xmm0
-	vhaddps	%xmm0, %xmm0, %xmm0
-	vhaddps	%xmm0, %xmm0, %xmm0
-	ret
-	.cfi_endproc
-.LFE7289:
-	.size	_Z14horizontal_sumDv8_f, .-_Z14horizontal_sumDv8_f
-	.p2align 4
-	.globl	_Z14dot_avx2manualPKfS0_i
-	.type	_Z14dot_avx2manualPKfS0_i, @function
-_Z14dot_avx2manualPKfS0_i:
-.LFB7290:
-	.cfi_startproc
-	endbr64
-	testl	%edx, %edx
-	jle	.L87
-	xorl	%eax, %eax
-	vxorps	%xmm0, %xmm0, %xmm0
-	.p2align 4,,10
-	.p2align 3
-.L86:
-	vmovups	(%rsi,%rax,4), %ymm2
-	vmulps	(%rdi,%rax,4), %ymm2, %ymm1
-	addq	$8, %rax
-	vaddps	%ymm1, %ymm0, %ymm0
-	cmpl	%eax, %edx
-	jg	.L86
-.L85:
-	vhaddps	%ymm0, %ymm0, %ymm0
-	vmovaps	%xmm0, %xmm1
-	vextractf128	$0x1, %ymm0, %xmm0
-	vaddps	%xmm0, %xmm1, %xmm0
-	vhaddps	%xmm0, %xmm0, %xmm0
-	vhaddps	%xmm0, %xmm0, %xmm0
-	vzeroupper
-	ret
-	.p2align 4,,10
-	.p2align 3
-.L87:
-	vxorps	%xmm0, %xmm0, %xmm0
-	jmp	.L85
-	.cfi_endproc
-.LFE7290:
-	.size	_Z14dot_avx2manualPKfS0_i, .-_Z14dot_avx2manualPKfS0_i
-	.section	.text.startup,"ax",@progbits
-	.p2align 4
-	.type	_GLOBAL__sub_I__Z8dot_simdPKfS0_i, @function
-_GLOBAL__sub_I__Z8dot_simdPKfS0_i:
-.LFB7772:
-	.cfi_startproc
-	endbr64
-	pushq	%rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	leaq	_ZStL8__ioinit(%rip), %rbp
-	movq	%rbp, %rdi
-	call	_ZNSt8ios_base4InitC1Ev@PLT
-	movq	_ZNSt8ios_base4InitD1Ev@GOTPCREL(%rip), %rdi
-	movq	%rbp, %rsi
-	popq	%rbp
-	.cfi_def_cfa_offset 8
-	leaq	__dso_handle(%rip), %rdx
-	jmp	__cxa_atexit@PLT
-	.cfi_endproc
-.LFE7772:
-	.size	_GLOBAL__sub_I__Z8dot_simdPKfS0_i, .-_GLOBAL__sub_I__Z8dot_simdPKfS0_i
-	.section	.init_array,"aw"
-	.align 8
-	.quad	_GLOBAL__sub_I__Z8dot_simdPKfS0_i
-	.local	_ZStL8__ioinit
-	.comm	_ZStL8__ioinit,1,1
-	.section	.rodata.cst4,"aM",@progbits,4
-	.align 4
-.LC1:
-	.long	1065353216
-	.hidden	__dso_handle
-	.ident	"GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0"
-	.section	.note.GNU-stack,"",@progbits
-	.section	.note.gnu.property,"a"
-	.align 8
-	.long	1f - 0f
-	.long	4f - 1f
-	.long	5
-0:
-	.string	"GNU"
-1:
-	.align 8
-	.long	0xc0000002
-	.long	3f - 2f
-2:
-	.long	0x3
-3:
-	.align 8
-4:
+        movl    %edx, %r8d
+        subl    %esi, %r8d
+        leal    -1(%r8), %r9d
+        cmpl    $2, %r9d
+        jbe     .L70
+        vmovups (%rdi,%rsi,4), %xmm5
+        vmulps  (%rcx,%rsi,4), %xmm5, %xmm1
+        vaddss  %xmm1, %xmm0, %xmm0
+        vshufps $85, %xmm1, %xmm1, %xmm2
+        vaddss  %xmm2, %xmm0, %xmm0
+        vunpckhps       %xmm1, %xmm1, %xmm2
+        vshufps $255, %xmm1, %xmm1, %xmm1
+        vaddss  %xmm2, %xmm0, %xmm0
+        vaddss  %xmm1, %xmm0, %xmm0
+        testb   $3, %r8b
+        je      .L64
+        andl    $-4, %r8d
+        addl    %r8d, %eax
+.L70:
+        movslq  %eax, %r8
+        vmovss  (%rdi,%r8,4), %xmm6
+        leaq    0(,%r8,4), %rsi
+        vfmadd231ss     (%rcx,%r8,4), %xmm6, %xmm0
+        leal    1(%rax), %r8d
+        cmpl    %r8d, %edx
+        jle     .L64
+        addl    $2, %eax
+        vmovss  4(%rdi,%rsi), %xmm7
+        vfmadd231ss     4(%rcx,%rsi), %xmm7, %xmm0
+        cmpl    %eax, %edx
+        jle     .L64
+        vmovss  8(%rdi,%rsi), %xmm7
+        vfmadd231ss     8(%rcx,%rsi), %xmm7, %xmm0
+        ret
+.L72:
+        vxorps  %xmm0, %xmm0, %xmm0
+.L64:
+        ret
+.L79:
+        vzeroupper
+        ret
+.L73:
+        xorl    %esi, %esi
+        xorl    %eax, %eax
+        vxorps  %xmm0, %xmm0, %xmm0
+        jmp     .L66
+dot_simd2(float const*, float const*, int):
+        subq    $40, %rsp
+        xorl    %ecx, %ecx
+        movl    %edx, 16(%rsp)
+        xorl    %edx, %edx
+        movq    %rsi, 8(%rsp)
+        movq    %rsp, %rsi
+        movq    %rdi, (%rsp)
+        movl    $dot_simd2(float const*, float const*, int) (._omp_fn.0), %edi
+        movl    $0x00000000, 20(%rsp)
+        call    GOMP_parallel
+        vmovss  20(%rsp), %xmm0
+        addq    $40, %rsp
+        ret
+dot_simd3(float const*, float const*, int):
+        subq    $40, %rsp
+        xorl    %ecx, %ecx
+        movl    %edx, 16(%rsp)
+        xorl    %edx, %edx
+        movq    %rsi, 8(%rsp)
+        movq    %rsp, %rsi
+        movq    %rdi, (%rsp)
+        movl    $dot_simd3(float const*, float const*, int) (._omp_fn.0), %edi
+        movl    $0x00000000, 20(%rsp)
+        call    GOMP_parallel
+        vmovss  20(%rsp), %xmm0
+        addq    $40, %rsp
+        ret
+prod(float const*, int):
+        subq    $24, %rsp
+        xorl    %ecx, %ecx
+        xorl    %edx, %edx
+        movl    %esi, 8(%rsp)
+        movq    %rsp, %rsi
+        movq    %rdi, (%rsp)
+        movl    $prod(float const*, int) (._omp_fn.0), %edi
+        movl    $0x3f800000, 12(%rsp)
+        call    GOMP_parallel
+        vmovss  12(%rsp), %xmm0
+        addq    $24, %rsp
+        ret
+horizontal_sum(float vector[8]):
+        vhaddps %ymm0, %ymm0, %ymm1
+        vmovaps %xmm1, %xmm0
+        vextractf128    $0x1, %ymm1, %xmm1
+        vaddps  %xmm1, %xmm0, %xmm0
+        vhaddps %xmm0, %xmm0, %xmm0
+        vhaddps %xmm0, %xmm0, %xmm0
+        ret
+dot_avx2manual(float const*, float const*, int):
+        testl   %edx, %edx
+        jle     .L90
+        xorl    %eax, %eax
+        vxorps  %xmm0, %xmm0, %xmm0
+.L89:
+        vmovups (%rsi,%rax,4), %ymm2
+        vfmadd231ps     (%rdi,%rax,4), %ymm2, %ymm0
+        addq    $8, %rax
+        cmpl    %eax, %edx
+        jg      .L89
+.L88:
+        vhaddps %ymm0, %ymm0, %ymm0
+        vmovaps %xmm0, %xmm1
+        vextractf128    $0x1, %ymm0, %xmm0
+        vaddps  %xmm0, %xmm1, %xmm0
+        vhaddps %xmm0, %xmm0, %xmm0
+        vhaddps %xmm0, %xmm0, %xmm0
+        vzeroupper
+        ret
+.L90:
+        vxorps  %xmm0, %xmm0, %xmm0
+        jmp     .L88
+.LC2:
+        .long   1065353216
