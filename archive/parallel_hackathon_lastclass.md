@@ -2,26 +2,91 @@
 
 ## Instructions
 
-Each group is to examine the following set of problems, sit together and strategize, split up and do as many of the problems as possible. You may create a repo if you know how, or a single google document and paste it all together if you don't. In the hierarchy, from best to worst results:
+Each group should:
 
-* Efficient, working, parallel code using great algorithms
-* Working code for as many problems as possible
-* Code that may not work, but is on the way and shows the structure
-* Pseudocode that shows the idea your group has for this problem, even if you do not have the time to complete
-* Notes on how the problem might be attacked
+1. Read the set of problems below.
+2. Sit together and **strategize**.
+3. Split up work and try to solve **as many problems as possible**.
 
-I will be going around helping groups. After 2 hours, I will select
-each group to present something. You will submit the document in
-canvas after the fact. As long as you make an attempt, you will not be
-penalized for failure, but you must try for those two hours.
+You may:
+
+- Create a **Git repo** if you’re comfortable with that, **or**
+- Use a **single Google Doc** and paste everyone’s work into it.
+
+In order of best to worst results:
+
+1. Efficient, **working, parallel code** using good algorithms.
+2. **Working code** for as many problems as possible.
+3. Code that may not work yet, but **clearly shows the structure/approach**.
+4. **Pseudocode** that shows your idea for the problem, even if you don’t have time to implement it.
+5. **Notes** on how you might attack the problem.
+
+I will be going around helping groups. After about 2 hours, each group will present something.  
+You will submit your document in Canvas afterwards.
+
+As long as you make a **good-faith attempt** for those two hours, you will **not be penalized for failure**—but you must
+actually try.
+
+---
 
 ## Problems
 
-1. Pythagorean Triplets. Write a program that accepts a number n on the command line. Find and count all pythagorean triplets up to n,n,n. For example, with n=10 your code should find (3,4,5), (6,8,10) count = 2. The idea is to come up with the most efficient parallel code to compute this for large $n=10^9$.
+### 1. Pythagorean Triplets
 
-2. Perfect numbers. A perfect number n is one whose factors (excluding n) sum to the same as the number. For example $6 = 1 + 2 + 3$. $28 = 1 + 2 + 4 + 7 + 14$. Write a program that accepts a number n on the command line and prints the perfect numbers, and the count up to n. For example, for n=100, the output should be 6 28 count=2.
+Write a program that accepts a number `n` on the command line and finds all **Pythagorean triplets** $(a,b,c)$ with:
 
-3. Finding common text sections. In project Gutenberg, text for open source books have been created and shared with the world. Each contains a lengthy and annoying header and trailer. The trailer is bigger and contains the legal license information. There is not a single one. Both header and trailer have varied over time. Write a program that finds common blocks of text at the beginning and end of a set of n documents, strips them out and creates a link. For example:
+- $a^2 + b^2 = c^2$
+- $1 \le a, b, c \le n$
+
+For example, with `n = 10`, your code should find:
+
+- $(3, 4, 5)$
+- $(6, 8, 10)$
+
+So the count is `2`.
+
+Your task is to come up with the most **efficient parallel code** to compute this for large $n$, e.g. **$n = 10^9$**.
+
+Think about:
+
+- How to **partition the search space**.
+- How to **avoid redundant work**.
+- Whether you can **avoid checking obviously impossible combinations**.
+
+---
+
+### 2. Perfect Numbers
+
+A **perfect number** $n$ is a positive integer whose proper divisors (factors excluding $n$ itself) **sum to $n$**.
+
+Examples:
+
+- $6 = 1 + 2 + 3$
+- $28 = 1 + 2 + 4 + 7 + 14$
+
+Write a program that:
+
+- Accepts a number `n` on the command line.
+- Prints all perfect numbers $\le n$ and their **count**.
+
+Example:
+
+- Input: `n = 100`
+- Output: `6 28 count = 2`
+
+Goal: design this to scale as well as possible in **parallel**.
+
+---
+
+### 3. Finding Common Text Sections (Gutenberg Headers/Footers)
+
+Project Gutenberg books are open-text files with **annoying headers and trailers** (license blocks). These:
+
+- Are **not identical across all books**.
+- Have **changed over time**.
+- Can be quite **large** (e.g., 5% of the file).
+
+Example documents:
 
 ```text
 This is standard header 1 of my project Gutenberg document
@@ -30,7 +95,7 @@ text text text
 yada yada yada
 This is the standard boring license v1. Why they do this I do not know.
 Sometimes it is 5%
-```
+````
 
 ```text
 This is standard header 1 of my project Gutenberg document
@@ -50,32 +115,112 @@ This is the standard boring license v2. Why they do this I do not know.
 Sometimes it is 5% of the entire document. What a waste!
 ```
 
-Write a program that creates a single header and footer file (you may create them all and then just choose one to use). Each file should have the standard header and footer stripped off
+Write a program that:
+
+1. Finds **common blocks of text** at:
+	* The **beginning** (headers), and
+	* The **end** (footers) of a set of `n` documents.
+2. Strips those common blocks out.
+3. Creates a **link** to a separate header/footer file.
+
+For each processed book, the result should look something like:
 
 ```html
 <a href="header.html">Gutenberg header and license</a>
-
 main body of text
 ```
 
-Example Gutenberg books have been placed in the data section.
+Guidelines:
 
+* You may generate **multiple candidate** header/footer files and then choose one to use.
+* Example Gutenberg books are provided in the **data** section.
 
-4. Partitioning into 2 Equal Sums
+Think about parallelism:
 
-Given n distinct integers in a file (input.txt), read the numbers and divide them into two sets with the same sum. This requires that the sum of the numbers be even. Note the input set will be in random order and will not be consecutive numbers, the only guarantee is that each number is distinct. For example, given:
+* How to process many documents at once.
+* How to detect common prefix/suffix strings efficiently.
 
-```cpp
-1 2 3 4 5 6 7 8 9 10 11 
+---
+
+### 4. Partitioning into Two Equal Sums
+
+Given `n` **distinct integers** in a file (e.g., `input.txt`), read the numbers and divide them into **two sets with the
+same sum**.
+
+Requirements:
+
+* The **total sum** of the numbers must be **even**; otherwise, it’s impossible.
+* The input:
+	* Is in **random order**.
+	* Numbers are **distinct**.
+	* They are **not guaranteed** to be consecutive.
+
+Example input:
+
+```text
+1 2 3 4 5 6 7 8 9 10 11
 ```
-$sum=10(11)/2 = 132/2= 66$
 
-you could split the set into two parts $a=2,10,4,8,9$ and $b=1,3,5,6,7,11$
+The sum is:
 
-5. Partitioning into two sets of equal size.
-Given 2n numbers, find the two sets of equal size that sum to the same value.
+* $\text{sum} = 11 \cdot 12 / 2 = 132 / 2 = 66$
 
-For example, the set (1, 10, 2, 9, 3, 8, 4,7) has a sum of 44 which is even, so it can theoretically be split. The question then becomes is there a subset which has a sum of 22? $10 + 8 + 3 + 1 = 22$, and the other is $2 + 4 + 7 + 9$ so it works. It doesn't have to work. For example, the set (1,100,5,80, 15,60, 35,50) also has 8 members summing to $101+85+85+85=356$ but $178>100+50$ the remaining numbers are too big or too small. I picked numbers that are too big and too small to come up with the right sum. In this case, trying every permutation is going to be the only way to find out if there is an answer.
-This algorithm will probably require backtracking and then just try to come up with a parallel implementation for speed. I suspect that 30 to 50 numbers will be hard. You can try with 1 to n for odd n, for which we know there is an answer. Then test with a different set.
+One valid partition:
 
-1,31, 2, 30, 3, 29, 4, 28, 5, 27, 6, 26, ...
+* Set $A = {2, 4, 8, 9, 10}$
+* Set $B = {1, 3, 5, 6, 7, 11}$
+
+Both sets sum to 33? (You should verify and find a correct partition.)
+Your task is to **find any** valid partition (or report that none exists).
+
+Consider:
+
+* This is related to the **subset sum / partition problem**.
+* It can be **hard** in the worst case (exponential), but small cases may be manageable.
+* Try to design a **parallel** approach (e.g., divide search space across threads).
+
+---
+
+### 5. Partitioning into Two Sets of Equal Size and Equal Sum
+
+Now we add an additional constraint: given **$2n$ numbers**, find **two sets** of:
+
+* **Equal size** (each has $n$ elements),
+* With the **same sum**.
+
+Example:
+
+* The set $(1, 10, 2, 9, 3, 8, 4, 7)$ has:
+	* 8 numbers (so $n = 4$),
+	* Total sum $44$, which is **even**.
+
+We ask: is there a **subset of 4 numbers** that sums to $22$?
+
+Yes:
+
+* $10 + 8 + 3 + 1 = 22$
+* The remaining 4 numbers are $2 + 4 + 7 + 9 = 22$
+
+So this set **can be split** into two equal-size subsets with equal sum.
+
+It **does not have to work** in general. For example:
+
+* The set $(1, 100, 5, 80, 15, 60, 35, 50)$ also has 8 members and an even sum,
+  but there may be **no** way to split it into two size-4 subsets with equal sum.
+* In some constructed examples, numbers are chosen so that:
+
+	* All subsets are either **too big** or **too small** to hit the target sum.
+
+This problem:
+
+* Often requires **backtracking** / exhaustive search.
+* Likely needs a smart **parallel search strategy** to explore the space faster.
+* For 30–50 numbers, this can get very hard.
+
+A good testing strategy:
+
+* Use inputs where you **know** there is an answer.
+
+	* Example: `1, 31, 2, 30, 3, 29, 4, 28, 5, 27, 6, 26, ...`
+	* Variants of $1, 2, \dots, n$ with pairings that obviously sum nicely.
+* Then test with “hard” random or adversarial sets.
