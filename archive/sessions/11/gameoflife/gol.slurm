@@ -12,4 +12,4 @@
 # module load openmpi
 
 # Run the compiled program
-srun  --mpi=openmpi  ./gol
+srun --mpi=openmpi ./gol
