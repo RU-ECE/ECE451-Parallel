@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Integrates conservative scalar equations
  * using a centred scheme, as originally provided in POM.
  *

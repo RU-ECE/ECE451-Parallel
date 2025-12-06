@@ -1,4 +1,4 @@
-﻿#include <immintrin.h>
+#include <immintrin.h>
 
 void sortnettest(__m256i& ar, __m256i& br, __m256i& cr, __m256i& dr) {
 	auto a = ar;

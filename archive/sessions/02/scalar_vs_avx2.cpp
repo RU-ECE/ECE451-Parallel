@@ -1,4 +1,4 @@
-﻿#include <ctime>
+#include <ctime>
 #include <immintrin.h>
 #include <iostream>
 #include <memory>

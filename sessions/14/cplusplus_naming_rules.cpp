@@ -1,4 +1,4 @@
-﻿int main() {
+int main() {
 	int a123;
 	auto ThisIsABigVariable = 2;
 	auto snake_case = 3;

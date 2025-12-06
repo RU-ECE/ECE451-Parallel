@@ -1,4 +1,4 @@
-﻿#include <immintrin.h>
+#include <immintrin.h>
 #include <thread>
 
 using namespace std;

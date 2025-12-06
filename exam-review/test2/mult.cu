@@ -1,4 +1,4 @@
-﻿__global__ void mult(float* c, const float* a, const float* b, const int n) {
+__global__ void mult(float* c, const float* a, const float* b, const int n) {
 	const auto idx = blockIdx.x * blockDim.x + threadIdx.x;
 	if (idx >= n)
 		return; // 31*32 31*32+1 = 993, .. 31*32+8

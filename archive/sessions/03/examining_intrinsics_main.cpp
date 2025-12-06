@@ -1,4 +1,4 @@
-﻿#include <malloc.h>
+#include <malloc.h>
 #include <memory.h>
 
 using namespace std;

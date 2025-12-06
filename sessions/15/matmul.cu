@@ -1,4 +1,4 @@
-﻿// matmul_kernels.cu
+// matmul_kernels.cu
 // Multiple kernels in one file for teaching/comparison
 // Compile: nvcc -O3 matmul.cu
 

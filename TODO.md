@@ -1,4 +1,4 @@
-﻿# Getting Started
+# Getting Started
 
 1. **Get set up for GitHub (you can
    follow [this](https://docs.google.com/document/d/1WOJqA5Vdo9QbeYMGn8pN1B8Uo8-1EnfZAMCAdkDKjFk/edit) guide)**

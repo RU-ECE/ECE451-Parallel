@@ -1,4 +1,4 @@
-﻿#include <immintrin.h>
+#include <immintrin.h>
 
 // there is no good way that I know to make this work well in C++
 // C++ pass by reference will force these values into memory

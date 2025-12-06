@@ -1,4 +1,4 @@
-﻿#include <immintrin.h>
+#include <immintrin.h>
 #include <vector>
 
 #include "benchmark.hpp"

@@ -1,4 +1,4 @@
-﻿__device__ void order(float& a, float& b) { // theoretically should be a register
+__device__ void order(float& a, float& b) { // theoretically should be a register
 	if (a > b) { // but pass by reference is not good, this does not work on CPU
 		const auto temp = a;
 		a = b;

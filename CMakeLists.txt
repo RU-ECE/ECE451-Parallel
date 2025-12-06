@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.22)
 
 # Enable CUDA as a first-class language (for .cu files)
 project(Rutgers_ECE451_Parallel LANGUAGES CXX CUDA)

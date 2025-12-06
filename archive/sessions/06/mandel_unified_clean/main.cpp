@@ -1,4 +1,4 @@
-﻿/*
+/*
 	Author: Dov Kruger
 	Cleaned up, unified Mandelbrot demo combining
 	gangs (vectorized code)

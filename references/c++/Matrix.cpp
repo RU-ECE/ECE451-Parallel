@@ -1,4 +1,4 @@
-﻿#include <thread>
+#include <thread>
 
 using namespace std;
 

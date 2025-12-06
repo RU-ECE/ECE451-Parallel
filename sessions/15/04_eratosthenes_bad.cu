@@ -1,4 +1,4 @@
-﻿auto prime_count = 0;
+auto prime_count = 0;
 
 __global__ void eratosthenes(unsigned int* primes, const unsigned int n) {
 	const auto tid = threadIdx.x; // each thread handles one element

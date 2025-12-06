@@ -1,4 +1,4 @@
-﻿// blur3x3_bench.cu
+// blur3x3_bench.cu
 // Compile: nvcc -O3 blur3x3_bench.cu -o blur3x3_bench
 // Run: ./blur3x3_bench [width] [height] [iters]
 

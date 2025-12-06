@@ -1,4 +1,4 @@
-﻿// default is sequential partitions
+// default is sequential partitions
 void product(const float a[], const float b[], float c[], const int n) {
 #pragma omp parallel for
 	for (auto i = 0; i < n; ++i)

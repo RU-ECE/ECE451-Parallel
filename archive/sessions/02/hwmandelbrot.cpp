@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Go from (-2,-1) to (2,1)
  *
  * For each point (x,y), calculate the number of iterations until |Z| > 2

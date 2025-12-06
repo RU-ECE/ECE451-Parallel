@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <random>
 
 #include "../14/src/benchmark.hpp"

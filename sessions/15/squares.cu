@@ -1,4 +1,4 @@
-﻿#include <cstdio>
+#include <cstdio>
 
 __global__ void square(int* array, const int n) {
 	const auto tid = blockDim.x * blockIdx.x + threadIdx.x;

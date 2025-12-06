@@ -1,4 +1,4 @@
-﻿int x; // x is global
+int x; // x is global
 
 void f() {
 	auto x = 2; // x is on the stack (auto)

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <chrono>
 #include <iomanip>
 #include <iostream>

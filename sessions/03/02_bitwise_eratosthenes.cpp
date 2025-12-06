@@ -1,4 +1,4 @@
-﻿#include <chrono>
+#include <chrono>
 #include <cmath>
 #include <immintrin.h>
 #include <iostream>

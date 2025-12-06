@@ -1,4 +1,4 @@
-﻿#include <cuda.h>
+#include <cuda.h>
 #include <iostream>
 
 using namespace std;

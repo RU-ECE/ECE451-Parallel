@@ -1,4 +1,4 @@
-﻿class PrimeBits {
+class PrimeBits {
 	unsigned long n;
 	unsigned long* p;
 	unsigned long count;

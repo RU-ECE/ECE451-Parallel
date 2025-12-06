@@ -1,4 +1,4 @@
-﻿#include <cmath>
+#include <cmath>
 
 /*
  * how to return multiple values in registers in C++??

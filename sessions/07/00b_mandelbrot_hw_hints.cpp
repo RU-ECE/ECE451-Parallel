@@ -1,4 +1,4 @@
-﻿#include <immintrin.h>
+#include <immintrin.h>
 
 int main() {
 	auto a = _mm256_setzero_ps();
