@@ -1,17 +1,16 @@
-﻿#include <cstdint>
-#include <iostream>
+﻿#include <iostream>
 
 using namespace std;
 
 class Matrix {
-	uint32_t rows;
-	uint32_t cols;
+	unsigned int rows;
+	unsigned int cols;
 	double* data;
 
 public:
-	Matrix(const uint32_t r, const uint32_t c, const double v) :
+	Matrix(const unsigned int r, const unsigned int c, const double v) :
 		rows(r), cols(c), data(new double[rows * cols]) { // initializer list
-		for (auto i = 0; i < rows * cols; i++)
+		for (auto i = 0UL; i < rows * cols; i++)
 			data[i] = v;
 	}
 
@@ -21,7 +20,7 @@ public:
 
 	// copy constructor only happens to uninitialized memory
 	Matrix(const Matrix& orig) : rows(orig.rows), cols(orig.cols), data(new double[rows * cols]) {
-		for (auto i = 0; i < rows * cols; i++)
+		for (auto i = 0UL; i < rows * cols; i++)
 			data[i] = orig.data[i];
 	}
 
@@ -37,14 +36,14 @@ public:
 		if (a.rows != b.rows || a.cols != b.cols)
 			throw invalid_argument("Matrix sizes don't match");
 		Matrix ans(a.rows, a.cols, 0.0); // this is inefficient, creates matrix of all zeros
-		for (auto i = 0; i < a.rows * a.cols; i++)
+		for (auto i = 0UL; i < a.rows * a.cols; i++)
 			ans.data[i] = a.data[i] + b.data[i];
 		return ans;
 	}
 
 	friend ostream& operator<<(ostream& os, const Matrix& m) {
-		for (auto i = 0, c = 0; i < m.rows; i++) {
-			for (auto j = 0; j < m.cols; j++, c++)
+		for (auto i = 0UL, c = 0UL; i < m.rows; i++) {
+			for (auto j = 0UL; j < m.cols; j++, c++)
 				os << m.data[c] << " ";
 			os << endl;
 		}

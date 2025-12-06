@@ -18,7 +18,7 @@ using namespace std;
 	} while (0)
 
 static constexpr float KERNEL_3x3[3][3] = {
-	{1 / 9.f, 1 / 9.f, 1 / 9.f}, {1 / 9.f, 1 / 9.f, 1 / 9.f}, {1 / 9.f, 1 / 9.f, 1 / 9.f}};
+	{1 / 9.0f, 1 / 9.0f, 1 / 9.0f}, {1 / 9.0f, 1 / 9.0f, 1 / 9.0f}, {1 / 9.0f, 1 / 9.0f, 1 / 9.0f}};
 
 /*
  * P P P
@@ -35,20 +35,18 @@ static constexpr float KERNEL_3x3[3][3] = {
  * 3.55
  */
 
-
 // -----------------------------
 // Kernel 1: Naive brute-force
 // Each thread computes one output pixel reading 9 global loads
 // -----------------------------
 __global__ void blur3x3_naive(const float* __restrict__ in, float* __restrict__ out, const int W, const int H) {
-	const int x = blockIdx.x * blockDim.x + threadIdx.x, y = blockIdx.y * blockDim.y + threadIdx.y;
+	const auto x = blockIdx.x * blockDim.x + threadIdx.x, y = blockIdx.y * blockDim.y + threadIdx.y;
 	if (x >= W || y >= H)
 		return;
-
 	auto sum = 0.0f;
 	// 3x3 kernel centered on (x,y). Use clamp at borders.
-	for (int ky = -1; ky <= 1; ++ky)
-		for (int kx = -1; kx <= 1; ++kx)
+	for (auto ky = -1; ky <= 1; ++ky)
+		for (auto kx = -1; kx <= 1; ++kx)
 			sum += in[min(max(y + ky, 0), H - 1) * W + min(max(x + kx, 0), W - 1)] * KERNEL_3x3[ky + 1][kx + 1];
 	out[y * W + x] = sum;
 }
@@ -62,67 +60,36 @@ template <int BX, int BY>
 __global__ void blur3x3_smem(const float* __restrict__ in, float* __restrict__ out, const int W, const int H) {
 	// shared tile dimensions: BX+2 by BY+2
 	__shared__ float s[(BY + 2) * (BX + 2)];
-
-	const int tx = threadIdx.x;
-	const int ty = threadIdx.y;
-	const int x = blockIdx.x * BX + tx;
-	const int y = blockIdx.y * BY + ty;
-
+	const auto tx = threadIdx.x, ty = threadIdx.y, x = blockIdx.x * BX + tx, y = blockIdx.y * BY + ty;
 	// shared memory coordinates (shifted by +1 for halo)
-	const int s_x = tx + 1;
-	const int s_y = ty + 1;
-	int s_idx = s_y * (BX + 2) + s_x;
-
+	const auto s_x = tx + 1, s_y = ty + 1;
+	auto s_idx = s_y * (BX + 2) + s_x;
 	// load center element (if within image) else load clamped border
-	const int xc = min(max(x, 0), W - 1);
-	const int yc = min(max(y, 0), H - 1);
+	const auto xc = min(max(x, 0), W - 1), yc = min(max(y, 0), H - 1);
 	s[s_idx] = in[yc * W + xc];
-
 	// load halos: threads on edges load the surrounding pixels
 	// left
-	if (tx == 0) {
-		const int xl = min(max(x - 1, 0), W - 1);
-		s[s_y * (BX + 2) + (s_x - 1)] = in[yc * W + xl];
-	}
+	if (tx == 0)
+		s[s_y * (BX + 2) + (s_x - 1)] = in[yc * W + min(max(x - 1, 0), W - 1)];
 	// right
-	if (tx == BX - 1) {
-		const int xr = min(max(x + 1, 0), W - 1);
-		s[s_y * (BX + 2) + (s_x + 1)] = in[yc * W + xr];
-	}
+	if (tx == BX - 1)
+		s[s_y * (BX + 2) + (s_x + 1)] = in[yc * W + min(max(x + 1, 0), W - 1)];
 	// top
-	if (ty == 0) {
-		const int yt = min(max(y - 1, 0), H - 1);
-		s[(s_y - 1) * (BX + 2) + s_x] = in[yt * W + xc];
-	}
+	if (ty == 0)
+		s[(s_y - 1) * (BX + 2) + s_x] = in[min(max(y - 1, 0), H - 1) * W + xc];
 	// bottom
-	if (ty == BY - 1) {
-		const int yb = min(max(y + 1, 0), H - 1);
-		s[(s_y + 1) * (BX + 2) + s_x] = in[yb * W + xc];
-	}
+	if (ty == BY - 1)
+		s[(s_y + 1) * (BX + 2) + s_x] = in[min(max(y + 1, 0), H - 1) * W + xc];
 	// corners (four)
-	if (tx == 0 && ty == 0) {
-		const int xl = min(max(x - 1, 0), W - 1);
-		const int yt = min(max(y - 1, 0), H - 1);
-		s[(s_y - 1) * (BX + 2) + (s_x - 1)] = in[yt * W + xl];
-	}
-	if (tx == BX - 1 && ty == 0) {
-		const int xr = min(max(x + 1, 0), W - 1);
-		const int yt = min(max(y - 1, 0), H - 1);
-		s[(s_y - 1) * (BX + 2) + (s_x + 1)] = in[yt * W + xr];
-	}
-	if (tx == 0 && ty == BY - 1) {
-		const int xl = min(max(x - 1, 0), W - 1);
-		const int yb = min(max(y + 1, 0), H - 1);
-		s[(s_y + 1) * (BX + 2) + (s_x - 1)] = in[yb * W + xl];
-	}
-	if (tx == BX - 1 && ty == BY - 1) {
-		const int xr = min(max(x + 1, 0), W - 1);
-		const int yb = min(max(y + 1, 0), H - 1);
-		s[(s_y + 1) * (BX + 2) + (s_x + 1)] = in[yb * W + xr];
-	}
-
+	if (tx == 0 && ty == 0)
+		s[(s_y - 1) * (BX + 2) + (s_x - 1)] = in[min(max(y - 1, 0), H - 1) * W + min(max(x - 1, 0), W - 1)];
+	if (tx == BX - 1 && ty == 0)
+		s[(s_y - 1) * (BX + 2) + (s_x + 1)] = in[min(max(y - 1, 0), H - 1) * W + min(max(x + 1, 0), W - 1)];
+	if (tx == 0 && ty == BY - 1)
+		s[(s_y + 1) * (BX + 2) + (s_x - 1)] = in[min(max(y + 1, 0), H - 1) * W + min(max(x - 1, 0), W - 1)];
+	if (tx == BX - 1 && ty == BY - 1)
+		s[(s_y + 1) * (BX + 2) + (s_x + 1)] = in[min(max(y + 1, 0), H - 1) * W + min(max(x + 1, 0), W - 1)];
 	__syncthreads();
-
 	// compute output if within image bounds
 	if (x < W && y < H) {
 		auto sum = 0.0f;
@@ -130,15 +97,12 @@ __global__ void blur3x3_smem(const float* __restrict__ in, float* __restrict__ o
 		sum += s[(s_y - 1) * (BX + 2) + (s_x - 1)] * KERNEL_3x3[0][0];
 		sum += s[(s_y - 1) * (BX + 2) + s_x] * KERNEL_3x3[0][1];
 		sum += s[(s_y - 1) * (BX + 2) + (s_x + 1)] * KERNEL_3x3[0][2];
-
 		sum += s[s_y * (BX + 2) + (s_x - 1)] * KERNEL_3x3[1][0];
 		sum += s[s_y * (BX + 2) + s_x] * KERNEL_3x3[1][1];
 		sum += s[s_y * (BX + 2) + (s_x + 1)] * KERNEL_3x3[1][2];
-
 		sum += s[(s_y + 1) * (BX + 2) + (s_x - 1)] * KERNEL_3x3[2][0];
 		sum += s[(s_y + 1) * (BX + 2) + s_x] * KERNEL_3x3[2][1];
 		sum += s[(s_y + 1) * (BX + 2) + (s_x + 1)] * KERNEL_3x3[2][2];
-
 		out[y * W + x] = sum;
 	}
 }
@@ -152,147 +116,73 @@ __global__ void blur3x3_smem(const float* __restrict__ in, float* __restrict__ o
 template <int BX, int BY>
 __global__ void blur3x3_smem_reg(const float* __restrict__ in, float* __restrict__ out, const int W, const int H) {
 	// tile width handled by block = BX*2, tile height = BY
-	const int tileW = BX * 2;
-	const int tileH = BY;
-	const int sW = tileW + 2;
-	const int sH = tileH + 2;
+	const auto tileW = BX * 2;
+	const auto tileH = BY;
+	const auto sW = tileW + 2;
+	[[maybe_unused]] const auto sH = tileH + 2;
 	extern __shared__ float s_ext[]; // size sW * sH
-	float* s = s_ext;
-
-	const int tx = threadIdx.x; // 0..BX-1
-	const int ty = threadIdx.y; // 0..BY-1
-
+	const auto s = s_ext;
+	const auto tx = threadIdx.x, // 0..BX-1
+		ty = threadIdx.y; // 0..BY-1
 	// base coordinates for block
-	const int baseX = blockIdx.x * tileW;
-	const int baseY = blockIdx.y * tileH;
-
+	const auto baseX = blockIdx.x * tileW, baseY = blockIdx.y * tileH;
 	// each thread will load two interior pixels (x0,x1) into shared memory
-	const int x0 = baseX + tx;
-	const int x1 = baseX + tx + BX; // second column handled by same thread
-	const int y = baseY + ty;
-
+	const auto x0 = baseX + tx,
+			   x1 = baseX + tx + BX, // second column handled by same thread
+		y = baseY + ty;
 	// shared memory coords: shift by +1 (halo)
-	const int s_x0 = tx + 1;
-	const int s_x1 = tx + 1 + BX;
-	const int s_y = ty + 1;
-
+	const auto s_x0 = tx + 1, s_x1 = tx + 1 + BX, s_y = ty + 1;
 	// load center pixels (clamped)
-	const int yc = min(max(y, 0), H - 1);
-
+	const auto yc = min(max(y, 0), H - 1);
 	// load center two pixels (if they exist)
-	if (x0 < W) {
-		const int xc0 = min(max(x0, 0), W - 1);
-		s[s_y * sW + s_x0] = in[yc * W + xc0];
-	} else {
-		s[s_y * sW + s_x0] = 0.0f;
-	}
-	if (x1 < W) {
-		const int xc1 = min(max(x1, 0), W - 1);
-		s[s_y * sW + s_x1] = in[yc * W + xc1];
-	} else {
-		s[s_y * sW + s_x1] = 0.0f;
-	}
-
+	s[s_y * sW + s_x0] = x0 < W ? in[yc * W + min(max(x0, 0), W - 1)] : 0.0f;
+	s[s_y * sW + s_x1] = x1 < W ? in[yc * W + min(max(x1, 0), W - 1)] : 0.0f;
 	// load left/right halo columns: threads with tx==0 load left halo column (two spots)
 	if (tx == 0) {
-		const int xl = min(max(baseX - 1, 0), W - 1);
-		const int xr = min(max(baseX + tileW - 1, 0), W - 1);
 		// left halo (at s_x0 -1)
-		s[s_y * sW + 0] = in[yc * W + xl];
+		s[s_y * sW + 0] = in[yc * W + min(max(baseX - 1, 0), W - 1)];
 		// rightmost interior location was loaded by thread tx=BX-1's x1 slot; but we should ensure right halo loaded at
 		// s_x = tileW+1
-		s[s_y * sW + (sW - 1)] = in[yc * W + xr];
+		s[s_y * sW + (sW - 1)] = in[yc * W + min(max(baseX + tileW - 1, 0), W - 1)];
 	}
-
 	// load top/bottom halo rows (for this thread's two x positions)
 	if (ty == 0) {
-		const int yt = min(max(y - 1, 0), H - 1);
+		const auto yt = min(max(y - 1, 0), H - 1);
 		// top for x0
-		if (x0 < W) {
-			const int xc0 = min(max(x0, 0), W - 1);
-			s[(s_y - 1) * sW + s_x0] = in[yt * W + xc0];
-		} else {
-			s[(s_y - 1) * sW + s_x0] = 0.0f;
-		}
+		s[(s_y - 1) * sW + s_x0] = x0 < W ? in[yt * W + min(max(x0, 0), W - 1)] : 0.0f;
 		// top for x1
-		if (x1 < W) {
-			const int xc1 = min(max(x1, 0), W - 1);
-			s[(s_y - 1) * sW + s_x1] = in[yt * W + xc1];
-		} else {
-			s[(s_y - 1) * sW + s_x1] = 0.0f;
-		}
+		s[(s_y - 1) * sW + s_x1] = x1 < W ? in[yt * W + min(max(x1, 0), W - 1)] : 0.0f;
 		// corners: left-top and right-top (for tx==0 thread)
 		if (tx == 0) {
-			const int xl = min(max(baseX - 1, 0), W - 1);
-			s[(s_y - 1) * sW + 0] = in[yt * W + xl];
-			const int xr = min(max(baseX + tileW - 1, 0), W - 1);
-			s[(s_y - 1) * sW + (sW - 1)] = in[yt * W + xr];
+			s[(s_y - 1) * sW + 0] = in[yt * W + min(max(baseX - 1, 0), W - 1)];
+			s[(s_y - 1) * sW + (sW - 1)] = in[yt * W + min(max(baseX + tileW - 1, 0), W - 1)];
 		}
 	}
 	if (ty == BY - 1) {
-		const int yb = min(max(y + 1, 0), H - 1);
-		if (x0 < W) {
-			const int xc0 = min(max(x0, 0), W - 1);
-			s[(s_y + 1) * sW + s_x0] = in[yb * W + xc0];
-		} else {
-			s[(s_y + 1) * sW + s_x0] = 0.0f;
-		}
-		if (x1 < W) {
-			const int xc1 = min(max(x1, 0), W - 1);
-			s[(s_y + 1) * sW + s_x1] = in[yb * W + xc1];
-		} else {
-			s[(s_y + 1) * sW + s_x1] = 0.0f;
-		}
+		const auto yb = min(max(y + 1, 0), H - 1);
+		s[(s_y + 1) * sW + s_x0] = x0 < W ? in[yb * W + min(max(x0, 0), W - 1)] : 0.0f;
+		s[(s_y + 1) * sW + s_x1] = x1 < W ? in[yb * W + min(max(x1, 0), W - 1)] : 0.0f;
 		if (tx == 0) {
-			const int xl = min(max(baseX - 1, 0), W - 1);
-			s[(s_y + 1) * sW + 0] = in[yb * W + xl];
-			const int xr = min(max(baseX + tileW - 1, 0), W - 1);
-			s[(s_y + 1) * sW + (sW - 1)] = in[yb * W + xr];
+			s[(s_y + 1) * sW + 0] = in[yb * W + min(max(baseX - 1, 0), W - 1)];
+			s[(s_y + 1) * sW + (sW - 1)] = in[yb * W + min(max(baseX + tileW - 1, 0), W - 1)];
 		}
 	}
-
 	__syncthreads();
-
 	// Now each thread computes two outputs (for x0 and x1) using registers
 	if (x0 < W && y < H) {
-		const float a00 = s[(s_y - 1) * sW + (s_x0 - 1)];
-		const float a01 = s[(s_y - 1) * sW + s_x0];
-		const float a02 = s[(s_y - 1) * sW + (s_x0 + 1)];
-
-		const float a10 = s[s_y * sW + (s_x0 - 1)];
-		const float a11 = s[s_y * sW + s_x0];
-		const float a12 = s[s_y * sW + (s_x0 + 1)];
-
-		const float a20 = s[(s_y + 1) * sW + (s_x0 - 1)];
-		const float a21 = s[(s_y + 1) * sW + s_x0];
-		const float a22 = s[(s_y + 1) * sW + (s_x0 + 1)];
-
-		const float sum0 = a00 * KERNEL_3x3[0][0] + a01 * KERNEL_3x3[0][1] + a02 * KERNEL_3x3[0][2] +
-			a10 * KERNEL_3x3[1][0] + a11 * KERNEL_3x3[1][1] + a12 * KERNEL_3x3[1][2] + a20 * KERNEL_3x3[2][0] +
-			a21 * KERNEL_3x3[2][1] + a22 * KERNEL_3x3[2][2];
-
-		out[y * W + x0] = sum0;
+		out[y * W + x0] = s[(s_y - 1) * sW + (s_x0 - 1)] * KERNEL_3x3[0][0] +
+			s[(s_y - 1) * sW + s_x0] * KERNEL_3x3[0][1] + s[(s_y - 1) * sW + (s_x0 + 1)] * KERNEL_3x3[0][2] +
+			s[s_y * sW + (s_x0 - 1)] * KERNEL_3x3[1][0] + s[s_y * sW + s_x0] * KERNEL_3x3[1][1] +
+			s[s_y * sW + (s_x0 + 1)] * KERNEL_3x3[1][2] + s[(s_y + 1) * sW + (s_x0 - 1)] * KERNEL_3x3[2][0] +
+			s[(s_y + 1) * sW + s_x0] * KERNEL_3x3[2][1] + s[(s_y + 1) * sW + (s_x0 + 1)] * KERNEL_3x3[2][2];
 	}
-
 	// second output
 	if (x1 < W && y < H) {
-		const float b00 = s[(s_y - 1) * sW + (s_x1 - 1)];
-		const float b01 = s[(s_y - 1) * sW + s_x1];
-		const float b02 = s[(s_y - 1) * sW + (s_x1 + 1)];
-
-		const float b10 = s[s_y * sW + (s_x1 - 1)];
-		const float b11 = s[s_y * sW + s_x1];
-		const float b12 = s[s_y * sW + (s_x1 + 1)];
-
-		const float b20 = s[(s_y + 1) * sW + (s_x1 - 1)];
-		const float b21 = s[(s_y + 1) * sW + s_x1];
-		const float b22 = s[(s_y + 1) * sW + (s_x1 + 1)];
-
-		const float sum1 = b00 * KERNEL_3x3[0][0] + b01 * KERNEL_3x3[0][1] + b02 * KERNEL_3x3[0][2] +
-			b10 * KERNEL_3x3[1][0] + b11 * KERNEL_3x3[1][1] + b12 * KERNEL_3x3[1][2] + b20 * KERNEL_3x3[2][0] +
-			b21 * KERNEL_3x3[2][1] + b22 * KERNEL_3x3[2][2];
-
-		out[y * W + x1] = sum1;
+		out[y * W + x1] = s[(s_y - 1) * sW + (s_x1 - 1)] * KERNEL_3x3[0][0] +
+			s[(s_y - 1) * sW + s_x1] * KERNEL_3x3[0][1] + s[(s_y - 1) * sW + (s_x1 + 1)] * KERNEL_3x3[0][2] +
+			s[s_y * sW + (s_x1 - 1)] * KERNEL_3x3[1][0] + s[s_y * sW + s_x1] * KERNEL_3x3[1][1] +
+			s[s_y * sW + (s_x1 + 1)] * KERNEL_3x3[1][2] + s[(s_y + 1) * sW + (s_x1 - 1)] * KERNEL_3x3[2][0] +
+			s[(s_y + 1) * sW + s_x1] * KERNEL_3x3[2][1] + s[(s_y + 1) * sW + (s_x1 + 1)] * KERNEL_3x3[2][2];
 	}
 }
 
@@ -308,7 +198,6 @@ void init_image(float* a, const int W, const int H) {
 double benchmark_naive(const float* d_in, float* d_out, const int W, const int H, const int iters) {
 	dim3 block(16, 16);
 	dim3 grid((W + block.x - 1) / block.x, (H + block.y - 1) / block.y);
-
 	cudaEvent_t s, e;
 	CHECK(cudaEventCreate(&s));
 	CHECK(cudaEventCreate(&e));
@@ -325,7 +214,7 @@ double benchmark_naive(const float* d_in, float* d_out, const int W, const int H
 }
 
 double benchmark_smem(const float* d_in, float* d_out, const int W, const int H, const int iters) {
-	constexpr constexpr auto BX = 16, BY = 16;
+	constexpr auto BX = 16, BY = 16;
 	dim3 block(BX, BY);
 	dim3 grid((W + BX - 1) / BX, (H + BY - 1) / BY);
 
@@ -345,14 +234,14 @@ double benchmark_smem(const float* d_in, float* d_out, const int W, const int H,
 }
 
 double benchmark_smem_reg(const float* d_in, float* d_out, const int W, const int H, const int iters) {
-	constexpr constexpr auto BX = 16, BY = 16;
-	constexpr int tileW = BX * 2;
+	constexpr auto BX = 16, BY = 16;
+	constexpr auto tileW = BX * 2UL;
 	dim3 block(BX, BY);
 	dim3 grid((W + tileW - 1) / tileW, (H + BY - 1) / BY);
 
-	constexpr size_t sW = tileW + 2;
-	constexpr size_t sH = BY + 2;
-	size_t shared_bytes = sW * sH * sizeof(float);
+	constexpr auto sW = tileW + 2UL;
+	constexpr auto sH = BY + 2UL;
+	auto shared_bytes = sW * sH * sizeof(float);
 
 	cudaEvent_t s, e;
 	CHECK(cudaEventCreate(&s));
@@ -370,16 +259,15 @@ double benchmark_smem_reg(const float* d_in, float* d_out, const int W, const in
 }
 
 bool compare_device_to_host(const float* d_res, const float* host_ref, const int W, const int H) {
-	const size_t N = static_cast<size_t>(W) * H;
+	const auto N = static_cast<size_t>(W) * H;
 	const auto tmp = static_cast<float*>(malloc(N * sizeof(float)));
 	CHECK(cudaMemcpy(tmp, d_res, N * sizeof(float), cudaMemcpyDeviceToHost));
 	auto ok = true;
-	for (size_t i = 0; i < N; ++i) {
-		float a = tmp[i], b = host_ref[i];
-		if (fabs(a - b) > 1e-5f) {
+	for (auto i = 0UL; i < N; ++i) {
+		if (const auto a = tmp[i], b = host_ref[i]; fabs(a - b) > 1e-5f) {
 			ok = false;
 			// print first mismatch for debugging
-			size_t y = i / W, x = i % W;
+			const auto y = i / W, x = i % W;
 			printf("mismatch at (%zu,%zu): gpu=%.6f host=%.6f\n", x, y, a, b);
 			break;
 		}
@@ -393,84 +281,69 @@ void cpu_blur_reference(const float* in, float* out, const int W, const int H) {
 	for (auto y = 0; y < H; ++y) {
 		for (auto x = 0; x < W; ++x) {
 			auto sum = 0.0f;
-			for (int ky = -1; ky <= 1; ++ky) {
-				const int yy = min(max(y + ky, 0), H - 1);
-				for (int kx = -1; kx <= 1; ++kx) {
-					const int xx = min(max(x + kx, 0), W - 1);
-					sum += in[yy * W + xx] * KERNEL_3x3[ky + 1][kx + 1];
-				}
-			}
+			for (auto ky = -1; ky <= 1; ++ky)
+				for (auto kx = -1, yy = min(max(y + ky, 0), H - 1); kx <= 1; ++kx)
+					sum += in[yy * W + min(max(x + kx, 0), W - 1)] * KERNEL_3x3[ky + 1][kx + 1];
 			out[y * W + x] = sum;
 		}
 	}
 }
 
-int main(const int argc, char** argv) {
-	auto W = 4096, H = 4096;
+int main(const int argc, char* argv[]) {
+	auto W = 4096L, H = 4096L;
 	if (argc >= 3) {
-		W = atoi(argv[1]);
-		H = atoi(argv[2]);
+		W = strtol(argv[1], nullptr, 10);
+		H = strtol(argv[2], nullptr, 10);
 	}
-	auto iters = 20;
+	auto iters = 20L;
 	if (argc >= 4)
-		iters = atoi(argv[3]);
-	printf("Image %d x %d, iterations %d\n", W, H, iters);
-
-	const size_t N = static_cast<size_t>(W) * H;
-	const size_t bytes = N * sizeof(float);
-
+		iters = strtol(argv[3], nullptr, 10);
+	printf("Image %ld x %ld, iterations %ld\n", W, H, iters);
+	const auto N = static_cast<size_t>(W) * H;
+	const auto bytes = N * sizeof(float);
 	const auto h_in = static_cast<float*>(malloc(bytes));
 	const auto h_ref = static_cast<float*>(malloc(bytes));
 	init_image(h_in, W, H);
 	cpu_blur_reference(h_in, h_ref, W, H);
-
 	float *d_in, *d_out;
 	CHECK(cudaMalloc(reinterpret_cast<void**>(&d_in), bytes));
 	CHECK(cudaMalloc(reinterpret_cast<void**>(&d_out), bytes));
 	CHECK(cudaMemcpy(d_in, h_in, bytes, cudaMemcpyHostToDevice));
-
 	// Warmup single run to avoid startup costs
 	{
 		dim3 b(16, 16), g((W + 15) / 16, (H + 15) / 16);
 		blur3x3_naive<<<g, b>>>(d_in, d_out, W, H);
 		CHECK(cudaDeviceSynchronize());
 	}
-
 	// Benchmark naive
-	const double ms_naive = benchmark_naive(d_in, d_out, W, H, iters);
+	const auto ms_naive = benchmark_naive(d_in, d_out, W, H, iters);
 	CHECK(cudaDeviceSynchronize());
-	const bool ok_naive = compare_device_to_host(d_out, h_ref, W, H);
+	const auto ok_naive = compare_device_to_host(d_out, h_ref, W, H);
 	printf("Naive: %.3f ms (avg), %s\n", ms_naive / iters, ok_naive ? "OK" : "WRONG");
-
 	// Benchmark shared-memory
-	const double ms_smem = benchmark_smem(d_in, d_out, W, H, iters);
+	const auto ms_smem = benchmark_smem(d_in, d_out, W, H, iters);
 	CHECK(cudaDeviceSynchronize());
-	const bool ok_smem = compare_device_to_host(d_out, h_ref, W, H);
+	const auto ok_smem = compare_device_to_host(d_out, h_ref, W, H);
 	printf("SMEM:  %.3f ms (avg), %s\n", ms_smem / iters, ok_smem ? "OK" : "WRONG");
-
 	// Benchmark shared-memory + register (2 outputs per thread)
-	const double ms_smem_reg = benchmark_smem_reg(d_in, d_out, W, H, iters);
+	const auto ms_smem_reg = benchmark_smem_reg(d_in, d_out, W, H, iters);
 	CHECK(cudaDeviceSynchronize());
-	const bool ok_smem_reg = compare_device_to_host(d_out, h_ref, W, H);
+	const auto ok_smem_reg = compare_device_to_host(d_out, h_ref, W, H);
 	printf("SMEM+REG: %.3f ms (avg), %s\n", ms_smem_reg / iters, ok_smem_reg ? "OK" : "WRONG");
-
 	// Print simple bandwidth numbers (approx): each output reads 9 reads but shared versions reduce global reads.
-	const double avg_naive = ms_naive / iters;
-	const double avg_smem = ms_smem / iters;
-	const double avg_smemr = ms_smem_reg / iters;
-	const double GB = static_cast<double>(bytes) / (1024.0 * 1024.0 * 1024.0);
-
+	const auto avg_naive = ms_naive / iters;
+	const auto avg_smem = ms_smem / iters;
+	const auto avg_smemr = ms_smem_reg / iters;
+	const auto GB = static_cast<double>(bytes) / (1024.0 * 1024.0 * 1024.0);
 	printf("\nAverage times (ms): naive=%.3f, smem=%.3f, smem_reg=%.3f\n", avg_naive, avg_smem, avg_smemr);
 	printf("Image size: %.3f GB\n", GB);
 	// Note: these â€œbandwidthâ€ numbers are very approximate
 	printf("Bandwidth (approx): naive: %.2f GB/s, smem: %.2f GB/s, smem_reg: %.2f GB/s\n", GB / (avg_naive / 1000.0),
 		   GB / (avg_smem / 1000.0), GB / (avg_smemr / 1000.0));
-
 	// cleanup
 	CHECK(cudaFree(d_in));
 	CHECK(cudaFree(d_out));
 	free(h_in);
 	free(h_ref);
-
 	return 0;
 }

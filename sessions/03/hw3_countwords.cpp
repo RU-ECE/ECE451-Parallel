@@ -1,16 +1,17 @@
 ﻿#include <algorithm>
-#include <cstdint>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <unordered_map>
 
 using namespace std;
+using namespace filesystem;
 
 struct word_info {
-	uint64_t count; // total number of times the word was found
-	uint32_t in_books; // in how many books
-	int32_t last_book; // number of last book it was found in
+	unsigned long count; // total number of times the word was found
+	unsigned int in_books; // in how many books
+	int last_book; // number of last book it was found in
 };
 // "the" last_book: -1 in_book = 1 count = 1 last_book = 1
 // "the" book: 2 last_book = 1, count = 2 last_book = 2
@@ -18,7 +19,7 @@ class Dict {
 	unordered_map<string, word_info> dict;
 
 public:
-	Dict() {}
+	Dict() = default;
 	void add_word(const string& word, const int book) {
 		if (!dict.contains(word)) {
 			dict[word] = {1, 1, book};
@@ -30,15 +31,10 @@ public:
 	}
 };
 
-#include <filesystem>
-
-namespace fs = filesystem;
-
 // open a single book
 Dict d;
 
-void openfile(const fs::path& path, const int book_num) {
-
+void openfile(const path& path, const int book_num) {
 	ifstream file(path);
 	if (!file.is_open()) {
 		cerr << "Failed to open file: " << path << endl;
@@ -56,20 +52,18 @@ void openfile(const fs::path& path, const int book_num) {
 		d.add_word(word, book_num);
 	}
 }
-int main(int argc, char* argv[]) {
+int main(int, char* argv[]) {
 	const string path = argv[1];
-
 	try {
 		auto book_num = 0;
-		for (const auto& entry : fs::directory_iterator(path)) {
+		for (const auto& entry : directory_iterator(path)) {
 			if (entry.is_regular_file() && entry.path().extension() == ".txt") {
 				cout << "Found .txt file: " << entry.path().filename() << endl;
 				openfile(entry.path(), ++book_num);
 			}
 		}
-	} catch (const fs::filesystem_error& err) {
+	} catch (const filesystem_error& err) {
 		cerr << "Filesystem error: " << err.what() << endl;
 	}
-
 	return 0;
 }

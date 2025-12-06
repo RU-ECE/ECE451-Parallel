@@ -1,8 +1,8 @@
 ﻿#include <cmath>
 
 /*
-	how to return multiple values in registers in C++??
-*/
+ * how to return multiple values in registers in C++??
+ */
 
 using namespace std;
 
@@ -18,7 +18,7 @@ struct Polar {
 Polar rect2polar(const float x, const float y) { return {sqrt(x * x + y * y), atan2(y, x)}; }
 
 int main() {
-	constexpr float x = 3, y = 4;
+	constexpr auto x = 3.0, y = 4.0;
 	float r, theta;
 
 	rect2polar(x, y, r, theta);

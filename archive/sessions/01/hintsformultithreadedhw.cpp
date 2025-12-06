@@ -25,9 +25,9 @@ void testkthreads(const int k) {
 
 int main() {
 	for (auto k = 1; k <= 16; k *= 2) {
-		const clock_t t0 = clock();
+		const auto t0 = clock();
 		testkthreads(k);
-		const clock_t t1 = clock();
+		const auto t1 = clock();
 		cout << static_cast<double>(t1 - t0) / CLOCKS_PER_SEC << endl;
 	}
 }

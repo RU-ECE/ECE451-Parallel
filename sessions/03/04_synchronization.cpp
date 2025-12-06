@@ -39,7 +39,6 @@ int main() {
 	processDeposits(10'000);
 	processWithdrawals(10'000);
 #endif
-
 	constexpr auto n = 100'000'000;
 	thread t1(processDeposits, n);
 	usleep(10'000);

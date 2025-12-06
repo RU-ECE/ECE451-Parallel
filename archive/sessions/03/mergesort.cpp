@@ -1,6 +1,4 @@
-﻿#include <cstdint>
-
-/*
+﻿/*
 	1, 5, 6, 9                       3, 4, 11, 14
 	i                                j
 
@@ -10,12 +8,12 @@
 		  i
 				i
 */
-void merge(const uint32_t a[], uint32_t b[], uint32_t c[], const uint32_t n) {
-	auto i = 0, j = 0, k = 0;
+
+void merge(const unsigned int a[], const unsigned int b[], unsigned int c[], const unsigned int n) {
+	auto i = 0U, j = 0U, k = 0U;
 	while (i < n && j < n)
 		c[k++] = a[i] > b[j] ? b[j++] : a[i++];
 }
 
-
-void merge4(const uint32_t a[], const uint32_t b[], const uint32_t c[], const uint32_t d[], uint32_t out[],
-			uint32_t n) {}
+void merge4(const unsigned int a[], const unsigned int b[], const unsigned int c[], const unsigned int d[], unsigned int out[],
+			unsigned int n) {}

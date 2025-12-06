@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 
 #if defined(__arm__) || defined(__aarch64__)
 #include <stddef.h>
@@ -14,7 +14,7 @@
 // we'll pretend it's a 1GHz processor and then compute pretend cycles
 // based on elapsed time from gettimeofday().
 __inline__ uint64_t rdtsc() {
-	static bool first = true;
+	static auto first = true;
 	static struct timeval tv_start;
 	if (first) {
 		gettimeofday(&tv_start, nullptr);
@@ -59,8 +59,8 @@ __inline__ uint64_t rdtsc() {
 
 #include <sys/time.h>
 static double rtc() {
-	timeval Tvalue;
-	struct timezone dummy;
+	timeval Tvalue{};
+	struct timezone dummy{};
 
 	gettimeofday(&Tvalue, &dummy);
 	return static_cast<double>(Tvalue.tv_sec) + 1.e-6 * static_cast<double>(Tvalue.tv_usec);
@@ -80,11 +80,10 @@ static void reset_and_start_timer() {
 #endif
 }
 
-/* Returns the number of millions of elapsed processor cycles since the
-   last reset_and_start_timer() call. */
+// Returns the number of millions of elapsed processor cycles since the last reset_and_start_timer() call.
 static double get_elapsed_mcycles() {
 	uend = rdtsc();
-	return (uend - ustart) / (1024. * 1024.);
+	return static_cast<double>(uend - ustart) / (1024. * 1024.);
 }
 
 #ifndef WIN32

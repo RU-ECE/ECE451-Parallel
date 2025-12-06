@@ -7,10 +7,8 @@ using namespace std;
 
 void sort8cols(__m256i& a, __m256i& b, __m256i& c, __m256i& d, __m256i& e, __m256i& f, __m256i& g, __m256i& h) {
 	auto cond_swap = [](__m256i& x, __m256i& y) {
-		const __m256i mask = _mm256_cmpgt_epi32(x, y); // mask: all ones where x > y
-		const __m256i tmp = x;
-		const __m256i x_new = _mm256_blendv_epi8(x, y, mask);
-		const __m256i y_new = _mm256_blendv_epi8(y, tmp, mask);
+		const auto mask = _mm256_cmpgt_epi32(x, y), // mask: all ones where x > y
+			tmp = x, x_new = _mm256_blendv_epi8(x, y, mask), y_new = _mm256_blendv_epi8(y, tmp, mask);
 		x = x_new;
 		y = y_new;
 	};
@@ -27,9 +25,16 @@ void sort16cols(__m256i a, __m256i b, __m256i c, __m256i d, __m256i e, __m256i f
 
 void transpose8() {}
 
-void merge(a, b, c, d) {}
+void merge(__m256i a, __m256i b, __m256i c, __m256i d) {}
 
-void sort(int a[], int n) {
-	if (a[i] > a[j])
-		swap(a[i], a[j]);
+void sort(int a[], const int n) {
+	for (auto i = 0; i < n; i++) {
+		for (auto j = i + 1; j < n; j++) {
+			if (a[i] > a[j]) {
+				const auto temp = a[i];
+				a[i] = a[j];
+				a[j] = temp;
+			}
+		}
+	}
 }

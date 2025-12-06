@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+﻿cmake_minimum_required(VERSION 3.22)
 
 # Enable CUDA as a first-class language (for .cu files)
 project(Rutgers_ECE451_Parallel LANGUAGES CXX CUDA)
@@ -6,6 +6,7 @@ project(Rutgers_ECE451_Parallel LANGUAGES CXX CUDA)
 # C++23 for all C++ sources
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # --- Optional: nicer warnings in GCC/Clang
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
@@ -84,6 +85,7 @@ add_executable(Rutgers_ECE451_Parallel
 		sessions/02/04_hopefullyworking_primes.cpp
 		sessions/02/05_testing_optimization.cpp
 		sessions/02/assembly_overview.cpp
+		sessions/02/examplesum.cpp
 		sessions/03/00_improved_eratosthenes.cpp
 		sessions/03/00_simple_eratosthenes.cpp
 		sessions/03/01_better_eratosthenes.cpp
@@ -99,7 +101,7 @@ add_executable(Rutgers_ECE451_Parallel
 		sessions/05/01_dotproduct.cpp
 		sessions/05/euler.cpp
 		sessions/05/void_mandel_ex.cpp
-		sessions/06/benchmark_assembler_mem.cpp
+		sessions/06/benchmark_assembly_mem.cpp
 		sessions/06/benchmarks.cpp
 		sessions/07/00b_mandelbrot_hw_hints.cpp
 		sessions/07/00mandelbrot.cpp
@@ -107,6 +109,7 @@ add_executable(Rutgers_ECE451_Parallel
 		sessions/07/02sortingnetwork.cpp
 		sessions/07/03vectorization.cpp
 		sessions/07/ExampleProblems.md.cpp
+		sessions/07/scope.cpp
 		sessions/07/test_intrinsics.cpp
 		sessions/08/memory_perf.cpp
 		sessions/09/memfuncs.cpp

@@ -9,7 +9,7 @@ auto balance = 0;
 void deposit(const int count, const int amount) {
 	for (auto i = 0; i < count; i++) {
 		// balance += amount;
-		const int tmp = balance + amount;
+		const auto tmp = balance + amount;
 		cout << "deposit: " << tmp << " amt=" << amount << endl;
 		sleep(1);
 		balance = tmp;

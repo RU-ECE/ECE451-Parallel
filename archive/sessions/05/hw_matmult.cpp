@@ -2,7 +2,7 @@
 
 using namespace std;
 
-constexpr constexpr constexpr auto M = 2, N = 3, P = 1;
+constexpr auto M = 2, N = 3, P = 1;
 
 void mult(double c[M][P], double a[M][N], double b[N][P]) {
 	for (auto k = 0; k < M; k++) {
@@ -17,7 +17,7 @@ void mult(double c[M][P], double a[M][N], double b[N][P]) {
 void mult2(double c[M][P], double a[M][N], double b[N][P]) {
 	for (auto k = 0; k < M; k++) {
 		for (auto j = 0; j < P; j++) {
-			double dot = 0;
+			auto dot = 0.0;
 			for (auto i = 0; i < N; i++)
 				dot += a[k][i] * b[i][j];
 			c[k][j] = dot;
@@ -65,7 +65,6 @@ void print(double c[M][P]) {
  *		Any tricks I don't know? If they are good, ...
  *
  */
-
 
 int main() {
 	/*

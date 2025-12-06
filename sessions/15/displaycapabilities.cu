@@ -1,22 +1,20 @@
 ﻿/*****************************************************************************
  * Display the capabilities of the GPU this program runs on
  ****************************************************************************/
-#include <cstdint>
+#include <ctime>
 #include <iomanip>
 #include <iostream>
-#include <time.h>
 
 #include "cuda_runtime.h"
 
 using namespace std;
-using u32 = uint32_t;
-using u64 = uint64_t;
+
 using prof_info = struct {
 	float seconds;
 };
 
 timespec timer_start() {
-	timespec start_time;
+	timespec start_time{};
 	clock_gettime(CLOCK_MONOTONIC, &start_time);
 	return start_time;
 }
@@ -24,9 +22,9 @@ timespec timer_start() {
 // Call this function on the return value of timer_start to get the total
 // number of nanoseconds that elapsed.
 long timer_end(const timespec start_time) {
-	timespec end_time;
+	timespec end_time{};
 	clock_gettime(CLOCK_MONOTONIC, &end_time);
-	long diffInNanos =
+	auto diffInNanos =
 		1'000'000'000 * end_time.tv_sec + end_time.tv_nsec - (1'000'000'000 * start_time.tv_sec + start_time.tv_nsec);
 	if (end_time.tv_nsec - start_time.tv_nsec < 0) {
 		diffInNanos = 1'000'000'000 * (end_time.tv_sec + 1) + end_time.tv_nsec -
@@ -35,27 +33,31 @@ long timer_end(const timespec start_time) {
 	return diffInNanos;
 }
 
-
 int global;
 
 void f() {
 	for (auto i = 0; i < 1'000'000; i++)
 		global = (global << 1) + 17; // just compute something so the compiler has to do this.
 }
+
 const char* powersk[] = {"k", "M", "G", "T"};
-string powerk(u64 v) {
-	u32 power = 0;
+
+string powerk(unsigned long v) {
+	auto power = 0U;
 	while (v > 0 && v % 1024 == 0) {
 		power++;
 		v /= 1024;
 	}
 	return to_string(v) + powersk[power];
 }
+
 #define check_status(st)                                                                                               \
-	if (st != 0) {                                                                                                     \
-		cerr << "Error file: " << __FILE__ << " line: " << __LINE__;                                                   \
-		return;                                                                                                        \
-	}
+	do {                                                                                                               \
+		if (st != cudaSuccess) {                                                                                       \
+			cerr << "Error file: " << __FILE__ << " line: " << __LINE__ << " : " << cudaGetErrorString(st) << endl;    \
+			exit(static_cast<int>(st));                                                                                \
+		}                                                                                                              \
+	} while (0)
 #define dispIntProp(sym) left << setw(27) << #sym << powerk(prop.sym) << endl <<
 #define dispProp(sym) left << setw(27) << #sym << prop.sym << endl <<
 #define dispProp3D(sym) left << setw(27) << #sym << prop.sym[0] << ", " << prop.sym[1] << ", " << prop.sym[2] << endl <<
@@ -143,7 +145,7 @@ string powerk(u64 v) {
  */
 void dump(cudaDeviceProp prop) {
 	cout << "Display CUDA device properties\n";
-	u64 uuid = *reinterpret_cast<u64*>(&prop.uuid);
+	auto uuid = *reinterpret_cast<unsigned long*>(&prop.uuid);
 	// TODO: UUID is probably being displayed backwards (little-endian?)
 	cout << "UUID:               " << hex << uuid << dec << endl
 		 << "Name:                      " << prop.name << endl
@@ -151,34 +153,30 @@ void dump(cudaDeviceProp prop) {
 		 <<
 		// TODO: automatically recognize powers of 2 and display 2G, 48M instead of huge numbers?
 		dispIntProp(totalGlobalMem) dispIntProp(sharedMemPerBlock) dispIntProp(regsPerBlock) dispIntProp(memPitch)
-			dispProp(multiProcessorCount) dispIntProp(sharedMemPerBlock) dispIntProp(totalConstMem) // = 65536,
-		dispIntProp(clockRate) // = 1784500,
-		dispProp(memoryClockRate) dispProp(memoryBusWidth) dispProp(maxThreadsPerBlock)
-			dispIntProp(sharedMemPerMultiprocessor) dispIntProp(regsPerMultiprocessor)
-				dispIntProp(persistingL2CacheMaxSize) dispProp(l2CacheSize) dispProp(accessPolicyMaxWindowSize)
-					dispProp3D(maxThreadsDim) // = {1024, 1024, 64},
+			dispProp(multiProcessorCount) dispIntProp(sharedMemPerBlock) dispIntProp(totalConstMem)
+				dispIntProp(clockRate) dispProp(memoryClockRate) dispProp(memoryBusWidth) dispProp(maxThreadsPerBlock)
+					dispIntProp(sharedMemPerMultiprocessor) dispIntProp(regsPerMultiprocessor)
+						dispIntProp(persistingL2CacheMaxSize) dispProp(l2CacheSize) dispProp(accessPolicyMaxWindowSize)
+							dispProp3D(maxThreadsDim) // = {1024, 1024, 64},
 		dispProp3D(maxGridSize) // = {2147483647, 65535, 65535},
 		"\n\n\n";
 }
 
 int main() {
-	cudaError_t st;
 	// Send as many threads as possible per block.
 	auto cuda_device_ix = 0;
-	cudaDeviceProp prop;
-	st = cudaGetDeviceProperties(&prop, cuda_device_ix);
+	cudaDeviceProp prop{};
+	auto st = cudaGetDeviceProperties(&prop, cuda_device_ix);
 	check_status(st);
 	int cudaDeviceCount;
 	cudaGetDeviceCount(&cudaDeviceCount);
 	constexpr auto profile_times = 10;
-
 	dump(prop);
-
 	for (auto i = 0; i < profile_times; i++) {
 		prof_info times[profile_times];
-		timespec t = timer_start();
+		auto t = timer_start();
 		f();
-		times[i].seconds = timer_end(t) * 1.0E-9;
+		times[i].seconds = static_cast<float>(timer_end(t)) * 1.0E-9;
 	}
 	return 0;
 }

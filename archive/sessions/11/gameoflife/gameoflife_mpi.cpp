@@ -1,33 +1,28 @@
-﻿#include <cstdint>
-#include <iostream>
+﻿#include <iostream>
 #include <mpi.h>
 
 using namespace std;
 
-
 int num_cpus;
 int id;
-constexpr uint32_t cpu_grid = 4;
-constexpr uint32_t n = 10;
-constexpr uint32_t row = n + 2;
-constexpr uint32_t grid_size = 4;
-uint8_t* life;
-uint8_t* nextlife;
-uint8_t* westbuf;
-uint8_t* eastbuf;
-
+constexpr auto cpu_grid = 4;
+constexpr auto n = 10;
+constexpr auto row = n + 2;
+constexpr auto grid_size = 4;
+unsigned char* life;
+unsigned char* nextlife;
+unsigned char* westbuf;
+unsigned char* eastbuf;
 
 void init() {
-	constexpr uint32_t size = (n + 2) * (n + 2);
-	life = new uint8_t[size];
-	nextlife = new uint8_t[size];
-
-	for (auto i = 0; i < size; i++)
+	constexpr auto size = (n + 2U) * (n + 2);
+	life = new unsigned char[size];
+	nextlife = new unsigned char[size];
+	for (auto i = 0U; i < size; i++)
 		life[i] = 0;
-
 	// east-west buffers need n + 2 elements to include the incoming value from NORTH/SOUTH
-	westbuf = new uint8_t[row];
-	eastbuf = new uint8_t[row];
+	westbuf = new unsigned char[row];
+	eastbuf = new unsigned char[row];
 }
 
 /*
@@ -90,62 +85,52 @@ Now we will use it by copying in the value from the neighbor
 	1                                        2
 */
 
-void calcLiveOrDead(const uint32_t i) {
-	constexpr uint32_t EAST = +1;
-	constexpr uint32_t WEST = -1;
-	constexpr uint32_t NORTH = -n - 2;
-	constexpr uint32_t SOUTH = +n + 2;
-	const int count = life[i + EAST] + life[i + WEST] + life[i + NORTH] + life[i + SOUTH] + life[i + NORTH + EAST] +
+void calcLiveOrDead(const unsigned int i) {
+	constexpr auto EAST = +1;
+	constexpr auto WEST = -1;
+	constexpr auto NORTH = -n - 2;
+	constexpr auto SOUTH = +n + 2;
+	const auto count = life[i + EAST] + life[i + WEST] + life[i + NORTH] + life[i + SOUTH] + life[i + NORTH + EAST] +
 		life[i + NORTH + WEST] + life[i + SOUTH + EAST] + life[i + SOUTH + WEST];
-	if (life[i])
-		nextlife[i] = count >= 2 && count <= 3;
-	else
-		nextlife[i] = count == 3;
+	nextlife[i] = life[i] ? count >= 2 && count <= 3 : count == 3;
 }
 
 void stepForward() {
 	// first copy to/from our neighbors
 	if (id >= grid_size)
 		MPI_Send(&life[row + 1], n, MPI_CHAR, id - grid_size, 1, MPI_COMM_WORLD);
-
 	if (id < num_cpus - grid_size) { // highest with neightbor to south = 11
 		MPI_Send(&life[row * n + 1], n, MPI_CHAR, id + grid_size, 1, MPI_COMM_WORLD);
 		MPI_Recv(&life[1], n, MPI_CHAR, id + grid_size, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 	}
-
 	if (id >= grid_size)
 		MPI_Recv(&life[row * n + 1], n, MPI_CHAR, id - grid_size, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
 	if (id % grid_size > 0) {
 		for (auto i = 0, c = 1; i < row; i++, c += row)
 			westbuf[i] = life[c]; // copy into a sequential buffer
 		MPI_Send(westbuf, row, MPI_CHAR, id - 1, 1, MPI_COMM_WORLD);
 	}
-
 	if (id % grid_size < grid_size - 1) {
-		for (int i = 0, c = n; i < row; i++, c += row)
+		for (auto i = 0, c = n; i < row; i++, c += row)
 			eastbuf[i] = life[c]; // copy our eastern edge to send east
 		MPI_Send(eastbuf, row, MPI_CHAR, id + 1, 1, MPI_COMM_WORLD);
-
 		MPI_Recv(eastbuf, row, MPI_CHAR, id + 1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		for (int i = 0, c = n + 1; i < row; i++, c += row)
+		for (auto i = 0, c = n + 1; i < row; i++, c += row)
 			life[c] = eastbuf[i]; // copy fromsequential buffer into our array
 	}
-
 	if (id % grid_size > 0)
 		MPI_Recv(westbuf, row, MPI_CHAR, id - 1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-	for (int i = 0, c = n + 2 + 1; i < n; i++, c += 2)
+	for (auto i = 0, c = n + 2 + 1; i < n; i++, c += 2)
 		for (auto j = 0; j < n; j++, c++)
 			calcLiveOrDead(c);
 	swap(life, nextlife);
 }
 
 void print() {
-	for (int i = 0, c = n + 2 + 1; i < n; i++, c += 2) {
+	for (auto i = 0, c = n + 2 + 1; i < n; i++, c += 2) {
 		for (auto j = 0; j < n; j++, c++)
 			cout << static_cast<int>(life[c]) << ' ';
-		cout << "\n";
+		cout << endl;
 	}
 	cout << "\n\n" << endl;
 }

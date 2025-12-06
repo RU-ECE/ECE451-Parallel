@@ -6,7 +6,7 @@ void product(const float a[], const float b[], float c[], const int n) {
 }
 
 float sum_array(const float arr[], const int n) {
-	float sum = 0.0;
+	auto sum = 0.0f;
 #pragma omp parallel for reduction(+ : sum)
 	for (auto i = 0; i < n; ++i)
 		sum += arr[i];
@@ -24,20 +24,19 @@ void multiply_by_scalar(const float a[], const float b, float c[], const int n) 
 }
 
 float mandelbrot_point(const float x, const float y, const int max_iter) {
-	float zr = 0.0, zi = 0.0;
+	auto zr = 0.0, zi = 0.0;
 	auto iter = 0;
 #pragma omp simd
 	for (iter = 0; iter < max_iter; ++iter) {
-		const float zr2 = zr * zr;
-		const float zi2 = zi * zi;
+		const auto zr2 = zr * zr;
+		const auto zi2 = zi * zi;
 		if (zr2 + zi2 > 4.0)
 			break;
 		zi = 2.0 * zr * zi + y;
 		zr = zr2 - zi2 + x;
 	}
-	return static_cast<float>(iter) / max_iter;
+	return static_cast<float>(iter) / static_cast<float>(max_iter);
 }
-
 
 void mandelbrot(const float xmin, const float xmax, const float ymin, const float ymax, const int width,
 				const int height, const int max_iter, float* output) {
@@ -45,7 +44,8 @@ void mandelbrot(const float xmin, const float xmax, const float ymin, const floa
 	for (auto i = 0; i < width; ++i) {
 		for (auto j = 0; j < height; ++j) {
 			output[i * height + j] =
-				mandelbrot_point(xmin + i * (xmax - xmin) / width, ymin + j * (ymax - ymin) / height, max_iter);
+				mandelbrot_point(xmin + static_cast<float>(i) * (xmax - xmin) / static_cast<float>(width),
+								 ymin + static_cast<float>(j) * (ymax - ymin) / static_cast<float>(height), max_iter);
 		}
 	}
 }
@@ -67,9 +67,8 @@ void matrix_multiply(const float A[], const float B[], float C[], const int N) {
 }
 
 /*
-	The reason speed will improve with transpose is:
-
-	matrix multiply is a = n^3 operations
-	if we transpose, it costs n^2
-	but then we can go sequential for the n^3
-*/
+ * The reason speed will improve with transpose is:
+ *     - matrix multiply is a = n^3 operations
+ *     - if we transpose, it costs n^2
+ *     - but then we can go sequential for the n^3
+ */

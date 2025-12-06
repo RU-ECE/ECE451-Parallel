@@ -1,5 +1,4 @@
-﻿#include <cmath>
-#include <cstdint>
+#include <cmath>
 #include <iostream>
 
 using namespace std;
@@ -8,8 +7,8 @@ using namespace std;
  * hw0: write a multi-threaded prime number counter
  */
 
-bool isPrime(const uint64_t n) {
-	for (uint64_t i = 2; i <= sqrt(n); i++)
+bool isPrime(const unsigned long n) {
+	for (auto i = 2; i <= sqrt(n); i++)
 		if (n % i == 0)
 			return false;
 	return true;
@@ -18,9 +17,9 @@ bool isPrime(const uint64_t n) {
 /**
 	@return the number of primes up to n
 */
-uint64_t count_primes(const uint64_t n) {
-	uint64_t count = 0;
-	for (uint64_t i = 2; i <= n; i++)
+unsigned long count_primes(const unsigned long n) {
+	auto count = 0UL;
+	for (auto i = 2UL; i <= n; i++)
 		if (isPrime(i))
 			count += 1;
 	return count;

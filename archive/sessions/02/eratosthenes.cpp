@@ -1,8 +1,4 @@
-﻿#include <cstdint>
-
-using namespace std;
-
-/*
+﻿/*
  * 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
  * 1, 1, 1, 1, 1, 1, 1, 1, 1,  1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1,  1,
  * 1  1  0     0     0      0       0       0       0       0       0       0       0       0       0       0       0
@@ -10,18 +6,16 @@ using namespace std;
  * 						 0                   0                   0                   0
  */
 
-uint64_t eratosthenes(const uint64_t n) {
-	uint64_t count = 0;
+unsigned long eratosthenes(const unsigned long n) {
+	auto count = 0UL;
 	const auto isPrime = new bool[n + 1];
-
 	// first assume all numbers are prime
-	for (uint64_t i = 2; i <= n; i++)
+	for (auto i = 2UL; i <= n; i++)
 		isPrime[i] = true;
-
-	for (uint64_t i = 2; i <= n; i++) {
+	for (auto i = 2UL; i <= n; i++) {
 		if (isPrime[i]) {
 			count++;
-			for (uint64_t j = 2 * i; j <= n; j += i)
+			for (auto j = 2UL * i; j <= n; j += i)
 				isPrime[j] = false;
 		}
 	}
@@ -38,18 +32,16 @@ uint64_t eratosthenes(const uint64_t n) {
 	O(n log log n)
 */
 
-uint64_t improved_eratosthenes(const uint64_t n) {
-	uint64_t count = 0;
+unsigned long improved_eratosthenes(const unsigned long n) {
+	auto count = 0UL;
 	const auto isPrime = new bool[n + 1];
-
 	// first assume all numbers are prime
-	for (uint64_t i = 2; i <= n; i++)
+	for (auto i = 2UL; i <= n; i++)
 		isPrime[i] = true;
-
-	for (uint64_t i = 2; i <= n; i++) {
+	for (auto i = 2UL; i <= n; i++) {
 		if (isPrime[i]) {
 			count++;
-			for (uint64_t j = i * i; j <= n; j += 2 * i)
+			for (auto j = i * i; j <= n; j += 2 * i)
 				isPrime[j] = false;
 		}
 	}
@@ -57,8 +49,7 @@ uint64_t improved_eratosthenes(const uint64_t n) {
 	return count;
 }
 
-
-bool isPrime(const uint64_t* primes, const uint64_t i) {
+bool isPrime(const unsigned long* primes, const unsigned long i) {
 	return primes[i / 64] & 1ULL << (i & 63);
 	// 8421
 	// 1010
@@ -101,25 +92,25 @@ https://en.wikipedia.org/wiki/Wheel_factorization
 	3rd pass: n/5
 	4th pass: n/7
 */
-uint64_t improved_bitpacked_eratosthenes(const uint64_t n) {
-	uint64_t count = 0;
-	const uint64_t SIZE = (n + 63 + 1) / 64;
-	auto primes = new uint64_t[SIZE];
-	// first assume all numbers are prime
-	for (uint64_t i = 2; i <= SIZE; i++)
-		isPrime[i] = 0xFFFFFFFFFFFFFFFFLL; // MAX(uint64_tuint64_t
 
-	for (uint64_t i = 2; i <= n; i++) {
+unsigned long improved_bitpacked_eratosthenes(const unsigned long n) {
+	auto count = 0UL;
+	const auto SIZE = (n + 63 + 1) / 64UL;
+	auto primes = new unsigned long[SIZE];
+	// first assume all numbers are prime
+	for (auto i = 2UL; i <= SIZE; i++)
+		primes[i] = 0xFFFFFFFFFFFFFFFFLL; // MAX(uint64_t,uint64_t)
+
+	for (auto i = 2UL; i <= n; i++) {
 		if (isPrime(primes, i)) {
 			count++;
-			for (uint64_t j = i * i; j <= n; j += 2 * i)
+			for (auto j = i * i; j <= n; j += 2 * i)
 				clearPrime(primes, j);
 		}
 	}
-	delete[] isPrime;
+	delete[] primes;
 	return count;
 }
-
 
 /*
  * Hard to parallelize first step, because we need to compute numbers up to sqrt(n) in order to do eratosthenes up to n

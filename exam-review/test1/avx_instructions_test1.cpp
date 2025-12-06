@@ -29,150 +29,128 @@ using namespace chrono;
 	sequential access 46 + 15*1 = 61
 */
 
-uint32_t sum_scalar(const uint32_t* arr, const uint32_t n) {
-	uint32_t sum = 0;
-	for (uint32_t i = 0; i < n; i++)
+unsigned int sum_scalar(const unsigned int* arr, const unsigned int n) {
+	auto sum = 0U;
+	for (auto i = 0U; i < n; i++)
 		sum += arr[i];
 	return sum;
 }
 
-uint32_t parallel_sum_avx2(uint32_t* arr, const uint32_t n) {
-	__m256i sum = _mm256_setzero_si256();
-	for (uint32_t i = 0; i < n; i += 8)
+unsigned int parallel_sum_avx2(unsigned int* arr, const unsigned int n) {
+	auto sum = _mm256_setzero_si256();
+	for (auto i = 0U; i < n; i += 8)
 		sum = _mm256_add_epi32(sum, _mm256_loadu_si256(reinterpret_cast<__m256i*>(&arr[i])));
 	// Horizontal summation of the 8 packed 32-bit integers
-	const __m128i low = _mm256_castsi256_si128(sum); // Get the low 128 bits
+	const auto low = _mm256_castsi256_si128(sum); // Get the low 128 bits
 	const auto high = _mm256_extracti128_si256(sum, 1); // Get the high 128 bits
-	__m128i result128 = _mm_add_epi32(low, high); // Sum the two 128-bit halves
-
+	auto result128 = _mm_add_epi32(low, high); // Sum the two 128-bit halves
 	// Sum the 4 elements in the 128-bit register
 	result128 = _mm_hadd_epi32(result128, result128);
 	result128 = _mm_hadd_epi32(result128, result128);
-
 	// Extract the final sum
 	return _mm_cvtsi128_si32(result128);
 	// return _mm512_reduce_add_epi32(sum);
 	// return _mm256_reduce_add_epi32(sum); // check out this cool convenience function!
 }
 
-float dot_product_scalar(const float* a, const float* b, const uint32_t n) {
-	float sum = 0;
-	for (uint32_t i = 0; i < n; i++)
+float dot_product_scalar(const float* a, const float* b, const unsigned int n) {
+	auto sum = 0.0f;
+	for (unsigned int i = 0; i < n; i++)
 		sum += a[i] * b[i];
 	return sum;
 }
 
-
-void vec_product_scalar(const float* a, const float* b, float* c, const uint32_t n) {
-	for (uint32_t i = 0; i < n; i++)
+void vec_product_scalar(const float* a, const float* b, float* c, const unsigned int n) {
+	for (auto i = 0U; i < n; i++)
 		c[i] = a[i] * b[i];
 }
 
-
-float vec_product_scalar2(const float* a, const float* b, const float* c, const uint32_t n) {
-	float sum = 0;
-	for (uint32_t i = 0; i < n; i++)
+float vec_product_scalar2(const float* a, const float* b, const float* c, const unsigned int n) {
+	auto sum = 0.0f;
+	for (auto i = 0U; i < n; i++)
 		sum += c[i] + a[i] * b[i];
 	return sum;
 }
 
-float dot_product_avx2(const float* a, const float* b, const uint32_t n) {
-	__m256 sum = _mm256_setzero_ps();
-	for (uint32_t i = 0; i < n; i++) {
-		const __m256 a_vec = _mm256_loadu_ps(&a[i]);
-		const __m256 b_vec = _mm256_loadu_ps(&b[i]);
+float dot_product_avx2(const float* a, const float* b, const unsigned int n) {
+	auto sum = _mm256_setzero_ps();
+	for (auto i = 0U; i < n; i++) {
+		const auto a_vec = _mm256_loadu_ps(&a[i]), b_vec = _mm256_loadu_ps(&b[i]);
 		sum = _mm256_add_ps(sum, _mm256_mul_ps(a_vec, b_vec));
 	}
 	// Horizontal summation of the 8 packed 32-bit integers
-	const __m128i low = _mm256_castsi256_si128(reinterpret_cast<__m256i>(sum)); // Get the low 128 bits
+	const auto low = _mm256_castsi256_si128(reinterpret_cast<__m256i>(sum)); // Get the low 128 bits
 	const auto high = _mm256_extracti128_si256(sum, 1); // Get the high 128 bits
-	__m128i result128 = _mm_add_epi32(low, high); // Sum the two 128-bit halves
-
+	auto result128 = _mm_add_epi32(low, high); // Sum the two 128-bit halves
 	// Sum the 4 elements in the 128-bit register
 	result128 = _mm_hadd_epi32(result128, result128);
 	result128 = _mm_hadd_epi32(result128, result128);
-
 	// Extract the final sum
-	return _mm_cvtsi128_si32(result128);
+	return static_cast<float>(_mm_cvtsi128_si32(result128));
 }
 
 // sum the reciprocals 1/1 + 1/2 + 1/3 + ...1/n
-float sumit(const uint32_t n) {
-	float sum = 0;
-	for (uint32_t i = 1; i <= n; i++)
-		sum += 1.0f / i;
+float sumit(const unsigned int n) {
+	auto sum = 0.0f;
+	for (auto i = 1U; i <= n; i++)
+		sum += 1.0f / static_cast<float>(i);
 	return sum;
 }
 
-float vector_sumit(float* arr, const uint32_t n) {
-	__m256 sum = _mm256_setzero_ps();
+float vector_sumit(float* arr, const unsigned int n) {
+	auto sum = _mm256_setzero_ps();
 	constexpr float k[] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f};
 	constexpr float eightarr[] = {8.0f, 8.0f, 8.0f, 8.0f, 8.0f, 8.0f, 8.0f, 8.0f};
-	const __m256 eightarr_vec = _mm256_loadu_ps(eightarr);
-	const __m256 eight = _mm256_set1_ps(8.0f); // broadcast scalar 8.0f
-	const __m256 one = _mm256_set1_ps(1.0f); // broadcast scalar 1.0f
-	__m256 delta = _mm256_loadu_ps(k);
-
-	for (uint32_t i = 0; i < n; i += 8) {
+	const auto eightarr_vec = _mm256_loadu_ps(eightarr);
+	const auto eight = _mm256_set1_ps(8.0f); // broadcast scalar 8.0f
+	const auto one = _mm256_set1_ps(1.0f); // broadcast scalar 1.0f
+	auto delta = _mm256_loadu_ps(k);
+	for (auto i = 0U; i < n; i += 8) {
 		// sum += 1.0f / delta (reciprocals)
 		sum = _mm256_add_ps(sum, _mm256_div_ps(one, delta));
 		delta = _mm256_add_ps(delta, eightarr_vec);
 	}
-
 	// horizontal sum of the 8 floats in 'sum'
-	const __m128 low = _mm256_castps256_ps128(sum);
+	const auto low = _mm256_castps256_ps128(sum);
 	const auto high = _mm256_extractf128_ps(sum, 1);
-	__m128 s128 = _mm_add_ps(low, high);
+	auto s128 = _mm_add_ps(low, high);
 	s128 = _mm_hadd_ps(s128, s128);
 	s128 = _mm_hadd_ps(s128, s128);
 	return _mm_cvtss_f32(s128);
 }
 
-
 // do a sorting network for groups of 8 elements
-void sort8_scalar(const uint32_t* arr, const uint32_t n) {
-	for (uint32_t i = 0; i < n; i += 8) {
-		uint32_t a = arr[i];
-		uint32_t b = arr[i + 1];
-		uint32_t c = arr[i + 2];
-		uint32_t d = arr[i + 3];
-		uint32_t e = arr[i + 4];
-		uint32_t f = arr[i + 5];
-		uint32_t g = arr[i + 6];
-		uint32_t h = arr[i + 7];
+void sort8_scalar(const unsigned int* arr, const unsigned int n) {
+	for (auto i = 0U; i < n; i += 8) {
+		auto a = arr[i], b = arr[i + 1], c = arr[i + 2], d = arr[i + 3], e = arr[i + 4], f = arr[i + 5], g = arr[i + 6],
+			 h = arr[i + 7];
 	}
 }
 
 int main() {
-	constexpr uint32_t n = 8 * 50'000'000; // why can n not be 100? Must be multiple of 8!
-	const auto p = static_cast<uint32_t*>(aligned_alloc(32, n * 4));
-
+	constexpr auto n = 8U * 50'000'000; // why can n not be 100? Must be multiple of 8!
+	const auto p = static_cast<unsigned int*>(aligned_alloc(32, n * 4));
 	auto t0 = high_resolution_clock::now();
-	const uint32_t s = sum_scalar(p, n);
+	const auto s = sum_scalar(p, n);
 	auto t1 = high_resolution_clock::now();
 	auto duration = duration_cast<microseconds>(t1 - t0).count();
 	cout << duration << " sum = " << s << endl;
-
 	t0 = high_resolution_clock::now();
-	const uint32_t p_s = parallel_sum_avx2(p, n);
+	const auto p_s = parallel_sum_avx2(p, n);
 	t1 = high_resolution_clock::now();
 	duration = duration_cast<microseconds>(t1 - t0).count();
 	cout << duration << " sum = " << p_s << endl;
-
 	const auto p2 = reinterpret_cast<float*>(p);
 	t0 = high_resolution_clock::now();
-	const float d = dot_product_scalar(p2, p2, n);
+	const auto d = dot_product_scalar(p2, p2, n);
 	t1 = high_resolution_clock::now();
 	duration = duration_cast<microseconds>(t1 - t0).count();
 	cout << duration << " sum = " << d << endl;
-
 	t0 = high_resolution_clock::now();
 	const float d2 = dot_product_avx2(p2, p2, n);
 	t1 = high_resolution_clock::now();
 	duration = duration_cast<microseconds>(t1 - t0).count();
 	cout << duration << " sum = " << d2 << endl;
-
-
 	free(p);
 	return 0;
 }

@@ -3,14 +3,14 @@
 using namespace std;
 
 class Matrix {
-	uint32_t rows;
-	uint32_t cols;
+	unsigned int rows;
+	unsigned int cols;
 	double* data;
 
 public:
-	Matrix(const uint32_t r, const uint32_t c, const double v) :
+	Matrix(const unsigned int r, const unsigned int c, const double v) :
 		rows(r), cols(c), data(new double[rows * cols]) { // initializer list
-		for (auto i = 0; i < rows * cols; i++)
+		for (auto i = 0U; i < rows * cols; i++)
 			data[i] = v;
 	}
 
@@ -22,7 +22,7 @@ public:
 	// Matrix& operator =(const Matrix& orig) = delete;
 
 	Matrix(const Matrix& orig) : rows(orig.rows), cols(orig.cols), data(new double[rows * cols]) {
-		for (auto i = 0; i < rows * cols; i++)
+		for (auto i = 0U; i < rows * cols; i++)
 			data[i] = orig.data[i];
 	}
 
@@ -57,17 +57,16 @@ void f() {
 	// this is because of paranoia due to stack smashing attack
 }
 
-void g(Matrix m2) { // m2 is a COPY of the original matrix m
+void g(const Matrix& m2) { // m2 is a COPY of the original matrix m
 }
 
-Matrix h() { return Matrix(1, 1, 0.0); }
+Matrix h() { return Matrix{1, 1, 0.0}; }
 int main() {
 #if 0
 	int* p = new int[100];
 	delete [] p;
 	delete [] p; // cannot delete a pointer twice
 #endif
-
 	const Matrix m(3, 4, 0.0);
 	g(m);
 	Matrix m2 = m; // copy constructor
@@ -92,6 +91,5 @@ int main() {
 	cout << m5 << endl;
 	cout << m6 << endl;
 #endif
-
 	return 0;
 }

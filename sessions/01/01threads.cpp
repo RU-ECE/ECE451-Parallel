@@ -8,24 +8,23 @@ using namespace std;
 
 // 28 = 1 ,2 , 4    |   7,    14,  28
 
-
 // O(sqrt(n))  omega(1)    is n prime? n=1001    n%2, n%3,  .. n%33 n%500
 // n=28    1, 2,4    |   7,    14,  28
-bool isPrime(const uint64_t n) {
-	for (uint64_t i = 2; i <= sqrt(n); i++)
+bool isPrime(const unsigned long n) {
+	for (auto i = 2; i <= sqrt(n); i++)
 		if (n % i == 0)
 			return false;
 	return true;
 }
 
-void f() {
+[[noreturn]] void f() {
 	for (;;) { // infinite loop
 		cout << "hello" << flush;
 		usleep(100'000);
 	}
 }
 
-void g() {
+[[noreturn]] void g() {
 	while (true) {
 		// int* p = new int[1024L * 1024 * 1024 * 16];
 		cout << "bye" << flush;
@@ -39,7 +38,7 @@ int main() {
 		thread t1(f);
 		t1.join();
 		t2.join();
-	} catch (exception e) {
+	} catch (exception& e) {
 		cout << e.what() << endl;
 	}
 }

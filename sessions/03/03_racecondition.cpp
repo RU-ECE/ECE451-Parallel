@@ -7,7 +7,7 @@ auto balance = 0;
 
 void deposit(const int amount) {
 	// sleep(1);
-	const int tmp = balance + amount;
+	const auto tmp = balance + amount;
 	// sleep(1);
 	// cout << "depositing " << amount << endl;
 	balance = tmp;
@@ -36,7 +36,7 @@ bool withdraw(const int amount) {
 	// sleep(1);
 	// cout << "withdrawing " << amount << endl;
 	if (balance >= amount) {
-		const int tmp = balance - amount;
+		const auto tmp = balance - amount;
 		// sleep(1);
 		balance = tmp;
 		return true;

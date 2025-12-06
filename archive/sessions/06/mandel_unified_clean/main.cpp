@@ -31,8 +31,8 @@ extern void mandelbrot_serial(float x0, float y0, float x1, float y1, int width,
 
 // TODO: replace this with color and .webp or png
 /* Write a PPM image file with the image of the Mandelbrot set */
-static void writePPM(const uint32_t* buf, const int width, const int height, const char* fn) {
-	FILE* fp = fopen(fn, "wb");
+static void writePPM(const unsigned int* buf, const int width, const int height, const char* fn) {
+	const auto fp = fopen(fn, "wb");
 	if (!fp) {
 		printf("Couldn't open a file '%s'\n", fn);
 		exit(-1);
@@ -53,14 +53,14 @@ static void writePPM(const uint32_t* buf, const int width, const int height, con
 
 // Execute function f, benchmark it a number of times, and print the best time
 template <typename Func>
-void benchmark1(const uint32_t num_trials, const char msg[], uint32_t max_iterations, float x0, float x1, float y0,
-				float y1, uint32_t width, uint32_t height, uint32_t counts[], Func f) {
+void benchmark1(const unsigned int num_trials, const char msg[], unsigned int max_iterations, float x0, float x1,
+				float y0, float y1, unsigned int width, unsigned int height, unsigned int counts[], Func f) {
 	auto min_time = 1e100;
 	cout << msg << endl;
-	for (unsigned int trials = 0; trials < num_trials; ++trials) {
+	for (auto trials = 0U; trials < num_trials; ++trials) {
 		reset_and_start_timer();
 		f(x0, y0, x1, y1, width, height, max_iterations, reinterpret_cast<int*>(counts));
-		double dt = get_elapsed_mcycles();
+		auto dt = get_elapsed_mcycles();
 		cout << setprecision(3) << dt << '\t';
 		min_time = min(min_time, dt);
 	}
@@ -68,28 +68,28 @@ void benchmark1(const uint32_t num_trials, const char msg[], uint32_t max_iterat
 }
 
 /*
-	verify that the parallel and scalar versions work the same
-	 by comparing the numbers
-	 TODO: should print how many errors, not each one but probably everything is fine so not bothering
+ * verify that the parallel and scalar versions work the same by comparing the numbers
+ *
+ * TODO: should print how many errors, not each one but probably everything is fine so not bothering
  */
-void verify(uint32_t counts1[], uint32_t counts2[], const uint32_t n) {
-	for (uint32_t i = 0; i < n; i++)
+void verify(const unsigned int counts1[], const unsigned int counts2[], const unsigned int n) {
+	for (auto i = 0U; i < n; i++)
 		if (counts1[i] != counts2[i])
 			cout << "Error at " << i << endl;
 }
 
-void bench(const uint32_t num_trials, const uint32_t vector_size, uint32_t res, const float x0, const float x1,
-		   const float y0, const float y1, const uint32_t max_iterations) {
+void bench(const unsigned int num_trials, const unsigned int vector_size, unsigned int res, const float x0,
+		   const float x1, const float y0, const float y1, const unsigned int max_iterations) {
 	if (res % vector_size != 0) {
 		res = (res + vector_size) % vector_size; // round up to next even multiple
-		const float aspect_ratio = (x1 - x0) / (y1 - y0);
+		const auto aspect_ratio = (x1 - x0) / (y1 - y0);
 		// right now this is 3:2, and this has to be made robust. We need a multiple of 8 for avx2, 16 for avx512
-		const uint32_t width = res * aspect_ratio, height = res;
+		const auto width = static_cast<int>(res * aspect_ratio), height = static_cast<int>(res);
 		cout << "benchmarking Mandelbrot width=" << width << ", height=" << height << endl;
 		// allocate integers to compute the images
-		const uint32_t num_pixels = width * height;
-		const auto counts_serial = new uint32_t[num_pixels];
-		const auto counts_parallel = new uint32_t[num_pixels];
+		const auto num_pixels = width * height;
+		const auto counts_serial = new unsigned int[num_pixels];
+		const auto counts_parallel = new unsigned int[num_pixels];
 		// TODO: note order of parameters is different not changing for now
 		// TODO: very sloppy intel!
 		benchmark1(num_trials, "scalar", x0, x1, y0, y1, width, height, max_iterations, counts_serial,
@@ -99,7 +99,7 @@ void bench(const uint32_t num_trials, const uint32_t vector_size, uint32_t res, 
 		verify(counts_serial, counts_parallel, num_pixels);
 
 		// Clear out the buffer to make sure the parallel vectorized test is really getting results...
-		for (uint32_t i = 0; i < num_pixels; ++i)
+		for (auto i = 0; i < num_pixels; ++i)
 			counts_parallel[i] = 0;
 
 		// this one is both multithreaded and vectorized
@@ -108,37 +108,35 @@ void bench(const uint32_t num_trials, const uint32_t vector_size, uint32_t res, 
 		verify(counts_serial, counts_parallel, num_pixels);
 
 		// write out one image since they are all the same
-		writePPM(counts_parallel, width, height, "mandelbrot.ppm");
+		writePPM(counts_parallel, 0 + width, 0 + height, "mandelbrot.ppm");
 
 		delete[] counts_serial;
 		delete[] counts_parallel;
 	}
 }
 
-
-int main(int argc, char* argv[]) {
-	constexpr uint32_t res = 4096;
+int main() {
+	constexpr auto res = 4096U;
 
 	/*
 		test will always compute the image with equal pixel sizes in x and y
 		generate classic mandelbrot picture 3 ways
 		single threaded, scalar
-		using vectorized (gangs in ispc)
+		using vectorized (gangs in ISPC)
 		using multiple cores
 		benchmark to show timings and compare the three to make sure results
 		are the same
 	*/
 	{
-		constexpr uint32_t num_trials = 5;
-		constexpr uint32_t vector_size =
-			16; // for AVX512, let's make sure the number works for all CPUs the same for now
-		constexpr uint32_t max_iterations = 512; // the multi-task version used this number
-		constexpr float x0 = -2, x1 = 1, y0 = -1, y1 = 1;
+		constexpr auto num_trials = 5U;
+		constexpr auto vector_size = 16U; // for AVX512, let's make sure the number works for all CPUs the same for now
+		constexpr auto max_iterations = 512U; // the multi-task version used this number
+		constexpr auto x0 = -2.0f, x1 = 1.0f, y0 = -1.0f, y1 = 1.0f;
 		bench(num_trials, vector_size, res, x0, x1, y0, y1, max_iterations);
 	}
 
 #if 0
-		//TODO: Make a movie zooming in?
+		// TODO: Make a movie zooming in?
 		// this would create frames mandelmovie0, mandelmovie1, ...
 		// turn into a movie using ffmpeg or equivalent
 		{

@@ -7,14 +7,15 @@ using namespace std;
 mutex m;
 
 /*
-	race condition
-*/
+ * race condition
+ */
 
 int g(int x);
 int f(int x);
 
 auto count = 0; // initialize global variable to zero (good style)
 constexpr auto n = 10'000'000;
+
 void increment() {
 	for (auto i = 0; i < n; i++) {
 		lock_guard lock(m);
@@ -34,7 +35,6 @@ int main() {
 	thread t2(decrement);
 	t1.join();
 	t2.join();
-
 	cout << count << endl;
 	return 0;
 }

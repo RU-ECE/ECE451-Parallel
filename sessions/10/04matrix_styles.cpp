@@ -6,31 +6,27 @@
 using namespace std;
 
 /*
-	For simplicity, we will represent a matrix as a 1D vector of float with n*n elements.
-	We will use the following functions:
-	- void multiply_matrices(float* a, float* b, float* c, int n)
-	- void multiply_matrices_omp(float* a, float* b, float* c, int n)
-	- void multiply_matrices_omp_simd(float* a, float* b, float* c, int n)
-	- void multiply_matrices_omp_simd_unroll(float* a, float* b, float* c, int n)
-	- void multiply_matrices_omp_simd_unroll_2(float* a, float* b, float* c, int n)
-	- void multiply_matrices_omp_simd_unroll_3(float* a, float* b, float* c, int n)
-	- use tiling to improve cache locality
-	  void multiply_matrices_tiling(float* a, float* b, float* c, int n)
-	- use blocking to improve cache locality
-	  void multiply_matrices_blocking(float* a, float* b, float* c, int n)
-	- use transposition to improve sequential memory performance
-	  void multiply_matrices_transposition(float* a, float* b, float* c, int n)
-*/
+ * For simplicity, we will represent a matrix as a 1D vector of float with n by n elements. We will use the following
+ * functions:
+ *     - void multiply_matrices(float* a, float* b, float* c, int n)
+ *     - void multiply_matrices_omp(float* a, float* b, float* c, int n)
+ *     - void multiply_matrices_omp_simd(float* a, float* b, float* c, int n)
+ *     - void multiply_matrices_omp_simd_unroll(float* a, float* b, float* c, int n)
+ *     - void multiply_matrices_omp_simd_unroll_2(float* a, float* b, float* c, int n)
+ *     - void multiply_matrices_omp_simd_unroll_3(float* a, float* b, float* c, int n)
+ *     - use tiling to improve cache locality
+ *       void multiply_matrices_tiling(float* a, float* b, float* c, int n)
+ *     - use blocking to improve cache locality
+ *       void multiply_matrices_blocking(float* a, float* b, float* c, int n)
+ *     - use transposition to improve sequential memory performance
+ *       void multiply_matrices_transposition(float* a, float* b, float* c, int n)
+ */
 
-
-/*
-	Using an scalar dot product for speed. No writing to memory
-	for the inner loop
-*/
+// Using an scalar dot product for speed. No writing to memory for the inner loop
 void multiply_matrices(const float* a, const float* b, float* c, const int n) {
 	for (auto i = 0; i < n; i++) {
 		for (auto j = 0; j < n; j++) {
-			float sum = 0;
+			auto sum = 0.0f;
 			for (auto k = 0; k < n; k++)
 				sum += a[i * n + k] * b[k * n + j];
 			c[i * n + j] = sum;
@@ -42,7 +38,7 @@ void multiply_matrices_omp(const float* a, const float* b, float* c, const int n
 #pragma omp parallel for
 	for (auto i = 0; i < n; i++) {
 		for (auto j = 0; j < n; j++) {
-			float sum = 0;
+			auto sum = 0.0f;
 			for (auto k = 0; k < n; k++)
 				sum += a[i * n + k] * b[k * n + j];
 			c[i * n + j] = sum;
@@ -53,7 +49,7 @@ void multiply_matrices_omp(const float* a, const float* b, float* c, const int n
 void multiply_matrices_omp2(const float* a, const float* b, float* c, const int n) {
 	for (auto i = 0; i < n; i++) {
 		for (auto j = 0; j < n; j++) {
-			float sum = 0;
+			auto sum = 0.0f;
 			// this should be locking on the shared sum! Not good
 #pragma omp parallel
 			for (auto k = 0; k < n; k++)
@@ -63,12 +59,11 @@ void multiply_matrices_omp2(const float* a, const float* b, float* c, const int 
 	}
 }
 
-
 void multiply_matrices_omp_simd(const float* a, const float* b, float* c, const int n) {
 #pragma omp parallel for
 	for (auto i = 0; i < n; i++) {
 		for (auto j = 0; j < n; j++) {
-			float sum = 0;
+			auto sum = 0.0f;
 #pragma omp simd reduction(+ : sum)
 			for (auto k = 0; k < n; k++)
 				sum += a[i * n + k] * b[k * n + j];
@@ -97,10 +92,9 @@ void multiply_matrices_omp_simd_unroll(const float* a, const float* b, float* c,
 #pragma omp parallel for
 	for (auto i = 0; i < n; i++) {
 		for (auto j = 0; j < n; j += 16) {
-			__m256 sum0 = _mm256_setzero_ps();
-			__m256 sum1 = _mm256_setzero_ps();
+			auto sum0 = _mm256_setzero_ps(), sum1 = _mm256_setzero_ps();
 			for (auto k = 0; k < n; k++) {
-				const __m256 a_vec = _mm256_set1_ps(a[i * n + k]);
+				const auto a_vec = _mm256_set1_ps(a[i * n + k]);
 				sum0 = _mm256_fmadd_ps(a_vec, _mm256_loadu_ps(&b[k * n + j]), sum0);
 				sum1 = _mm256_fmadd_ps(a_vec, _mm256_loadu_ps(&b[k * n + j + 8]), sum1);
 			}
@@ -116,8 +110,7 @@ void multiply_matrices_omp_simd_unroll_2(const float* a, const float* b, float* 
 		for (auto j = 0; j < n; j += 2) {
 			float sum[4] = {0, 0, 0, 0};
 			for (auto k = 0; k < n; k++) {
-				const float a0 = a[i * n + k];
-				const float a1 = a[(i + 1) * n + k];
+				const auto a0 = a[i * n + k], a1 = a[(i + 1) * n + k];
 				sum[0] += a0 * b[k * n + j];
 				sum[1] += a0 * b[k * n + j + 1];
 				sum[2] += a1 * b[k * n + j];
@@ -138,7 +131,7 @@ void multiply_matrices_omp_simd_unroll_3(const float* a, const float* b, float* 
 		for (auto j = 0; j < n; j += tile) {
 			for (auto ii = 0; ii < tile && i + ii < n; ii++) {
 				for (auto jj = 0; jj < tile && j + jj < n; jj++) {
-					float sum = 0;
+					auto sum = 0.0f;
 					for (auto k = 0; k < n; k++)
 						sum += a[(i + ii) * n + k] * b[k * n + j + jj];
 					c[(i + ii) * n + j + jj] = sum;
@@ -169,7 +162,7 @@ void multiply_matrices_tiling(const float* a, const float* b, float* c, const in
 			for (auto k = 0; k < n; k += tile) {
 				for (auto ii = 0; ii < tile && i + ii < n; ii++) {
 					for (auto jj = 0; jj < tile && j + jj < n; jj++) {
-						float sum = 0;
+						auto sum = 0.0f;
 						for (auto kk = 0; kk < tile && k + kk < n; kk++)
 							sum += a[(i + ii) * n + k + kk] * b[(k + kk) * n + j + jj];
 						c[(i + ii) * n + j + jj] += sum;
@@ -179,7 +172,6 @@ void multiply_matrices_tiling(const float* a, const float* b, float* c, const in
 		}
 	}
 }
-
 
 int main() {
 	constexpr auto n = 1000;

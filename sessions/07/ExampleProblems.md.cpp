@@ -21,7 +21,6 @@ void test2() {
 
 auto balance = 0;
 void test2() {
-
 	thread t1(deposit);
 	thread t2(withdraw);
 	cout << balance << endl;

@@ -1,4 +1,4 @@
-﻿#include <chrono>
+#include <chrono>
 #include <iostream>
 #include <thread>
 #include <vector>

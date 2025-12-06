@@ -43,10 +43,7 @@ int main() {
 	constexpr auto lengthX = 1.0;
 	constexpr auto lengthY = 1.0;
 	constexpr auto lengthZ = 1.0;
-
 	Grid3D grid(nx, ny, nz, lengthX, lengthY, lengthZ);
-
-	grid.FiniteElementAnalysis();
-
+	Grid3D::FiniteElementAnalysis();
 	return 0;
 }

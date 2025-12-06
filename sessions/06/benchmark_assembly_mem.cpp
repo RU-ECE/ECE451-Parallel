@@ -1,32 +1,31 @@
 ﻿#include <chrono>
-#include <immintrin.h>
 #include <iostream>
 
 using namespace std;
 using namespace chrono;
 
 extern "C" {
-void read_one(uint64_t* data, int n);
-void read_memory_scalar(uint64_t* data, int n);
-void read_memory_sse(uint64_t* data, int n);
-void read_one_avx(uint64_t* data, int n);
-void read_memory_avx(uint64_t* data, int n);
-void read_memory_sse_unaligned(uint64_t* data, int n);
-void read_memory_avx_unaligned(uint64_t* data, int n);
-void read_memory_every2(uint64_t* data, int n);
-void read_memory_everyk(uint64_t* data, int n, int k);
-void write_one(uint64_t* data, int n);
-void write_one_avx(uint64_t* data, int n);
-void write_memory_scalar(uint64_t* data, int n);
-void write_memory_sse(uint64_t* data, int n);
-void write_memory_avx(uint64_t* data, int n);
+void read_one(unsigned long* data, int n);
+void read_memory_scalar(unsigned long* data, int n);
+void read_memory_sse(unsigned long* data, int n);
+void read_one_avx(unsigned long* data, int n);
+void read_memory_avx(unsigned long* data, int n);
+void read_memory_sse_unaligned(unsigned long* data, int n);
+void read_memory_avx_unaligned(unsigned long* data, int n);
+void read_memory_every2(unsigned long* data, int n);
+void read_memory_everyk(unsigned long* data, int n, int k);
+void write_one(unsigned long* data, int n);
+void write_one_avx(unsigned long* data, int n);
+void write_memory_scalar(unsigned long* data, int n);
+void write_memory_sse(unsigned long* data, int n);
+void write_memory_avx(unsigned long* data, int n);
 }
 
 // for information on how C++ passes parameters to functions, see:
 // https://en.wikipedia.org/wiki/X86_calling_conventions (search for linux)
 
 template <typename Func, typename... Args>
-void benchmark(const char name[], Func read_memory, uint64_t* p, int n, Args... args) {
+void benchmark(const char name[], Func read_memory, unsigned long* p, int n, Args... args) {
 	const auto start = high_resolution_clock::now();
 	read_memory(p, n, args...);
 	const auto end = high_resolution_clock::now();
@@ -36,8 +35,8 @@ void benchmark(const char name[], Func read_memory, uint64_t* p, int n, Args... 
 }
 
 int main() {
-	constexpr uint64_t n = 1024 * 1024 * 512; // 4 GB, 512 million 64-bit words
-	const auto p = static_cast<uint64_t*>(aligned_alloc(32, n * sizeof(uint64_t))); // allocate
+	constexpr auto n = 1024UL * 1024 * 512; // 4 GB, 512 million 64-bit words
+	const auto p = static_cast<unsigned long*>(aligned_alloc(32, n * sizeof(unsigned long))); // allocate
 
 	benchmark("warmup (disregard)", read_memory_scalar, p, n);
 	benchmark("read_one", read_one, p, n);

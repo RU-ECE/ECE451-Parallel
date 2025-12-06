@@ -1,5 +1,4 @@
-﻿#include <cstdint>
-#include <immintrin.h>
+﻿#include <immintrin.h>
 
 // there is no good way that I know to make this work well in C++
 // C++ pass by reference will force these values into memory
@@ -57,14 +56,14 @@ output: 1 2 4 5
 *
  */
 void transpose(__m256i& a, __m256i& b, __m256i& c, __m256i& d, __m256i& e, __m256i& f, __m256i& g, __m256i& h) {
-	const __m256i temp1 = _mm256_unpacklo_epi32(a, b);
-	const __m256i temp2 = _mm256_unpackhi_epi32(a, b);
-	const __m256i temp3 = _mm256_unpacklo_epi32(c, d);
-	const __m256i temp4 = _mm256_unpackhi_epi32(c, d);
-	const __m256i temp5 = _mm256_unpacklo_epi32(e, f);
-	const __m256i temp6 = _mm256_unpackhi_epi32(e, f);
-	const __m256i temp7 = _mm256_unpacklo_epi32(g, h);
-	const __m256i temp8 = _mm256_unpackhi_epi32(g, h);
+	const auto temp1 = _mm256_unpacklo_epi32(a, b);
+	const auto temp2 = _mm256_unpackhi_epi32(a, b);
+	const auto temp3 = _mm256_unpacklo_epi32(c, d);
+	const auto temp4 = _mm256_unpackhi_epi32(c, d);
+	const auto temp5 = _mm256_unpacklo_epi32(e, f);
+	const auto temp6 = _mm256_unpackhi_epi32(e, f);
+	const auto temp7 = _mm256_unpacklo_epi32(g, h);
+	const auto temp8 = _mm256_unpackhi_epi32(g, h);
 	a = _mm256_unpacklo_epi64(temp1, temp3);
 	b = _mm256_unpackhi_epi64(temp1, temp3);
 	c = _mm256_unpacklo_epi64(temp2, temp4);
@@ -75,29 +74,28 @@ void transpose(__m256i& a, __m256i& b, __m256i& c, __m256i& d, __m256i& e, __m25
 	h = _mm256_unpackhi_epi64(temp6, temp8);
 }
 
-
-void sortingnetwork8(const uint32_t arr[], const uint32_t n) {
-	for (uint32_t i = 0; i < n; i += 64) {
-		__m256i a = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i));
-		__m256i b = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 8));
-		__m256i c = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 16));
-		__m256i d = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 24));
-		const __m256i e = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 32));
-		const __m256i f = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 40));
-		const __m256i g = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 48));
-		const __m256i h = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 56));
+void sortingnetwork8(const unsigned int arr[], const unsigned int n) {
+	for (auto i = 0U; i < n; i += 64) {
+		auto a = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i));
+		auto b = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 8));
+		auto c = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 16));
+		auto d = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 24));
+		const auto e = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 32));
+		const auto f = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 40));
+		const auto g = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 48));
+		const auto h = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(arr + i + 56));
 		// a = [5, 1, 10, 2, 11, 14, 3, 6]
 		// c = [6, 2, 9,  3, 8, 6, 4, 7]
 		// temp[5, 1, 9, 2,  8, 6, 3, 6]
 		// cm = [6, 2, 10, 3, 11, 14, 4, 7]
 		{
-			const __m256i temp = _mm256_min_epi32(a, c); // order all pairs in a,c
+			const auto temp = _mm256_min_epi32(a, c); // order all pairs in a,c
 			c = _mm256_max_epi32(a, c);
 			a = temp;
 		}
 		{
 			// to avoid divergence, use vector instructions
-			const __m256i temp = _mm256_min_epi32(b, d); // order all pairs in b,d
+			const auto temp = _mm256_min_epi32(b, d); // order all pairs in b,d
 			d = _mm256_max_epi32(b, d);
 			b = temp;
 		}

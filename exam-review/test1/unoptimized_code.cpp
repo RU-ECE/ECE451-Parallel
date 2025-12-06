@@ -1,13 +1,11 @@
-﻿#include <cstdint>
-#include <iostream>
+﻿#include <iostream>
 
 using namespace std;
 
-uint64_t f(const uint64_t x, const uint64_t y) { return x + y; }
+unsigned long f(const unsigned long x, const unsigned long y) { return x + y; }
 
 int main() {
-	constexpr uint64_t x = 3;
-	constexpr uint64_t y = 5;
+	constexpr auto x = 3UL, y = 5UL;
 	cout << f(x, y);
 	return 0;
 }

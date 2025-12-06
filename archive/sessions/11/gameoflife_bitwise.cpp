@@ -1,5 +1,4 @@
-﻿#include <cstdint>
-#include <iostream>
+﻿#include <iostream>
 
 using namespace std;
 
@@ -58,27 +57,26 @@ using namespace std;
  *
  */
 
-
-uint32_t n;
-uint64_t* life;
-uint64_t* nextlife;
+unsigned int n;
+unsigned long* life;
+unsigned long* nextlife;
 
 void setLife(const int i) { life[i / 64] |= 1ULL << (i % 64); }
 bool isAlive(const int i) { return life[i / 64] &= 1ULL << (i % 64); }
+bool isAlive(const unsigned int i) { return life[i / 64] &= 1ULL << (i % 64); }
 
 void init() {
-	const uint32_t size = (n + 2) * (n + 2);
-	const uint32_t word_size = (size + 63) / 64;
-	life = new uint64_t[word_size];
-	nextlife = reinterpret_cast<uint64_t*>(new uint8_t[word_size]);
+	const unsigned int size = (n + 2) * (n + 2);
+	const unsigned int word_size = (size + 63) / 64;
+	life = new unsigned long[word_size];
+	nextlife = new unsigned long[word_size];
 
-	for (auto i = 0; i < word_size; i++)
+	for (auto i = 0U; i < word_size; i++)
 		life[i] = 0;
 	setLife(100);
 	setLife(101);
 	setLife(102);
 }
-
 
 /*
 	vector approach
@@ -97,35 +95,34 @@ void init() {
 
 */
 
-void calcLiveOrDead(const uint32_t i) {
-	constexpr uint32_t EAST = +1;
-	constexpr uint32_t WEST = -1;
-	const uint32_t NORTH = -n - 2;
-	const uint32_t SOUTH = +n + 2;
-	const int count = isAlive(i + EAST) + isAlive(i + WEST) + // TODO: life[i+NORTH] + life[i+SOUTH] +
+void calcLiveOrDead(const unsigned int i) {
+	constexpr auto EAST = +1U;
+	constexpr auto WEST = -1U;
+	const auto NORTH = -n - 2U;
+	const auto SOUTH = +n + 2U;
+	const auto count = isAlive(i + EAST) + isAlive(i + WEST) + // TODO: life[i+NORTH] + life[i+SOUTH] +
 		life[i + NORTH + EAST] + life[i + NORTH + WEST] + life[i + SOUTH + EAST] + life[i + SOUTH + WEST];
 	nextlife[i] = (isAlive(i) ? count == 2 || count == 3 : count == 3) ? 1 : 0;
 }
 
 void stepForward() {
-
-	for (int i = 0, c = n + 2 + 1; i < n; i++, c += 2)
-		for (auto j = 0; j < n; j++, c++)
+	for (auto i = 0U, c = n + 2 + 1; i < n; i++, c += 2)
+		for (auto j = 0U; j < n; j++, c++)
 			calcLiveOrDead(c);
 	swap(life, nextlife);
 }
 
 void print() {
-	for (int i = 0, c = n + 2 + 1; i < n; i++, c += 2) {
-		for (auto j = 0; j < n; j++, c++)
-			cout << static_cast<int>(life[c]) << ' ';
-		cout << "\n";
+	for (auto i = 0U, c = n + 2 + 1; i < n; i++, c += 2) {
+		for (auto j = 0U; j < n; j++, c++)
+			cout << life[c] << ' ';
+		cout << endl;
 	}
 	cout << "\n\n";
 }
 int main() {
 	n = 10;
-	const int row = n + 2;
+	const auto row = n + 2;
 	constexpr auto num_generations = 4;
 	init();
 	life[2 * row + 3] = 1;

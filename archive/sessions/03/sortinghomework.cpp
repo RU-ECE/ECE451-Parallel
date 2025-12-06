@@ -1,5 +1,4 @@
-﻿#include <cstdint>
-#include <immintrin.h>
+﻿#include <immintrin.h>
 #include <iostream>
 #include <memory.h>
 
@@ -27,7 +26,7 @@ inline void minmax(const int a, const int b, int& minab, int& maxab) {
 }
 
 void minmax(__m256i& a, __m256i& b) {
-	const __m256i temp = _mm256_min_epi32(a, b);
+	const auto temp = _mm256_min_epi32(a, b);
 	b = _mm256_max_epi32(a, b);
 	a = temp;
 }
@@ -55,8 +54,8 @@ void sort8cols(__m256i a, __m256i b, __m256i c, __m256i d, __m256i e, __m256i f,
  * given pointer to 64 consecutive 32-bit integers
  * sort each column of 8
  */
-void sort8cols(uint32_t* p) {
-	const __m256i a = _mm256_load_si256(reinterpret_cast<__m256i const*>(p));
+void sort8cols(unsigned int* p) {
+	const auto a = _mm256_load_si256(reinterpret_cast<__m256i const*>(p));
 	// load 8 _m256i registers a..h
 	__m256i aout, bout, cout, dout, eout, fout, gout, hout;
 	// sort8cols(a,b,c,d,e,f,g,h, aout, bout, cout, dout, eout, fout, gout, hout);
@@ -64,11 +63,10 @@ void sort8cols(uint32_t* p) {
 	_mm256_store_si256(reinterpret_cast<__m256i*>(p), a);
 }
 
-
-__m256i load(const uint32_t* ap) {
-	const auto temp = static_cast<uint32_t*>(aligned_alloc(32, 32));
+__m256i load(const unsigned int* ap) {
+	const auto temp = static_cast<unsigned int*>(aligned_alloc(32, 32));
 	memcpy(temp, ap, 32);
-	__m256i v = _mm256_load_si256(reinterpret_cast<__m256i const*>(temp));
+	auto v = _mm256_load_si256(reinterpret_cast<__m256i const*>(temp));
 	free(temp);
 	return v;
 }
@@ -78,22 +76,12 @@ void sort8colsasm(__m256i a, __m256i b, __m256i c, __m256i d, __m256i e, __m256i
 }
 
 int main() {
-	const uint32_t a[8] = {57, 58, 59, 60, 61, 62, 63, 64};
-	const uint32_t b[8] = {49, 50, 51, 52, 53, 54, 55, 56};
-	const uint32_t c[8] = {41, 42, 43, 44, 45, 46, 47, 48};
-	const uint32_t d[8] = {33, 34, 35, 36, 37, 38, 39, 40};
-	const uint32_t e[8] = {25, 26, 27, 28, 29, 30, 31, 32};
-	const uint32_t f[8] = {17, 18, 19, 20, 21, 22, 23, 24};
-	const uint32_t g[8] = {9, 10, 11, 12, 13, 14, 15, 16};
-	const uint32_t h[8] = {1, 2, 3, 4, 5, 6, 7, 8};
-	const __m256i av = load(a);
-	const __m256i bv = load(b);
-	const __m256i cv = load(c);
-	const __m256i dv = load(d);
-	const __m256i ev = load(e);
-	const __m256i fv = load(f);
-	const __m256i gv = load(g);
-	const __m256i hv = load(h);
+	const unsigned int a[8] = {57, 58, 59, 60, 61, 62, 63, 64}, b[8] = {49, 50, 51, 52, 53, 54, 55, 56},
+					   c[8] = {41, 42, 43, 44, 45, 46, 47, 48}, d[8] = {33, 34, 35, 36, 37, 38, 39, 40},
+					   e[8] = {25, 26, 27, 28, 29, 30, 31, 32}, f[8] = {17, 18, 19, 20, 21, 22, 23, 24},
+					   g[8] = {9, 10, 11, 12, 13, 14, 15, 16}, h[8] = {1, 2, 3, 4, 5, 6, 7, 8};
+	const auto av = load(a), bv = load(b), cv = load(c), dv = load(d), ev = load(e), fv = load(f), gv = load(g),
+			   hv = load(h);
 	sort8cols(av, bv, cv, dv, ev, fv, gv, hv);
 	// printvec(av); printvec(bv)...
 	sort8colsasm(av, bv, cv, dv, ev, fv, gv, hv);

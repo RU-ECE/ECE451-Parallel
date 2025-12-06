@@ -1,5 +1,4 @@
-﻿#include <cstdint>
-#include <iostream>
+﻿#include <iostream>
 #include <ranges>
 #include <unordered_map>
 
@@ -7,10 +6,10 @@ using namespace std;
 
 class trie {
 	struct node {
-		unordered_map<uint32_t, node*> next;
-		uint32_t count;
+		unordered_map<unsigned int, node*> next;
+		unsigned int count;
 		node() : count(0) {}
-		bool contains(const uint32_t a) const { return next.contains(a); }
+		bool contains(const unsigned int a) const { return next.contains(a); }
 		void print(ostream& s) const {
 			s << count << endl;
 			for (const auto snd : next | views::values)
@@ -20,10 +19,10 @@ class trie {
 	node root;
 
 public:
-	trie() {}
+	trie() = default;
 	void add(const int a, const int b) {
-		node* p = &root;
-		if (node* q = p->next[a]; q == nullptr) {
+		auto p = &root;
+		if (auto q = p->next[a]; q == nullptr) {
 			p->next[a] = new node();
 			q = p;
 			q->count++;
@@ -32,10 +31,10 @@ public:
 		p = p->next[b];
 		p->count++;
 	}
-	void add(const uint32_t words[], const uint32_t n) {
-		node* p = &root;
-		for (uint32_t i = 0; i < n; i++) {
-			if (node* q = p->next[words[i]]; q == nullptr) {
+	void add(const unsigned int words[], const unsigned int n) {
+		auto p = &root;
+		for (auto i = 0U; i < n; i++) {
+			if (auto q = p->next[words[i]]; q == nullptr) {
 				p->next[words[i]] = q = new node();
 				p = q;
 			}
@@ -43,9 +42,9 @@ public:
 		}
 	}
 
-	uint32_t contains(const uint32_t words[], const uint32_t n) {
-		node* p = &root;
-		for (uint32_t i = 0; i < n; i++) {
+	unsigned int contains(const unsigned int words[], const unsigned int n) {
+		auto p = &root;
+		for (auto i = 0U; i < n; i++) {
 			p = p->next[words[i]];
 			if (p == nullptr)
 				return 0;
@@ -54,7 +53,7 @@ public:
 	}
 
 	friend ostream& operator<<(ostream& s, const trie& t) {
-		const node* p = &t.root;
+		const auto p = &t.root;
 		p->print(s);
 		return s;
 	}
@@ -62,10 +61,10 @@ public:
 
 int main() {
 	trie t;
-	constexpr uint32_t w1[] = {1, 2, 3};
-	constexpr uint32_t w2[] = {1, 2, 3, 4};
-	constexpr uint32_t w3[] = {2, 3, 4, 5};
-	constexpr uint32_t w4[] = {2, 3, 5};
+	constexpr unsigned int w1[] = {1, 2, 3};
+	constexpr unsigned int w2[] = {1, 2, 3, 4};
+	constexpr unsigned int w3[] = {2, 3, 4, 5};
+	constexpr unsigned int w4[] = {2, 3, 5};
 	t.add(w1, size(w1));
 	t.add(w2, size(w2));
 	t.add(w3, size(w3));

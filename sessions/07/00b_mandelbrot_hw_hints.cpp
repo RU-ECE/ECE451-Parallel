@@ -1,18 +1,16 @@
 ﻿#include <immintrin.h>
 
 int main() {
-	__m256 a = _mm256_setzero_ps();
-	__m256 dx = _mm256_set_ps(0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1); // (0.1, 0.1, 0.1, ...)
-	const __m256 s = _mm256_set_ps(0, 1, 2, 3, 4, 5, 6, 7);
+	auto a = _mm256_setzero_ps();
+	auto dx = _mm256_set_ps(0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1); // (0.1, 0.1, 0.1, ...)
+	const auto s = _mm256_set_ps(0, 1, 2, 3, 4, 5, 6, 7);
 	dx = _mm256_mul_ps(dx, s); // (0dx, 1dx, 2dx, ....)
 	// (r, i),   (r+d, i), (r+2d, i)
 	for (auto i = 0; i < 10; i += 8) {
 	}
 }
 
-
 // there are instructions for multiply, fused multiply-add
-
 
 /* divergence
   in SIMD, all data is treated THE SAME

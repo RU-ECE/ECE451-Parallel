@@ -6,10 +6,8 @@
 // out = [1 2 3 4 5 6 7 8 ]
 
 void merge(const int* in, int* out, const int n) {
-	const int right = n;
-	const int end = n + n;
-	int i = 0, j = right;
-	auto k = 0;
+	const auto right = n, end = n + n;
+	auto i = 0, j = right, k = 0;
 	while (i < n && j < end)
 		out[k++] = in[(in[i] < in[j] ? i : j)++];
 	while (i < n)

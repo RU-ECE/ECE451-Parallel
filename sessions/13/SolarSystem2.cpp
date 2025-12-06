@@ -2,7 +2,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
-#include <numbers> // for C++20 pi
+#include <numbers>
 #include <random>
 #include <sstream>
 #include <string>
@@ -12,6 +12,7 @@
 
 using namespace std;
 using namespace numbers;
+
 /**
  * Cleaner Object-Oriented Approach
  *
@@ -67,20 +68,19 @@ public:
 private:
 	ofstream graphfile;
 	vector<string> names;
-	unordered_map<string, uint32_t> orbit_map;
-	uint32_t find(const string& orbits) {
+	unordered_map<string, unsigned int> orbit_map;
+	unsigned int find(const string& orbits) {
 		const auto it = orbit_map.find(orbits);
-		if (it == orbit_map.end())
-			return 0; // default to the sun
-		return it->second;
+		return it == orbit_map.end() ? 0 // defaults to the sun
+									 : it->second;
 	}
 	struct body {
-		uint32_t id; // unique identifier, let's keep strings out of the struct
-		float Gm; // precomputed G*m
-		float x, y, z; // position
-		float vx, vy, vz; // velocity
-		float ax, ay, az; // acceleration
-		float old_ax, old_ay, old_az; // old acceleration
+		unsigned int id; // unique identifier, let's keep strings out of the struct
+		float Gm, // precomputed G*m
+			x, y, z, // position
+			vx, vy, vz, // velocity
+			ax, ay, az, // acceleration
+			old_ax, old_ay, old_az; // old acceleration
 		void accelerate(const float ax, const float ay, const float az) {
 			this->ax += ax;
 			this->ay += ay;
@@ -89,23 +89,24 @@ private:
 	};
 	vector<body> bodies; // everything is in a vector for easy parallelization
 	float dt;
-	uint64_t timestep;
+	unsigned long timestep;
 	int num_steps;
-	void read_line(ifstream& infile);
+	static void read_line(ifstream& infile) {}
 
-	void add_body(const string& name, uint32_t orbiting_body, const float m, const float x, const float y,
+	void add_body(const string& name, unsigned int orbiting_body, const float m, const float x, const float y,
 				  const float z, const float vx, const float vy, const float vz) {
-		bodies.push_back({static_cast<uint32_t>(names.size()), G * m, x, y, z, vx, vy, vz, 0, 0, 0});
+		bodies.push_back({static_cast<unsigned int>(names.size()), G * m, x, y, z, vx, vy, vz, 0, 0, 0, 0, 0, 0});
 		names.push_back(name);
 	}
-	void add_body_circular(const string& name, uint32_t orbiting_body, float m, float a, float e, float orbPeriod);
-	void add_body_circular_random(const string& name, uint32_t orbiting_body, float m, float a, float e,
+	void add_body_circular(const string& name, unsigned int orbiting_body, float m, float a, float e, float orbPeriod);
+	void add_body_circular_random(const string& name, unsigned int orbiting_body, float m, float a, float e,
 								  float orbPeriod);
-	void add_body_elliptical(const string& name, uint32_t orbiting_body, float m, float a, float e, float orbPeriod);
+	void add_body_elliptical(const string& name, unsigned int orbiting_body, float m, float a, float e,
+							 float orbPeriod);
 
 public:
-	GravSim(const char filename[], float dt, float duration, bool verbose, uint32_t print_every, uint32_t graph_every,
-			configuration config);
+	GravSim(const char filename[], float dt, float duration, bool verbose, unsigned int print_every,
+			unsigned int graph_every, configuration config);
 	~GravSim(); // we probably don't need a destructor, but we can just make it empty for now
 	GravSim(const GravSim& orig) =
 		delete; // let's stop people from accidentally copying the system, it can be enormous!
@@ -117,34 +118,33 @@ public:
 	void graph_system();
 };
 
-
 /*
  * Calculates the initial velocity for simple circular orbits around the specified body
  * This method will line up all bodies initially on the x-axis which is kind of dumb.
  * The next option below is circular but starts everyone at a random angle.
  */
-void GravSim::add_body_circular(const string& name, const uint32_t orbiting_body, const float m, const float a, float e,
-								const float orbPeriod) {
-	const float Gm = bodies[orbiting_body].Gm;
-	float v0 = sqrt(Gm / a); // assuming the sun's mass for simplicity
+void GravSim::add_body_circular(const string& name, const unsigned int orbiting_body, const float m, const float a,
+								float e, const float orbPeriod) {
+	const auto Gm = bodies[orbiting_body].Gm;
+	auto v0 = sqrt(Gm / a); // assuming the sun's mass for simplicity
 	if (orbPeriod < 0)
 		v0 = -v0; // reverse direction for negative orbital period
-	const float x = bodies[orbiting_body].x + a; // place the new body at the aphelion
+	const auto x = bodies[orbiting_body].x + a; // place the new body at the aphelion
 	add_body(name, orbiting_body, m, x, 0, 0, 0, v0, 0);
 }
 
 /*
-	Calculates the initial velocity for a circular orbit where each body starts at a random angle around the orbiting
-   body We should fix this by adding a parameter to the method to specify the body being orbited. This method will start
-   everyone at a random angle.
-*/
-void GravSim::add_body_circular_random(const string& name, const uint32_t orbiting_body, const float m, const float a,
-									   float e, const float orbPeriod) {
-	float v0 = sqrt(bodies[orbiting_body].Gm / a); // assuming the sun's mass for simplicity
+ * Calculates the initial velocity for a circular orbit where each body starts at a random angle around the orbiting
+ * body. We should fix this by adding a parameter to the method to specify the body being orbited. This method will
+ * start everyone at a random angle.
+ */
+void GravSim::add_body_circular_random(const string& name, const unsigned int orbiting_body, const float m,
+									   const float a, float e, const float orbPeriod) {
+	auto v0 = sqrt(bodies[orbiting_body].Gm / a); // assuming the sun's mass for simplicity
 	if (orbPeriod < 0)
 		v0 = -v0; // reverse direction for bodies moving in the opposite direction (example: Venus)
-	const float angle = dis(gen) * 2 * pi;
-	const float x = bodies[orbiting_body].x +
+	const auto angle = dis(gen) * 2 * pi;
+	const auto x = bodies[orbiting_body].x +
 		a * cos(angle); // calculate the position of the new body with respect to the orbiting body
 	const float y = bodies[orbiting_body].y + a * sin(angle); // for the sun, [x,y] = [0,0] initially
 	add_body(name, orbiting_body, m, x, y, 0, -v0 * sin(angle), v0 * cos(angle), 0);
@@ -154,49 +154,48 @@ void GravSim::add_body_circular_random(const string& name, const uint32_t orbiti
  * Calculates the initial velocity for an elliptical orbit around the specified body
  * You don't have to use this for your homework, but it's kind of cool.
  */
-void GravSim::add_body_elliptical(const string& name, const uint32_t orbiting_body, const float m, const float a,
+void GravSim::add_body_elliptical(const string& name, const unsigned int orbiting_body, const float m, const float a,
 								  const float e, float orbPeriod) {
-	const float Gm = bodies[orbiting_body].Gm;
-	const float v0 = sqrt(Gm * (1 - e * e) / a); // vis-viva equation
+	const auto Gm = bodies[orbiting_body].Gm;
+	const auto v0 = sqrt(Gm * (1 - e * e) / a); // vis-viva equation
 	// O great chatgpt, we will take your word for this....
-
-	const float angle = dis(gen) * 2 * pi;
+	const auto angle = dis(gen) * 2 * pi;
 	add_body(name, orbiting_body, m, a * cos(angle), a * sin(angle), 0, -v0 * sin(angle), v0 * cos(angle), 0);
 }
 
-GravSim::GravSim(const char filename[], const float dt, const float duration, const bool verbose, uint32_t print_every,
-				 const uint32_t graph_every, const configuration config) :
+GravSim::GravSim(const char filename[], const float dt, const float duration, const bool verbose,
+				 unsigned int print_every, const unsigned int graph_every, const configuration config) :
 	verbose(verbose), graphfile("solargraph.dat"), dt(dt), timestep(0), num_steps(duration / dt) {
-
 	ifstream infile(filename);
 	while (infile)
 		read_line(infile, config);
 	infile.close();
 	cout << "Starting simulation with " << bodies.size() << " bodies num_steps=" << num_steps << endl;
 	for (auto i = 0; i < num_steps; i++) {
-		for (auto j = 0; j < bodies.size(); j++) { // save the old accelerations
-			bodies[j].old_ax = bodies[j].ax;
-			bodies[j].old_ay = bodies[j].ay;
-			bodies[j].old_az = bodies[j].az;
+		for (auto& body : bodies) { // save the old accelerations
+			body.old_ax = body.ax;
+			body.old_ay = body.ay;
+			body.old_az = body.az;
 		}
 		compute_acceleration();
 		step_forward();
 		if (verbose) {
 			timestep = i;
-			//            if (i % print_every == 0) {
-			//                print_system();
-			//            }
+			// if (i % print_every == 0)
+			// 	print_system();
 			if (i % graph_every == 0) {
 				graph_system();
 				// wait for the user to press enter
-				//                cout << "Press enter to continue\n";
-				//                cin.ignore();
+				// cout << "Press enter to continue\n";
+				// cin.ignore();
 			}
 		}
 	}
 }
 
-GravSim::~GravSim() {}
+GravSim::~GravSim() = default;
+
+using enum GravSim::configuration;
 
 // read a line from the file as specified in solarsystem.dat
 void GravSim::read_line(ifstream& infile, const configuration config) {
@@ -213,20 +212,24 @@ void GravSim::read_line(ifstream& infile, const configuration config) {
 	float mass, diam, perihelion, aphelion, orbPeriod, rotationalPeriod, axialtilt, orbinclin;
 	ss >> name >> orbits >> mass >> diam >> perihelion >> aphelion >> orbPeriod >> rotationalPeriod >> axialtilt >>
 		orbinclin;
-	if (bodies.size() == 0) {
+	if (bodies.empty()) {
 		// we need to add the sun first
 		add_body(name, 0, mass, 0, 0, 0, 0, 0, 0);
 		return;
 	}
-	const uint32_t orbiting_body = find(orbits);
-	if (config == configuration::CIRCULAR) {
-		add_body_circular(name, orbiting_body, mass, perihelion, 0, orbPeriod);
-	} else if (config == configuration::CIRCULAR_RANDOM) {
-		add_body_circular_random(name, orbiting_body, mass, perihelion, 0, orbPeriod);
-	} else if (config == configuration::ELLIPTICAL_2D) {
-		add_body_elliptical(name, orbiting_body, mass, perihelion, aphelion, orbPeriod);
-	} else if (config == configuration::ELLIPTICAL_3D) {
+	switch (config) {
+	case CIRCULAR:
+		add_body_circular(name, find(orbits), mass, perihelion, 0, orbPeriod);
+		break;
+	case CIRCULAR_RANDOM:
+		add_body_circular_random(name, find(orbits), mass, perihelion, 0, orbPeriod);
+		break;
+	case ELLIPTICAL_2D:
+		add_body_elliptical(name, find(orbits), mass, perihelion, aphelion, orbPeriod);
+		break;
+	case ELLIPTICAL_3D:
 		// TODO: implement elliptical 3D
+		break;
 	}
 }
 
@@ -255,27 +258,14 @@ void GravSim::read_line(ifstream& infile, const configuration config) {
  */
 
 void GravSim::compute_acceleration() {
-	for (auto i = 0; i < bodies.size(); i++) {
-		const float x1 = bodies[i].x;
-		const float y1 = bodies[i].y;
-		const float z1 = bodies[i].z;
-		float ax0 = 0;
-		float ay0 = 0;
-		float az0 = 0;
-		for (auto j = 0; j < bodies.size(); j++) {
+	for (auto i = 0UL; i < bodies.size(); i++) {
+		const auto x1 = bodies[i].x, y1 = bodies[i].y, z1 = bodies[i].z;
+		auto ax0 = 0.0f, ay0 = 0.0f, az0 = 0.0f;
+		for (auto j = 0UL; j < bodies.size(); j++) {
 			if (i == j)
 				continue;
-			const float Gm2 = bodies[j].Gm;
-			const float x2 = bodies[j].x;
-			const float y2 = bodies[j].y;
-			const float z2 = bodies[j].z;
-			const float dx = x2 - x1;
-			const float dy = y2 - y1;
-			const float dz = z2 - z1;
-			// calculate r^2 not r!
-			const float r2 = dx * dx + dy * dy + dz * dz;
-			const float r = sqrt(r2);
-			const float a_r = Gm2 / (r2 * r);
+			const auto Gm2 = bodies[j].Gm, x2 = bodies[j].x, y2 = bodies[j].y, z2 = bodies[j].z, dx = x2 - x1,
+					   dy = y2 - y1, dz = z2 - z1, r2 = dx * dx + dy * dy + dz * dz, r = sqrt(r2), a_r = Gm2 / (r2 * r);
 			ax0 += a_r * dx;
 			ay0 += a_r * dy;
 			az0 += a_r * dz;
@@ -288,39 +278,37 @@ void GravSim::compute_acceleration() {
 
 // error: vx is not constant, can do a better approximation
 void GravSim::step_forward() {
-	for (auto i = 0; i < bodies.size(); i++) {
-		bodies[i].x += bodies[i].vx * dt;
-		bodies[i].y += bodies[i].vy * dt;
-		bodies[i].z += bodies[i].vz * dt;
-		bodies[i].vx += bodies[i].ax * dt;
-		bodies[i].vy += bodies[i].ay * dt;
-		bodies[i].vz += bodies[i].az * dt;
+	for (auto& body : bodies) {
+		body.x += body.vx * dt;
+		body.y += body.vy * dt;
+		body.z += body.vz * dt;
+		body.vx += body.ax * dt;
+		body.vy += body.ay * dt;
+		body.vz += body.az * dt;
 	}
 }
 
 void GravSim::print_system() const {
-	for (auto i = 0; i < bodies.size(); i++) {
+	for (auto i = 0UL; i < bodies.size(); i++) {
 		cout << names[i] << " " << bodies[i].x << " " << bodies[i].y << " " << bodies[i].z << " " << bodies[i].vx << " "
 			 << bodies[i].vy << " " << bodies[i].vz << endl;
 	}
 }
+
 #if 0
 void GravSim::graph_system() const {
 	static int pipefd[2];
-	static pid_t pid = -1;
-
+	static auto pid = -1;
 	if (pid == -1) { // Create the pipe and fork only once
 		if (pipe(pipefd) == -1) {
 			perror("pipe");
 			exit(EXIT_FAILURE);
 		}
-
 		pid = fork();
 		if (pid == -1) {
 			perror("fork");
 			exit(EXIT_FAILURE);
 		}
-
 		if (pid == 0) { // Child process
 			close(pipefd[1]); // Close write end
 			dup2(pipefd[0], STDIN_FILENO); // Redirect stdin to read end of pipe
@@ -331,22 +319,20 @@ void GravSim::graph_system() const {
 			close(pipefd[0]); // Close read end
 		}
 	}
-
-	for (int i = 0; i < bodies.size(); i++)
+	for (auto  i = 0; i < bodies.size(); i++)
 		dprintf(pipefd[1], "%s %f %f %f\n", names[i].c_str(), bodies[i].x, bodies[i].y, bodies[i].z);
 	dprintf(pipefd[1], "draw\n");
 }
 #endif
 
 void GravSim::graph_system() {
-	for (auto i = 0; i < bodies.size(); i++)
+	for (auto i = 0UL; i < bodies.size(); i++)
 		graphfile << names[i] << ' ' << bodies[i].x << ' ' << bodies[i].y << ' ' << bodies[i].z << ' ';
 	graphfile << endl;
 }
 
-int main(const int argc, char** argv) {
-	const char* filename = argc > 1 ? argv[1] : "solarsystem2.dat";
-	GravSim sim(filename, 100, year, true, 10'000, 100, GravSim::configuration::CIRCULAR_RANDOM);
+int main(const int argc, char* argv[]) {
+	GravSim sim(argc > 1 ? argv[1] : "solarsystem2.dat", 100, year, true, 10'000, 100, CIRCULAR_RANDOM);
 	sim.print_system();
 	sim.graph_system();
 }

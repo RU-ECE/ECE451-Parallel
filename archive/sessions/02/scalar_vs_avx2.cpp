@@ -1,10 +1,9 @@
-﻿#include <immintrin.h>
+﻿#include <ctime>
+#include <immintrin.h>
 #include <iostream>
-#include <time.h>
+#include <memory>
 
 using namespace std;
-
-// load the intel intrinsics
 
 float dot(const float x[], const float y[], const int n) {
 	float sum = 0;
@@ -13,19 +12,15 @@ float dot(const float x[], const float y[], const int n) {
 	return sum;
 }
 
-
 float dot_product_avx2(const float* a, const float* b, const int n) {
-	__m256 result = _mm256_setzero_ps();
+	auto result = _mm256_setzero_ps();
 
-	for (auto i = 0; i < n; i += 8) {
-		const __m256 a_vec = _mm256_loadu_ps(&a[i]);
-		const __m256 b_vec = _mm256_loadu_ps(&b[i]);
-		result = _mm256_add_ps(result, _mm256_mul_ps(a_vec, b_vec));
-	}
+	for (auto i = 0; i < n; i += 8)
+		result = _mm256_add_ps(result, _mm256_mul_ps(_mm256_loadu_ps(&a[i]), _mm256_loadu_ps(&b[i])));
 
 	// Horizontal addition of elements in the result vector
 	const auto hi128 = _mm256_extractf128_ps(result, 1);
-	__m128 dotproduct = _mm_add_ps(_mm256_castps256_ps128(result), hi128);
+	auto dotproduct = _mm_add_ps(_mm256_castps256_ps128(result), hi128);
 	dotproduct = _mm_hadd_ps(dotproduct, dotproduct);
 	dotproduct = _mm_hadd_ps(dotproduct, dotproduct);
 
@@ -42,21 +37,21 @@ void init(float* a, const float value, const int n) {
 
 int main() {
 	constexpr auto n = 100'000'000;
-	const auto a = new float[n];
-	const auto b = new float[n];
-	clock_t t0 = clock();
-	init(a, 1.5, n);
-	init(b, 2.3, n);
-	clock_t t1 = clock();
+	const auto a = make_unique<float[]>(n);
+	const auto b = make_unique<float[]>(n);
+	auto t0 = clock();
+	init(a.get(), 1.5, n);
+	init(b.get(), 2.3, n);
+	auto t1 = clock();
 	cout << "init: " << (t1 - t0) << endl;
 
 	t0 = clock();
-	cout << dot(a, b, n) << endl;
+	cout << dot(a.get(), b.get(), n) << endl;
 	t1 = clock();
 	cout << "elapsed time dot: " << (t1 - t0) << endl;
 
 	t0 = clock();
-	cout << dot_product_avx2(a, b, n) << endl;
+	cout << dot_product_avx2(a.get(), b.get(), n) << endl;
 	t1 = clock();
 	cout << "elapsed time dot_product_avx2: " << (t1 - t0) << endl;
 }

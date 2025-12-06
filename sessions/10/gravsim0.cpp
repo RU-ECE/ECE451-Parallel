@@ -35,8 +35,8 @@ class Body final {
 	double x, y, z; // location
 	double vx, vy, vz; // velocity
 public:
-	Body([[maybe_unused]] string name, const double m, const double x, const double y, const double z, const double vx,
-		 const double vy, const double vz) : m(m), x(x), y(y), z(z), vx(vx), vy(vy), vz(vz) {}
+	Body([[maybe_unused]] const string& name, const double m, const double x, const double y, const double z,
+		 const double vx, const double vy, const double vz) : m(m), x(x), y(y), z(z), vx(vx), vy(vy), vz(vz) {}
 	~Body();
 	friend void step_forward(double dt);
 	friend ostream& operator<<(ostream& s, const Body& b) {
@@ -45,35 +45,24 @@ public:
 	double dist(const Body* b) const;
 
 	// given the acceleration, calculate the component in the x, y, z direction
-	double d2x(const Body* other, double a) const;
-	double d2y(const Body* other, double a) const;
-	double d2z(const Body* other, double a) const;
+	double d2x(const Body* b, double a) const;
+	double d2y(const Body* b, double a) const;
+	double d2z(const Body* b, double a) const;
 	void step_forward(double dt);
 };
 
-Body::~Body() {}
+Body::~Body() = default;
 
 double Body::dist(const Body* b) const {
-	const double dx = this->x - b->x;
-	const double dy = this->y - b->y;
-	const double dz = this->z - b->z;
+	const auto dx = this->x - b->x;
+	const auto dy = this->y - b->y;
+	const auto dz = this->z - b->z;
 	return sqrt(dx * dx + dy * dy + dz * dz);
 }
 
-double Body::d2x(const Body* b, const double a) const {
-	const double dx = this->x - b->x;
-	return a * dx / this->dist(b);
-}
-
-double Body::d2y(const Body* b, const double a) const {
-	const double dy = this->y - b->y;
-	return a * dy / this->dist(b);
-}
-
-double Body::d2z(const Body* b, const double a) const {
-	const double dz = this->z - b->z;
-	return a * dz / this->dist(b);
-}
+double Body::d2x(const Body* b, const double a) const { return a * (this->x - b->x) / this->dist(b); }
+double Body::d2y(const Body* b, const double a) const { return a * (this->y - b->y) / this->dist(b); }
+double Body::d2z(const Body* b, const double a) const { return a * (this->z - b->z) / this->dist(b); }
 
 // step this one body forward in time
 void Body::step_forward(const double dt) {
@@ -92,38 +81,38 @@ vector<Body*> bodies;
 
 // step all bodies forward in time
 void step_forward(const double dt) {
-	for (auto i = 0; i < bodies.size(); i++) {
-		Body* b = bodies[i];
-		for (auto j = 0; j < bodies.size(); j++) {
+	for (auto i = 0UL; i < bodies.size(); i++) {
+		const auto b = bodies[i];
+		for (auto j = 0UL; j < bodies.size(); j++) {
 			if (i == j)
 				continue;
-			const Body* other = bodies[j];
-			const double r = b->dist(other);
-			const double F = G * b->m * other->m / (r * r);
-			const double a = F / b->m;
+			const auto other = bodies[j];
+			const auto r = b->dist(other);
+			const auto F = G * b->m * other->m / (r * r);
+			const auto a = F / b->m;
 			b->vx -= b->d2x(other, a);
 			b->vy -= b->d2y(other, a);
 			b->vz -= b->d2z(other, a);
 		}
 	}
 	// step forward after we calculate everyone's velocity
-	for (auto i = 0; i < bodies.size(); i++)
-		bodies[i]->step_forward(dt);
+	for (const auto& body : bodies)
+		body->step_forward(dt);
 }
 
 void print(const double t) {
 	cout << setw(12) << t << endl;
-	for (auto i = 0; i < bodies.size(); i++)
-		cout << *bodies[i] << endl;
+	for (const auto& body : bodies)
+		cout << *body << endl;
 	cout << endl;
 }
 
 int main(const int argc, char* argv[]) {
-	constexpr double YEAR = 365.25 * 24 * 60 * 60;
-	constexpr double MONTH = 30 * 24 * 60 * 60;
-	const double dt = argc > 1 ? atof(argv[1]) : 100; // 100 second default timestep
-	const double END = argc > 2 ? atof(argv[2]) * YEAR : YEAR;
-	double print_interval = argc > 3 ? atof(argv[3]) : 1000;
+	constexpr auto YEAR = 365.25 * 24 * 60 * 60;
+	constexpr auto MONTH = 30.0 * 24 * 60 * 60;
+	const auto dt = argc > 1 ? strtof(argv[1], nullptr) : 100; // 100 second default timestep
+	const auto END = argc > 2 ? strtof(argv[2], nullptr) * YEAR : YEAR;
+	auto print_interval = argc > 3 ? strtof(argv[3], nullptr) : 1000;
 	bodies.push_back(new Body("Sun", 1.989e30, 0, -200, 0, 0, 0, 0));
 	bodies.push_back(new Body("Earth", 5.97219e24, 149.59787e9, 0, 0, 0, 29784.8, 0));
 	bodies.push_back(new Body("Mars", -6.39e23, 228e9, 0, 0, 0, -24130.8, 0));
@@ -131,9 +120,9 @@ int main(const int argc, char* argv[]) {
 
 	cerr << "dt=" << dt << "\tEND=" << (END / YEAR) << " years \tprint=" << print_interval << endl;
 	print_interval *= dt;
-	for (double t = 0; t < END;) {
+	for (auto t = 0.0; t < END;) {
 		print(t);
-		for (const double next_print = t + print_interval; t < next_print; t += dt)
+		for (const auto next_print = t + print_interval; t < next_print; t += dt)
 			step_forward(dt);
 	}
 }
