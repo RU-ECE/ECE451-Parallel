@@ -1,29 +1,27 @@
-#include <iostream>
-#include <cstdint>
 #include <cmath>
+#include <iostream>
+
 using namespace std;
 
-//O(log log n)
-uint64_t eratosthenes(bool primes[], uint64_t n) {
-    uint64_t count = 0;
-    for (uint64_t i = 2; i <= n; i++) {
-        primes[i] = true;
-    }
+// O(log log n)
+unsigned long eratosthenes(bool primes[], const unsigned long n) {
+	auto count = 0UL;
+	for (auto i = 2UL; i <= n; i++)
+		primes[i] = true;
 
-    for (uint64_t i = 2; i <= n; i++) {
-        if (primes[i]) {
-            count++;
-            for (uint64_t j = 2 * i; j <= n; j += i) {
-                primes[j] = false;
-            }
-        }
-    }
-		return count;
+	for (auto i = 2UL; i <= n; i++) {
+		if (primes[i]) {
+			count++;
+			for (unsigned long j = 2 * i; j <= n; j += i)
+				primes[j] = false;
+		}
+	}
+	return count;
 }
 
-int main(int argc, char* argv[]) {
-	uint64_t n = argc > 1 ? atol(argv[1]) : 1000;
-	bool* primes = new bool[n+1];
-	cout << eratosthenes(primes, n) << '\n';
-    delete[] primes;
+int main(const int argc, char* argv[]) {
+	const auto n = argc > 1 ? strtol(argv[1], nullptr, 10) : 1000;
+	const auto primes = new bool[n + 1];
+	cout << eratosthenes(primes, n) << endl;
+	delete[] primes;
 }

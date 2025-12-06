@@ -1,14 +1,20 @@
-// rax, rbx, rcx, rdx, rsi, rdi, rbp, rsp, r8, r9, r10, r11, r12, r13, r14, r15
-//                                x    x
+    .text
 
-    .global f
-    ; rdi = address of the array  rsi = number of element
+    .globl  f
+    # rdi = address of the array
+    # rsi = number of elements (each 8 bytes)
 f:
-      mov  $0, %rax
-loop:
-      mov (%rdi), %rbx  // load from each element in memory
-      add %rbx, %rax  // rax = rax + rbx
-      add $8, %rdi      // advance to next memory location
-      sub $1, %rsi      //count down
-      cmp $0, %rsi      // compare
-      jg  loop          // jump if greater to do it again
+    xor     %rax, %rax         # sum = 0
+
+    test    %rsi, %rsi         # if count <= 0, return 0
+    jle     .done
+
+.loop:
+    mov     (%rdi), %rdx       # load element (assume 64-bit)
+    add     %rdx, %rax         # sum += element
+    add     $8, %rdi           # advance to next element
+    dec     %rsi               # count--
+    jg      .loop              # if count > 0, keep going
+
+.done:
+    ret

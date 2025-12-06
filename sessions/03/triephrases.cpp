@@ -1,85 +1,80 @@
 #include <iostream>
+#include <ranges>
 #include <unordered_map>
 
 using namespace std;
 
 class trie {
-private:
-  struct node {
-    unordered_map<uint32_t,node*> next;
-    uint32_t count;
-    node() : count(0) {}
-      bool contains(uint32_t a) {
-          return (next.find(a) != next.end());      
-     }
-    void print(ostream& s) const {
-      s << count << '\n';
-      for (auto p : next) {
-        p.second->print(s);
-      }
-    }
-  };
-  node root;
+	struct node {
+		unordered_map<unsigned int, node*> next;
+		unsigned int count;
+		node() : count(0) {}
+		bool contains(const unsigned int a) const { return next.contains(a); }
+		void print(ostream& s) const {
+			s << count << endl;
+			for (const auto snd : next | views::values)
+				snd->print(s);
+		}
+	};
+	node root;
+
 public:
-  trie() {}
-  void add(int a, int b) {
-    node* p = &root;
-    node* q = p->next[a];
-    if (q == nullptr) {
-      p->next[a] = new node();
-      q = p;
-      q->count++;
-    }
-    p->count++;
-    p = p->next[b];
-    p->count++;
-  }
-  void add(const uint32_t words[], uint32_t n) {
-    node* p = &root;
-    for (uint32_t i = 0; i < n; i++) {
-      node* q = p->next[words[i]];
-      if (q == nullptr) {
-        p->next[words[i]] = q = new node();
-        p = q;
-      }
-      p->count++;
-    }
-  }
+	trie() = default;
+	void add(const int a, const int b) {
+		auto p = &root;
+		if (auto q = p->next[a]; q == nullptr) {
+			p->next[a] = new node();
+			q = p;
+			q->count++;
+		}
+		p->count++;
+		p = p->next[b];
+		p->count++;
+	}
+	void add(const unsigned int words[], const unsigned int n) {
+		auto p = &root;
+		for (auto i = 0U; i < n; i++) {
+			if (auto q = p->next[words[i]]; q == nullptr) {
+				p->next[words[i]] = q = new node();
+				p = q;
+			}
+			p->count++;
+		}
+	}
 
-  uint32_t contains(const uint32_t words[], uint32_t n) {
-    node* p = &root;
-    for (uint32_t i = 0; i < n; i++) {
-      p = p->next[words[i]];
-      if (p == nullptr) {
-        return 0;
-      }
-    }
-    return p->count;
-  }
+	unsigned int contains(const unsigned int words[], const unsigned int n) {
+		auto p = &root;
+		for (auto i = 0U; i < n; i++) {
+			p = p->next[words[i]];
+			if (p == nullptr)
+				return 0;
+		}
+		return p->count;
+	}
 
-  friend ostream& operator <<(ostream& s, const trie& t) {
-    const node* p = &t.root;
-    p->print(s);
-    return s;
-  }
+	friend ostream& operator<<(ostream& s, const trie& t) {
+		const auto p = &t.root;
+		p->print(s);
+		return s;
+	}
 };
 
 int main() {
-    trie t;
-    const uint32_t w1[] = {1,2,3};
-    const uint32_t w2[] = {1,2,3,4};
-    const uint32_t w3[] = {2, 3, 4, 5};
-    const uint32_t w4[] = {2, 3, 5};
-    t.add(w1, sizeof(w1)/sizeof(w1[0]));
-    t.add(w2, sizeof(w2)/sizeof(w2[0]));
-    t.add(w3, sizeof(w3)/sizeof(w3[0]));
-    t.add(w4, sizeof(w4)/sizeof(w4[0]));
-    cout << t << '\n';
+	trie t;
+	constexpr unsigned int w1[] = {1, 2, 3};
+	constexpr unsigned int w2[] = {1, 2, 3, 4};
+	constexpr unsigned int w3[] = {2, 3, 4, 5};
+	constexpr unsigned int w4[] = {2, 3, 5};
+	t.add(w1, size(w1));
+	t.add(w2, size(w2));
+	t.add(w3, size(w3));
+	t.add(w4, size(w4));
+	cout << t << endl;
 
-    cout << t.contains(w1, sizeof(w1)/sizeof(w1[0])) << '\n';
-    cout << t.contains(w1, sizeof(w1)/sizeof(w2[0])-1) << '\n';
-    cout << t.contains(w2, sizeof(w2)/sizeof(w1[0])) << '\n';
-    cout << t.contains(w3, sizeof(w3)/sizeof(w3[0])) << '\n';
-    cout << t.contains(w4, sizeof(w4)/sizeof(w4[0])) << '\n';
-    return 0;
+	cout << t.contains(w1, size(w1)) << endl;
+	cout << t.contains(w1, size(w1) - 1) << endl;
+	cout << t.contains(w2, size(w2)) << endl;
+	cout << t.contains(w3, size(w3)) << endl;
+	cout << t.contains(w4, size(w4)) << endl;
+	return 0;
 }
