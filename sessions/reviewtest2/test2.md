@@ -217,7 +217,7 @@ __device__ int* setMemory(uint32_t n) {
 
 
 void main() {
-    const int n = 1'000'000;
+    const int n = 1'000;
     int* p = malloc(n * sizeof(uint32_t)); // memory is on CPU
     for (int i = 0; i < n; i++)
       p[i] = i;
@@ -228,7 +228,7 @@ void main() {
 
     cudaMemcpy(dev_p, p, n * 1024*sizeof(uint32_t),
           cudaMemcpyHostToDevice);
-    g<<<256, 256>>>(dev_p, n * 1024);  // 256 blocks, 256 threads/block = 65,536 threads
+    g<<<32, 32>>>(dev_p, n * 1024);  // 256 blocks, 256 threads/block = 65,536 threads
     // g<<<1024, 128>>>(dev_p, n * 1024);  // 1024 blocks, 128 threads/block = 131,072 threads
     // g<<<64, 512>>>(dev_p, n * 1024);    // 64 blocks, 512 threads/block = 32,768 threads
     // g<<<1024, 1024>>>(dev_p, n * 1024); // 1024 blocks, 1024 threads/block = 1,048,576 threads
