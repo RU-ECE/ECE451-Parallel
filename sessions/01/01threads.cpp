@@ -43,8 +43,8 @@ int main() {
    try {
     thread t1(f);
     thread t2(g);
-    t1.join();
-    t2.join();
+//    t1.join();
+//    t2.join();
   } catch (exception e) {
      cout << e.what() << '\n';
   }
