@@ -136,11 +136,50 @@ _Z2f7Dv8_fS_:
 	.cfi_endproc
 .LFE7295:
 	.size	_Z2f7Dv8_fS_, .-_Z2f7Dv8_fS_
+	.p2align 4
+	.globl	_Z7compareDv4_xS_
+	.type	_Z7compareDv4_xS_, @function
+_Z7compareDv4_xS_:
+.LFB7296:
+	.cfi_startproc
+	endbr64
+	ret
+	.cfi_endproc
+.LFE7296:
+	.size	_Z7compareDv4_xS_, .-_Z7compareDv4_xS_
+	.p2align 4
+	.globl	_Z12comparebyrefRDv4_xS0_
+	.type	_Z12comparebyrefRDv4_xS0_, @function
+_Z12comparebyrefRDv4_xS0_:
+.LFB7297:
+	.cfi_startproc
+	endbr64
+	vmovdqa	(%rdi), %ymm2
+	vpminsd	(%rsi), %ymm2, %ymm1
+	vpmaxsd	(%rsi), %ymm2, %ymm0
+	vmovdqa	%ymm0, (%rsi)
+	vmovdqa	%ymm1, (%rdi)
+	vzeroupper
+	ret
+	.cfi_endproc
+.LFE7297:
+	.size	_Z12comparebyrefRDv4_xS0_, .-_Z12comparebyrefRDv4_xS0_
+	.p2align 4
+	.globl	_Z8compare4Dv4_xS_S_S_
+	.type	_Z8compare4Dv4_xS_S_S_, @function
+_Z8compare4Dv4_xS_S_S_:
+.LFB7298:
+	.cfi_startproc
+	endbr64
+	ret
+	.cfi_endproc
+.LFE7298:
+	.size	_Z8compare4Dv4_xS_S_S_, .-_Z8compare4Dv4_xS_S_S_
 	.section	.text.startup,"ax",@progbits
 	.p2align 4
 	.type	_GLOBAL__sub_I__Z2f1mm, @function
 _GLOBAL__sub_I__Z2f1mm:
-.LFB7777:
+.LFB7780:
 	.cfi_startproc
 	endbr64
 	pushq	%rbp
@@ -156,7 +195,7 @@ _GLOBAL__sub_I__Z2f1mm:
 	leaq	__dso_handle(%rip), %rdx
 	jmp	__cxa_atexit@PLT
 	.cfi_endproc
-.LFE7777:
+.LFE7780:
 	.size	_GLOBAL__sub_I__Z2f1mm, .-_GLOBAL__sub_I__Z2f1mm
 	.section	.init_array,"aw"
 	.align 8

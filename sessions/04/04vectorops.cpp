@@ -49,8 +49,14 @@ __m256 f7(__m256 a, __m256 b) {
 /*
     So, how would we sort values? We would have to compare and swap
     This is a problem in vector registers:
+    in:
     ymm0 = [5, 1, 2, 9, 3, 1, 4, 8]
     ymm1 = [3, 2, 1, 4, 5, 9, 8, 7]
+
+    out:
+    ymm0 = [3, 1, 1, 4, 3, 1, 4, 7]
+    ymm1 = [5, 2, 2, 9, 5, 9, 8, 8]
+   
 
     what you cannot do with vector registers is use an if statement
 
@@ -73,3 +79,20 @@ __m256 f7(__m256 a, __m256 b) {
 
 */
 
+void compare(__m256i a, __m256i b) {
+    __m256i temp = _mm256_min_epi32(a, b);
+    b = _mm256_max_epi32(a, b);
+    a = temp;
+ }
+
+
+void comparebyref(__m256i& a, __m256i& b) {
+    __m256i temp = _mm256_min_epi32(a, b);
+    b = _mm256_max_epi32(a, b);
+    a = temp;
+ }
+
+void compare4(__m256i a, __m256i b, __m256i c, __m256i d) {
+    compare(a,b);
+    compare(c,d);
+ }
