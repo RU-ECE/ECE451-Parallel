@@ -2,7 +2,17 @@
 #include <cstdint>
 #include <immintrin.h>
 #include <iomanip>
+#include <cmath>
 using namespace std;
+
+float sum_f(uint64_t a, uint64_t b) {
+    float sum = 0;
+    for (uint64_t i = a; i <= b; i++) {
+      sum += 1.0/(i*i);
+    }
+    return sum;
+  }
+  
 
 double sum(uint64_t a, uint64_t b) {
   double sum = 0;
@@ -59,7 +69,7 @@ double sum_avx_rev(uint64_t a, uint64_t b) {
       __m256d square = _mm256_mul_pd(term, term); // ymm4
       __m256d t = _mm256_div_pd(num_vec, square);
       sum = _mm256_add_pd(sum, t);
-      term = _mm256_add_pd(term, four);
+      term = _mm256_sub_pd(term, four);
     }
     double result[4]; // this code is AI slop. There is way better way to do this
     _mm256_storeu_pd(result, sum);
@@ -72,7 +82,8 @@ double sum_avx_rev(uint64_t a, uint64_t b) {
   
 
 int main() {
-  const uint64_t n = 12;
+  const uint64_t n = 800'000;
+  cout << setprecision(15) << sqrt(6*sum_f(1, n)) << endl;
   cout << setprecision(15) << sum(1, n) << endl;
   cout << setprecision(15) << sum_rev(1, n) << endl;
   cout << setprecision(15) << sum_avx(1, n) << endl;
