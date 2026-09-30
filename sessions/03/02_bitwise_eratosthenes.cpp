@@ -356,6 +356,8 @@ public:
 		// this is storing only odd numbers in each mask!
 		// note 1LL is crucial. If you write just 1 it's an int.
 		// (1 << 40) would be 0   (1LL << 40) is 10000000000000000000000000....
+		// 1, 3, 5, 7, ..., 127
+		// 1--> 0, 3-->1, 5-->2, 7-->3, ..., 127-->63
 		p[i/128] |= (1LL << ((i%128) >> 1));
 	}
 	bool is_prime(uint64_t i) const {
@@ -377,6 +379,7 @@ public:
 				count++;
 		return count;
 	}
+
 	// use bitcounting to avoid counting each one separately
 	uint64_t fast_eratosthenes() {
 		uint64_t count = 1; // 2 is a special case

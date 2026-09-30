@@ -1,4 +1,27 @@
 // 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
+// 0  0  1  0  1  0  1  1  1   0   1   0   1   1   1   0   1   0   1   0   1   0   1   1                            1
+// at n=1'000'000'001,
+// O(log log n)  omega(1)
+void original_eratosthenes(bool primes[], uint64_t n) {
+    uint64_t count = 0;
+    for (uint64_t i = 2; i <= n; i++) {
+        primes[i] = true;
+    }
+
+    for (uint64_t i = 2; i <= n; i++) {
+        if (!primes[i]) {
+            count++;
+            for (uint64_t j = 2*i; j <= n; j += i) {
+                primes[j] = false;
+            }
+        }
+    }
+//    *pcount = count;
+}
+
+
+
+// 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
 // 0  0  1  0  1  0  1  1  1   0   1   0   1   1   1   0                               1
 // i=97
 //O(log log n)

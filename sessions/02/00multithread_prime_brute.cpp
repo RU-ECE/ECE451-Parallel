@@ -4,6 +4,7 @@
 #include <cmath>
 using namespace std;
 
+// 28 = 1 ,2 , 4    |   7,    14,  28
 // example n = 1000000001
 // O(sqrt n)  omega(1)
 inline bool isPrime(uint64_t n) {

@@ -4,7 +4,7 @@
 using namespace std;
 
 // n is the total number we are doing
-int globalvar[10]; // pass in any information you want...
+int globalvar[1`]; // pass in any information you want...
 
 
 uint64_t counts[4];
@@ -27,7 +27,5 @@ int main() {
     thread t1(countprime, n, 2, batchsize, step, &counts[0]);
     thread t2(f, batchsize+1, 2*batchsize, step, &counts[1]);
     t1.join();
-    uint64_t total_primes = counts[0] + counts[1];
-    // at the end , all threads add up their counts to get the total
 
 }

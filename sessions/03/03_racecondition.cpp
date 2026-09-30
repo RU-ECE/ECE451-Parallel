@@ -4,19 +4,13 @@
 
 using namespace std;
 
-int balance =0;
+int balance =0; // global variable (in memory)
 
-void deposit(int amount) {
-  //    sleep(1);
-    int tmp = balance + amount;
-    //    sleep(1);
-    //cout << "depositing " << amount << endl;
-    balance = tmp;
-}
+void deposit(int amount);
 
 /*
 race condition
-
+    balance=0
     thread1: load balance:   rax = 0
     thread2: load balance:   rax = 0
     thread1: rax+1 = 1
@@ -65,13 +59,24 @@ int main() {
 
     const int n = 100'000'000;
     // synchronous is faster!
-//    processDeposits(n);
-//    processWithdrawals(n);
+    processDeposits(n);
+    processWithdrawals(n);
+    cout << "synchronous balance=" << balance << '\n';
+#if 0
     thread t1(processDeposits, n);
     thread t2(processWithdrawals, n);
     t1.join();
     t2.join();
     cout << balance << endl;
+#endif
     return 0;
 
+}
+
+void deposit(int amount) {
+    //    sleep(1);
+    int tmp = balance + amount;
+    //    sleep(1);
+    //cout << "depositing " << amount << endl;
+    balance = tmp;
 }
