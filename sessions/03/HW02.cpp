@@ -4,7 +4,7 @@ HW02: Prime numbers using Eratosthenes mega uber bit tricks
 
 1. to calculate primes up to (n)...
 2. first calculate primes up to s = sqrt(n)
-   a. recursively... calculate primes up to sqrt(s) EXTRA CREDIT
+   a. recursively... calculate primes up to sqrt(s) EXTRA CREDIT +10%
 
 3. now do the rest in parallel!
 
