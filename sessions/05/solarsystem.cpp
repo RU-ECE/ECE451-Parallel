@@ -3,6 +3,7 @@
 #include <random>
 #include <vector>
 
+
 /*
 
     Gravity Simulator
@@ -25,6 +26,11 @@
 class Vec3d {
 public:
     double x,y,z;
+
+    // Vec3d a(1,2,3);
+    // Vec3d b(4,5);
+    // Vec3d c(6);
+    // Vec3d d; // d = (0,0,0)
     Vec3d(double x = 0, double y = 0, double z = 0) : x(x), y(y), z(z) {}
     // without friend:  a.dist(b,c) WRONG
     friend double distsq(const Vec3d& a, const Vec3d& b) {
@@ -42,8 +48,10 @@ public:
     friend Vec3d operator*(const Vec3d& a, double s) {
         return Vec3d(a.x * s, a.y * s, a.z * s);
     }
+
+    // remember in C++ ONLY WRITE IT ONCE... let the compiler inline things
     friend Vec3d operator*(double s, const Vec3d& a) {
-        return Vec3d(a.x * s, a.y * s, a.z * s);
+        return a * s;
     }
     friend Vec3d operator/(const Vec3d& a, double s) {
         return Vec3d(a.x / s, a.y / s, a.z / s);
@@ -55,10 +63,20 @@ public:
     friend double dist(const Vec3d& a, const Vec3d& b) {
         return sqrt(distsq(a,b));
     }
-    friend std::ostream& operator<<(std::ostream& s, const Vec3d& a) {
+    //   2 << 3     00010  left shift by 3  00010000
+    friend std::ostream& operator <<(std::ostream& s, const Vec3d& a) {
         return s << a.x << ',' << a.y << ',' << a.z;
     }
 };
+
+/*
+    Represent a gravitational body in a solar system
+    each body has
+        mass
+        position
+        velocity
+
+*/
 
 class Body { 
 public:
@@ -141,16 +159,20 @@ System::System(int n) {
 
 void System::stepForward(double dt) {
     for (uint32_t i = 0; i < bodies.size(); i++) {
-        bodies[i].a = Vec3d(0,0,0);
+        bodies[i].a = Vec3d(0,0,0);  //local variable would be faster
         for (uint32_t j = 0; j < bodies.size(); j++) {
             if (i == j) continue;
             // a_i = G m_j / d^2 along the unit vector (pos_j - pos_i)/d
             double d = dist(bodies[i].pos, bodies[j].pos);
-            double s = Body::G * bodies[j].mass / (d*d*d);
-            bodies[i].a += (bodies[j].pos - bodies[i].pos) * s;
+            double F = Body::G * bodies[i].mass * bodies[j].mass / (d*d);
+            double a = F / bodies[i].mass;
+            bodies[i].a += a * (bodies[j].pos - bodies[i].pos)/d ;
+            // make it faster by NOT WRITING TO MEMORY EVERY TIME!!!
+            // calculate in a local variable that can be put into a register
+            // then write to bodes[i].a ONCE
         }
         // this is not correct. Can you think why?
-        // bodies[i].v += bodies[i].a * dt;
+        // bodies[i].v += bodies[i].a * dt; // true if a is constant for dt
         // bodies[i].pos += bodies[i].v * dt;
     }
     /*

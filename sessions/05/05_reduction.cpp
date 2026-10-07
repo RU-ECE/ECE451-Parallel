@@ -1,5 +1,6 @@
 #include <omp.h>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 double dot(const double a[], const double b[], int n) {
@@ -10,6 +11,35 @@ double dot(const double a[], const double b[], int n) {
         sum += a[i] * b[i];
     return sum;
 }
+
+double factorial(int n) {
+    double prod = 1;
+    for (int i = 1; i <= n; i++) 
+      prod *= i;
+    return prod;
+}
+
+
+// this isn't worth it because factorial isn't enough work, but shows the idea
+double omp_factorial(int n) {
+    double prod = 1;
+    #pragma omp parallel for reduction(*:prod)
+    for (int i = 1; i <= n; i++) 
+      prod *= i;
+    return prod;
+}
+
+// this is a BAD idea
+double omp_factorial_noreduction(int n) {
+    double prod = 1;
+    #pragma omp parallel for
+    for (int i = 1; i <= n; i++) 
+      prod *= i;
+    return prod;
+}
+
+
+
 
 int main() {
     const int n = 100'000'000;
@@ -26,5 +56,24 @@ int main() {
          << " time=" << t1 - t0 << " threads=" << omp_get_max_threads() << '\n';
     delete[] a;
     delete[] b;
+    int p = 100;
+    t0 = omp_get_wtime();
+    double fac = factorial(p);
+    t1 = omp_get_wtime();
+    cout << setprecision(15);
+    cout << "omp_factorial=" << fac << "time = " << (t1-t0) << '\n';
+
+
+    t0 = omp_get_wtime();
+    fac = omp_factorial(p);
+    t1 = omp_get_wtime();
+    cout << setprecision(15);
+    cout << "omp_factorial=" << fac << "time = " << (t1-t0) << '\n';
+
+    t0 = omp_get_wtime();
+    fac = omp_factorial_noreduction(p);
+    t1 = omp_get_wtime();
+    cout << setprecision(15);
+    cout << "omp_factorial=" << fac << "time = " << (t1-t0) << '\n';
     return 0;
 }
