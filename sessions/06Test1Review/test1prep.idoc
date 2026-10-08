@@ -1,0 +1,502 @@
+@style(ECE451_quiz, topic= Example QuestionsParallel Computation)
+
+@h1(C++ Optimization)
+@qc(1) For a correct C++ program, an unoptimized program must produce ___ results. (same/different)
+
+@qc(1) For an incorrect C++ program, can optimization change the observed results? (yes/no)
+
+@qc(1) If a loop's runtime drops from 10 seconds to nearly zero after optimization, what likely happened? (10 words or less)
+
+@qc(1) Why might a compiler remove a loop that takes 10 seconds? (10 words or less)
+
+@qc(1) Why should parallel code keep frequently used values in registers? (10 words or less)
+
+@qc(1) Which is generally faster for repeated access: a register or RAM? (register/RAM)
+
+@qc(1) Which is generally faster: register access or cache-miss memory access? (register/memory)
+
+@qc(1) What compiler optimization eliminates redundant loads of an unchanged value? (name)
+
+@qc(1) What compiler optimization removes computations whose results are never used? (name)
+
+@qc(1) What compiler optimization replaces multiplication by a constant power of two with a shift when valid? (name)
+
+@qc(1) What compiler optimization moves loop-invariant computations outside a loop? (name)
+
+@qc(1) What compiler optimization reduces function-call overhead by substituting the function body? (name)
+
+@qc(1) Why can eliminating memory accesses improve parallel performance? (10 words or less)
+
+@qc(1) Which is usually easier to optimize for SIMD: independent register operations or dependent memory accesses? (choose one)
+
+@qc(1) What type of dependency prevents two instructions from executing independently? (dependency type)
+
+@qc(1) If iteration i reads a value written by iteration i-1, what dependency exists? (name)
+
+@qc(1) Can a compiler freely reorder two operations when doing so changes observable behavior? (yes/no)
+
+@qc(1) Does C++ optimization generally preserve the behavior of a well-defined program? (yes/no)
+
+@qc(1) What does -O0 usually prioritize over execution speed? (10 words or less)
+
+@qc(1) Which GCC option enables common optimizations without the most aggressive optimization level? (-O0/-O1/-O3)
+
+@qc(1) Which GCC option typically enables more aggressive optimization than -O1? (-O0/-O1/-O3)
+
+@qc(1) Can -O3 guarantee that every program runs faster than with -O2? (yes/no)
+
+@qc(1) Why can optimization make debugging harder? (10 words or less)
+
+@qc(1) If a computed value is never used, what may the optimizer do? (10 words or less)
+
+@qc(1) What is dead-code elimination? (10 words or less)
+
+@qc(1) What is loop unrolling? (10 words or less)
+
+@qc(1) What is the main purpose of loop vectorization? (10 words or less)
+
+@qc(1) Which can execute multiple data operations per instruction: SIMD or scalar execution? (SIMD/scalar)
+
+@qc(1) Why can register pressure reduce performance? (10 words or less)
+
+@qc(1) If registers run out, where might the compiler store temporary values? (location)
+
+@qc(1) What is the name for storing register values temporarily in memory? (term)
+
+@qc(1) Does eliminating redundant loads necessarily eliminate all memory accesses? (yes/no)
+
+@qc(1) Why can a memory-bound loop gain little from arithmetic optimization? (10 words or less)
+
+@qc(1) If two threads repeatedly modify the same shared variable, what performance problem may occur? (10 words or less)
+
+@qc(1) What optimization can allow independent loop iterations to execute simultaneously? (10 words or less)
+
+@h1(C++ Threads)
+
+@qc(1) What information is needed by a thread?
+
+@qc(1) what information is needed for a process that is more than a thread?
+
+@qc(1) Why are threads faster for context-switching than threads?
+
+@qc(1) If you have millions of threads, what is the necessary limitation as a result?
+
+@qc(1) What do you include for a thread in C++
+
+
+
+@h1(SIMD instructions)
+
+@qc(1) How many 256-bit YMM registers are available in AVX2 on x86-64?
+@q(n:16)
+
+@qc(1) Name the first and last AVX2 YMM registers.
+@q(f:ymm0,ymm15)
+
+@qc(1) How many bits are in one YMM register?
+@q(n:256)
+
+@qc(1) How many bytes are in one YMM register?
+@q(n:32)
+
+@qc(1) How many bits are in a double-precision floating-point number?
+@q(n:64)
+
+@qc(1) How many bits are in a single-precision floating-point number?
+@q(n:32)
+
+@qc(1) How many double-precision numbers fit in one YMM register?
+@q(n:4)
+
+@qc(1) How many single-precision floats fit in one YMM register?
+@q(n:8)
+
+@qc(1) How many bits in an AVX512 register?
+@q(n:512)
+What is the name @q(f:zmm)
+
+@qc(2) Vector execution is not necessarily four times faster than scalar execution. Give two reasons, each in 10 words or fewer.
+@q(f:memory bandwidth limits, instruction overhead, dependencies, unused lanes, clock frequency reduction)
+
+@qc(1) Scalar execution takes 1200 cycles. AVX2 execution takes 300 cycles. What is the speedup?
+@q(n:4)
+
+@qc(1) Scalar execution takes 2400 cycles. AVX2 execution takes 800 cycles. What is the speedup?
+@q(n:3)
+
+@qc(1) Scalar execution takes 1000 cycles. AVX2 execution takes 250 cycles. What is the percentage reduction in execution time?
+@q(n:75)
+
+@qc(1) An AVX2 loop processes four doubles per iteration. For N=1000, how many full vector iterations are required?
+@q(n:250)
+
+@qc(1) An AVX2 loop processes four doubles per iteration. For N=1003, how many elements remain after full vector iterations?
+@q(n:3)
+
+@qc(2) Write scalar C++ code to compute sum(1.0/i) for i=1 through N. No array accesses.
+@code(language=c++)
+double sum=0.0;
+for (int i=1; i<=N; ++i) sum += 1.0/i;)
+@end
+
+@qc(2) Write scalar C++ code to compute sum(1.0/(i*i)) for i=1 through N. Avoid integer overflow.
+@code(language=c++)
+double sum=0.0;
+for (int i=1; i<=N; ++i) { 
+    double x=i;
+    sum += 1.0/(x*x);
+}
+@end
+@qc(2) Write AVX2 code to compute sum(1.0/i) for i=1 through N, using four double-precision lanes. No array accesses.
+
+@qc(2) Write AVX2 code to compute sum(1.0/(i*i)) for i=1 through N, using four double-precision lanes. No array accesses.
+
+
+@qc(1) Scalar execution takes 4000 cycles. AVX2 execution takes 1250 cycles. Calculate speedup to two decimal places.
+@q(f:3.20)
+
+@qc(1) Scalar execution takes 6400 cycles. AVX2 execution is 3.2 times faster. How many cycles does AVX2 take?
+@q(n:2000)
+
+@qc(1) How many YMM registers are needed to hold 32 doubles?
+@q(n:8)
+
+@qc(1) A scalar loop performs 1000 iterations. An AVX2 loop processes four iterations per vector instruction. How many full vector iterations are needed?
+@q(n:250)
+
+
+
+@qc(10) What does this program print? Explain whether the output is guaranteed.
+
+```cpp
+int x = 10;
+
+void worker() {
+    x = 20;
+}
+
+int main() {
+    std::thread t(worker);
+    std::cout << x << '\n';
+    t.join();
+}
+```
+
+@qc(10) What does this program print? Explain why.
+
+```cpp
+void worker(int x) {
+    x++;
+}
+
+int main() {
+    int n = 10;
+    std::thread t(worker, n);
+    t.join();
+    std::cout << n << '\n';
+}
+```
+
+@qc(10) What does this program print? Explain why.
+
+@code(language=cpp)
+void worker(int x) {
+    x++;
+}
+
+int main() {
+    int n = 10;
+    std::thread t(worker, n);
+    std::cout << n << '\n';
+}
+@end
+
+@code(language=cpp)
+void worker(int x) {
+    x++;
+}
+
+int main() {
+    int n = 1000;
+    std::thread t1(worker, n);
+    std::thread t2(worker, n);
+    t1.join();
+    t1.join();
+    std::cout << n << '\n';
+}
+@end
+
+
+@qc(20) Write a short C++ program that creates four threads. Each thread computes the sum of a different, non-overlapping portion of an integer array. The main thread must obtain and print the total sum after all threads finish.
+
+@h2(AVX Instructions)
+
+@qc(3) An AVX2 YMM register is 256 bits wide. How many 32-bit integers, single-precision floating-point values, and double-precision floating-point values fit in one YMM register?
+
+@qc(3) Two YMM registers contain eight 32-bit integers each. An element-wise packed addition instruction is applied to them. Describe exactly what happens to the eight pairs of values. Does the instruction compute the sum of all eight elements?
+
+@qc(4) A YMM register contains the values `[1, 2, 3, 4, 5, 6, 7, 8]`. Describe the result of adding the vector `[10, 20, 30, 40, 50, 60, 70, 80]` using packed 32-bit integer addition.
+
+@qc(3) Explain the difference between SIMD parallelism and thread-level parallelism. Give one example of each.
+
+@qc(3) An AVX2 program processes eight 32-bit integers per vector instruction. An array contains 1,003 integers. How many complete vectors can be processed, and how many elements remain? Describe one way to handle the remainder safely.
+
+@qc(4) A programmer loads eight floating-point values into a YMM register and performs one packed addition instruction. The programmer expects the result to be the sum of all eight values. Explain the error and describe the additional computation required.
+
+@qc(4) A program uses four threads, and each thread performs AVX2 operations on eight 32-bit elements per packed instruction. Assuming all four threads execute one packed addition instruction concurrently, how many element-wise additions are performed in total? Explain why this does not guarantee a fourfold speedup over a single thread.
+
+@qc(4) Write a short C++ program using AVX2 intrinsics to add two arrays of eight single-precision floating-point values and store the result in a third array. Assume the arrays contain exactly eight elements and the target supports AVX2.
+
+@h1(SIMD instructions)
+@qc(5) Write a swap where every element of a vector register gets sorted between two registers
+
+@qc(5) Given the following numbers and an optimal sorting network n=4, show how you would sorted
+[5,2,3,1]
+
+@qc(5) Write a sequence calculating z=z*z + c  for REAL numbers, doing it floats in parallel in an avx register
+
+@h1(OpenMP)
+
+@qc(1) Explain what #pragma does? (10 words or less)
+
+
+@qc(10) What does this program print? Explain why the output is not necessarily the value a programmer might expect.
+
+```cpp
+int sum = 0;
+
+#pragma omp parallel
+{
+    sum++;
+}
+
+std::cout << sum << '\n';
+```
+
+@qc(4) Identify the bug in this program and rewrite the OpenMP directive or code to compute the correct sum.
+
+```cpp
+int sum = 0;
+
+#pragma omp parallel for
+for (int i = 0; i < 1000; i++) {
+    sum += i;
+}
+
+std::cout << sum << '\n';
+```
+
+@qc(3) What is an OpenMP barrier? What must happen before a thread can pass an ordinary barrier?
+
+@qc(3) Explain the difference between `parallel for` and a parallel region containing an ordinary loop. How does work get distributed in each case?
+
+@qc(4) Write a short OpenMP program that computes the sum of the integers from 0 through 999,999. Use a reduction to obtain the correct result.
+
+
+@qc(1) What does #pragma omp parallel for do? (10 words or less)
+@qc(1) What does #pragma omp barrier do? (10 words or less)
+@qc(1) What does #pragma omp parallel do? (10 words or less)
+@qc(1) Which OpenMP directive creates a team of threads? (directive)
+@qc(1) Which OpenMP directive distributes loop iterations among threads? (directive)
+@qc(1) Which OpenMP directive synchronizes threads at a barrier? (directive)
+
+@qc(1) What does this program output?
+@code(cpp, run, lines=8)
+#include <stdio.h>
+#include <omp.h>
+int main() {
+    #pragma omp parallel num_threads(4)
+    printf("X");
+}
+@end
+
+@qc(1) How many times is X printed?
+@code(cpp, run, lines=8)
+#include <stdio.h>
+int main() {
+    #pragma omp parallel num_threads(4)
+    {
+        printf("X");
+    }
+}
+@end
+
+@qc(1) How many times is each loop iteration executed?
+@code(cpp, run, lines=8)
+#include <stdio.h>
+int main() {
+    #pragma omp parallel for num_threads(4)
+    for (int i = 0; i < 8; i++)
+        printf("%d ", i);
+}
+@end
+
+@qc(1) How many loop iterations does each thread receive with static scheduling?
+@code(cpp, run, lines=8)
+#include <omp.h>
+int main() {
+    #pragma omp parallel for num_threads(4) schedule(static)
+    for (int i = 0; i < 16; i++)
+        work(i);
+}
+@end
+
+@qc(1) Which thread executes iteration i=0 with this schedule?
+@code(cpp, run, lines=8)
+#pragma omp parallel for num_threads(4) schedule(static, 2)
+for (int i = 0; i < 8; i++)
+    work(i);
+@end
+
+@qc(1) Which thread executes iteration i=5 with this schedule?
+@code(cpp, run, lines=8)
+#pragma omp parallel for num_threads(4) schedule(static, 2)
+for (int i = 0; i < 8; i++)
+    work(i);
+@end
+
+@qc(1) How many threads reach the barrier?
+@code(cpp, run, lines=8)
+#pragma omp parallel num_threads(4)
+{
+    work();
+    #pragma omp barrier
+}
+@end
+
+@qc(1) What happens if one thread skips this barrier? (short answer)
+@code(cpp, run, lines=8)
+#pragma omp parallel num_threads(4)
+{
+    if (omp_get_thread_num() != 0)
+        #pragma omp barrier
+}
+@end
+
+@qc(1) Is an implicit barrier present at the end of omp parallel for? (yes/no)
+
+@qc(1) Does omp parallel for have an implicit barrier by default? (yes/no)
+
+@qc(1) Which clause sets the number of threads? (clause)
+@code(cpp, run, lines=4)
+#pragma omp parallel num_threads(6)
+work();
+@end
+
+@qc(1) What is the value of omp_get_thread_num() for the master thread? (integer)
+
+@qc(1) What values can omp_get_thread_num() return with 4 threads? (range)
+
+@qc(1) How many times does each thread execute this statement?
+@code(cpp, run, lines=8)
+#pragma omp parallel num_threads(4)
+{
+    #pragma omp single
+    work();
+}
+@end
+
+@qc(1) Which threads execute the loop body?
+@code(cpp, run, lines=8)
+#pragma omp parallel for num_threads(4)
+for (int i = 0; i < 4; i++)
+    work(i);
+@end
+
+@qc(1) Does the following code guarantee that B prints after A? (yes/no)
+@code(cpp, run, lines=8)
+#pragma omp parallel num_threads(4)
+{
+    #pragma omp for
+    for (int i = 0; i < 4; i++)
+        work(i);
+    printf("B");
+}
+@end
+
+@qc(1) What directive removes the implicit barrier at the end of a loop? (directive clause)
+@code(cpp, run, lines=4)
+#pragma omp for nowait
+for (int i = 0; i < 8; i++)
+    work(i);
+@end
+
+@qc(1) Is this code guaranteed to print 1000? (yes/no)
+@code(cpp, run, lines=8)
+int sum = 0;
+#pragma omp parallel for
+for (int i = 0; i < 1000; i++)
+    sum++;
+@end
+
+@qc(1) Which clause makes this sum safe? (clause)
+@code(cpp, run, lines=8)
+int sum = 0;
+#pragma omp parallel for reduction(+:sum)
+for (int i = 0; i < 1000; i++)
+    sum++;
+@end
+
+@qc(1) What is the final value of sum?
+@code(cpp, run, lines=8)
+int sum = 0;
+#pragma omp parallel for num_threads(4) reduction(+:sum)
+for (int i = 0; i < 100; i++)
+    sum++;
+@end
+
+@qc(1) Does each thread have a private copy of i in this loop? (yes/no)
+@code(cpp, run, lines=4)
+#pragma omp parallel for
+for (int i = 0; i < 10; i++)
+    work(i);
+@end
+
+@qc(1) Which clause explicitly makes x private to each thread? (clause)
+@code(cpp, run, lines=4)
+#pragma omp parallel private(x)
+work();
+@end
+
+@qc(1) What is the final value of x?
+@code(cpp, run, lines=8)
+int x = 10;
+#pragma omp parallel num_threads(4) private(x)
+{
+    x = 5;
+}
+printf("%d", x);
+@end
+
+@qc(1) How many times does work() execute?
+@code(cpp, run, lines=8)
+#pragma omp parallel num_threads(4)
+{
+    #pragma omp master
+    work();
+}
+@end
+
+@qc(1) Which directive allows exactly one unspecified thread to execute a block? (directive)
+@code(cpp, run, lines=4)
+#pragma omp single
+work();
+@end
+
+@qc(1) Does omp single have an implicit barrier by default? (yes/no)
+
+@qc(1) What is the purpose of schedule(dynamic, 1)? (10 words or less)
+
+@qc(1) With schedule(static, 1), which thread gets iteration 0? (thread ID)
+
+@qc(1) With schedule(static, 1), which thread gets iteration 4 when there are 4 threads? (thread ID)
+
+@qc(1) What is the default OpenMP data-sharing attribute for a variable declared inside a parallel block? (attribute)
+
+@qc(1) What is the default data-sharing attribute for a variable decla
+
+@h1(Combined Parallelism)
+
+@qc(4) A parallel program is slower than its sequential version. Give three possible explanations involving thread overhead, synchronization, workload size, memory bandwidth, or the amount of available parallelism.
+
+
