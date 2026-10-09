@@ -1,85 +1,135 @@
 @style(ECE451_quiz, topic= Example QuestionsParallel Computation)
 
 @h1(C++ Optimization)
-@qc(1) For a correct C++ program, an unoptimized program must produce ___ results. (same/different)
+@qc(1) For a correct C++ program, an unoptimized program must produce ___ results than optimized. (same/different)
+   two reasons for differences: 1. your program is wrong 2. THERE WOULD HAVE TO BE A BUG IN THE compiler
 
 @qc(1) For an incorrect C++ program, can optimization change the observed results? (yes/no)
 
 @qc(1) If a loop's runtime drops from 10 seconds to nearly zero after optimization, what likely happened? (10 words or less)
 
+concrete example:
+sum the numbers from 1 to N
+
+compiler knows sum=n(n+1)/2
+
+
 @qc(1) Why might a compiler remove a loop that takes 10 seconds? (10 words or less)
 
+for games NEVER DO A BUSY LOOP. You ahve to wait()
+
 @qc(1) Why should parallel code keep frequently used values in registers? (10 words or less)
+   1. memory is slow compared to registers
+   2. it's shared by ALL CORES (that's your bottleneck)
+
+@qc(1) How fast are registers?
+you can read 2 registers, add and write back ALL IN ONE clock
+Row access time RAS  column access CAS = 130clock DDR5 RAM Burst 16 sequential is fast (TEST #2)
 
 @qc(1) Which is generally faster for repeated access: a register or RAM? (register/RAM)
+REGISTER
+for future reference (not on test)
+L1 cache HIT 4 clock
+L2 cache HIT 12
+L3 cache HIT 30 (shared by the entire chip)
 
 @qc(1) Which is generally faster: register access or cache-miss memory access? (register/memory)
+REGISTER
 
-@qc(1) What compiler optimization eliminates redundant loads of an unchanged value? (name)
+*IGNORE  @qc(1) What compiler optimization eliminates redundant loads of an unchanged value? (name)
 
-@qc(1) What compiler optimization removes computations whose results are never used? (name)
+ @qc(1) What compiler optimization removes computations whose results are never used? (name)
+DEAD CODE ELIMINATION
 
 @qc(1) What compiler optimization replaces multiplication by a constant power of two with a shift when valid? (name)
+* PEEPHOLE OPTMIZATION
+
+ADD  %rax, %rbx #rbx = rbx + rax
+LEA  %rax, %rax*4, %rcx # rcx*5
 
 @qc(1) What compiler optimization moves loop-invariant computations outside a loop? (name)
+* CODE HOISTING
 
 @qc(1) What compiler optimization reduces function-call overhead by substituting the function body? (name)
+inlining
+
+inline double add(double a, double b) { return a + b; }
+
+
+double y = add(2,3); // 2+3 ==> 5
 
 @qc(1) Why can eliminating memory accesses improve parallel performance? (10 words or less)
 
-@qc(1) Which is usually easier to optimize for SIMD: independent register operations or dependent memory accesses? (choose one)
+* @qc(1) What type of dependency prevents two instructions from executing independently? (dependency type)
 
-@qc(1) What type of dependency prevents two instructions from executing independently? (dependency type)
-
-@qc(1) If iteration i reads a value written by iteration i-1, what dependency exists? (name)
+* @qc(1) If iteration i reads a value written by iteration i-1, what dependency exists? (name)
 
 @qc(1) Can a compiler freely reorder two operations when doing so changes observable behavior? (yes/no)
+NO
 
 @qc(1) Does C++ optimization generally preserve the behavior of a well-defined program? (yes/no)
 
-@qc(1) What does -O0 usually prioritize over execution speed? (10 words or less)
-
-@qc(1) Which GCC option enables common optimizations without the most aggressive optimization level? (-O0/-O1/-O3)
-
-@qc(1) Which GCC option typically enables more aggressive optimization than -O1? (-O0/-O1/-O3)
+* @qc(1) Which GCC option enables common optimizations without the most aggressive optimization level?
+    g++ -O2 optimize but don't get crazy
+    g++ -O3 get aggressive (usually no difference)
 
 @qc(1) Can -O3 guarantee that every program runs faster than with -O2? (yes/no)
 
 @qc(1) Why can optimization make debugging harder? (10 words or less)
+The debugger no longer steps 1:1 through your code. Pieces no longer exist.
+Some variables are optimized out of existence.
 
 @qc(1) If a computed value is never used, what may the optimizer do? (10 words or less)
-
-@qc(1) What is dead-code elimination? (10 words or less)
+eliminate it
 
 @qc(1) What is loop unrolling? (10 words or less)
+do multiple loops in one iteration to reduce loop overhead
 
 @qc(1) What is the main purpose of loop vectorization? (10 words or less)
+do it n at a time
 
 @qc(1) Which can execute multiple data operations per instruction: SIMD or scalar execution? (SIMD/scalar)
+Single instruction multiple data
+(but modern CPUs try to execute 4 instructions at a time)
 
 @qc(1) Why can register pressure reduce performance? (10 words or less)
+running out of registers means we have to read/write to memory (slow)
 
 @qc(1) If registers run out, where might the compiler store temporary values? (location)
+STACK
 
-@qc(1) What is the name for storing register values temporarily in memory? (term)
+* @qc(1) What is the name for storing register values temporarily in memory? (term)
 
 @qc(1) Does eliminating redundant loads necessarily eliminate all memory accesses? (yes/no)
+NO. Our problem may require memory access
 
 @qc(1) Why can a memory-bound loop gain little from arithmetic optimization? (10 words or less)
+there isn't enough computation so we are waiting on memory. That is the bottleneck.
 
 @qc(1) If two threads repeatedly modify the same shared variable, what performance problem may occur? (10 words or less)
-
-@qc(1) What optimization can allow independent loop iterations to execute simultaneously? (10 words or less)
+If two threads DON'T use a mutex, then there will be a RACE CONDITION
+if they DO it will be slow
 
 @h1(C++ Threads)
 
 @qc(1) What information is needed by a thread?
+PC, STACK
+
 
 @qc(1) what information is needed for a process that is more than a thread?
+PC Rip, STACK, MMU
 
-@qc(1) Why are threads faster for context-switching than threads?
+*@qc(1) Why are threads faster for context-switching than processes?
+*there is more context to switch for processes
 
 @qc(1) If you have millions of threads, what is the necessary limitation as a result?
+
+
+@code(cpp, run)
+void f() {
+    int x[4*1024*1024]; // kaboom
+}
+@end
 
 @qc(1) What do you include for a thread in C++
 
@@ -115,8 +165,8 @@
 @q(n:512)
 What is the name @q(f:zmm)
 
-@qc(2) Vector execution is not necessarily four times faster than scalar execution. Give two reasons, each in 10 words or fewer.
-@q(f:memory bandwidth limits, instruction overhead, dependencies, unused lanes, clock frequency reduction)
+* @qc(2) Vector execution is not necessarily four times faster than scalar execution. Give two reasons, each in 10 words or fewer.
+* @q(f:memory bandwidth limits, instruction overhead, dependencies, unused lanes, clock frequency reduction)
 
 @qc(1) Scalar execution takes 1200 cycles. AVX2 execution takes 300 cycles. What is the speedup?
 @q(n:4)
@@ -134,7 +184,7 @@ What is the name @q(f:zmm)
 @q(n:3)
 
 @qc(2) Write scalar C++ code to compute sum(1.0/i) for i=1 through N. No array accesses.
-@code(language=c++)
+@code(language=cpp, run)
 double sum=0.0;
 for (int i=1; i<=N; ++i) sum += 1.0/i;)
 @end
@@ -147,9 +197,7 @@ for (int i=1; i<=N; ++i) {
     sum += 1.0/(x*x);
 }
 @end
-@qc(2) Write AVX2 code to compute sum(1.0/i) for i=1 through N, using four double-precision lanes. No array accesses.
 
-@qc(2) Write AVX2 code to compute sum(1.0/(i*i)) for i=1 through N, using four double-precision lanes. No array accesses.
 
 
 @qc(1) Scalar execution takes 4000 cycles. AVX2 execution takes 1250 cycles. Calculate speedup to two decimal places.
@@ -168,7 +216,7 @@ for (int i=1; i<=N; ++i) {
 
 @qc(10) What does this program print? Explain whether the output is guaranteed.
 
-```cpp
+@code(language=cpp)
 int x = 10;
 
 void worker() {
@@ -180,11 +228,11 @@ int main() {
     std::cout << x << '\n';
     t.join();
 }
-```
+@end
 
 @qc(10) What does this program print? Explain why.
 
-```cpp
+@code(language=cpp)
 void worker(int x) {
     x++;
 }
@@ -193,27 +241,43 @@ int main() {
     int n = 10;
     std::thread t(worker, n);
     t.join();
-    std::cout << n << '\n';
-}
-```
-
-@qc(10) What does this program print? Explain why.
-
-@code(language=cpp)
-void worker(int x) {
-    x++;
-}
-
-int main() {
-    int n = 10;
-    std::thread t(worker, n);
-    std::cout << n << '\n';
+    std::cout << n << '\n'; // 10 because x is a COPY
 }
 @end
 
 @code(language=cpp)
-void worker(int x) {
-    x++;
+void worker(int* x) {
+    (*x)++;
+}
+
+int main() {
+    int n = 10;
+    std::thread t(worker, &n);
+    t.join();
+    std::cout << n << '\n'; // 11 because the thread is DONE
+}
+@end
+
+
+@qc(10) What does this program print? Explain why.
+
+@code(language=cpp)
+void worker(int *x) {
+    (*x)++;
+}
+
+int main() {
+    int n = 10;
+    std::thread t(worker, &n);
+    std::cout << n << '\n'; // will print 10 or 11 depending AND CRASH
+}
+@end
+
+@code(language=cpp)
+int x = 0;
+void worker(int n) {
+    for (int i = 0; i < n; i++)
+      x++;
 }
 
 int main() {
