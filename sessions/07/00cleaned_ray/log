@@ -1,0 +1,17 @@
+Elapsed: test1               80940ms
+Elapsed: test2               8573ms
+Elapsed: test4               814908ms
+Elapsed: test5               1643169ms
+Elapsed: test3               81055ms
+Key world not found in config file
+Key min_coord not found in config file
+Key max_coord not found in config file
+Key samples_per_pixel not found in config file
+Key max_depth not found in config file
+Key vfov not found in config file
+Key defocus_angle not found in config file
+Key focus_dist not found in config file
+Key lookfrom not found in config file
+Key lookat not found in config file
+Key vup not found in config file
+Elapsed: test1               3255ms

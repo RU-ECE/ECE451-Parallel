@@ -57,8 +57,7 @@ void compute_fern(vector<uint32_t>& image)
 
     Point p{0.0, 0.0};
 
-    for (uint32_t i = 0; i < POINTS; ++i)
-    {
+    for (uint32_t i = 0; i < POINTS; ++i) {
         const uint32_t r = distribution(rng);
 
         // try cache?  choice = lookup[r];
@@ -66,7 +65,7 @@ void compute_fern(vector<uint32_t>& image)
             r < 1  ? 0 :
             r < 86 ? 1 :
             r < 93 ? 2 : 3;
-
+    
         p = transform(p, choice);
 
         const int px = static_cast<int>(
