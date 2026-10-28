@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+
 //==============================================================================================
 // Originally written in 2016 by Peter Shirley <ptrshrl@gmail.com>
 //
@@ -69,19 +71,15 @@ class camera {
         initialize();
         std::cout << "Scanlines remaining:\n";
         for (int j = 0; j < image_height; j++) {
+					if (j % 10 == 0) {
+						std::cout << j << ' ' << std::flush << '\r';
+					}
             for (int i = 0; i < image_width; i++) {
                 color pixel_color(0,0,0);
                 for (int sample = 0; sample < samples_per_pixel; sample++) {
                     ray r = get_ray(i, j);
                     pixel_color += ray_color(r, max_depth, world);
                 }
-#if 0
-            color scaled_p = pixel_samples_scale * pixel_color;
-            uint32_t r = conv_color(scaled_p.x());
-            uint32_t g = conv_color(scaled_p.y());
-            uint32_t b = conv_color(scaled_p.z());
-            uint32_t p = (((((0xFF00 | b) << 8) | g) << 8) | r); // this is the same.
-#endif
                 uint32_t p2 = conv_color(pixel_samples_scale * pixel_color);
                 pixels[j*image_width + i] = p2;
             }
