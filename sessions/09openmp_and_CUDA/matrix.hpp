@@ -5,7 +5,7 @@
 
 class matrix {
 private:
-	double* m; // row-major order
+	float* m; // row-major order
 	
 	/*
 		random access: RAS + CAS + 15 gives you 16  burst 64-bit numbers
@@ -18,7 +18,7 @@ private:
 
 public:
 	matrix(uint32_t rows, uint32_t cols) :
-		rows(rows), cols(cols), m(new double[rows*cols]) {
+		rows(rows), cols(cols), m(new float[rows*cols]) {
 		for (uint32_t i = 0; i < rows*cols; i++)
 			m[i] = 0;
 	}
@@ -30,7 +30,7 @@ public:
 
 	double operator ()(uint32_t r, uint32_t c) const { return m[r * cols + c]; }
 	double& operator ()(uint32_t r, uint32_t c) { return m[r * cols + c]; }
-	void operator=(double v) {
+	void operator=(float v) {
 		uint32_t c = 0;
 		for (uint32_t i = 0; i < rows; i++)
 			for (uint32_t j = 0; j < cols; j++)

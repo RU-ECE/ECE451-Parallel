@@ -1,0 +1,47 @@
+#include "matrix.hpp"
+
+void copy_to_device(uint32_t n, double*d_a, double*d_b, double*d_c, 
+    matrix& a, matrix& b, matrix& c) {
+        uint32_t size = n * n * sizeof(double);
+    cudaMalloc(&d_a, size);
+//ILLEGAL: we cannot access device memory from host cout << *d_a;
+    cudaMalloc(&d_b, size);
+    cudaMalloc(&d_c, size);
+    cudaMemcpy(d_a, a.data(), size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_b, b.data(), size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_c, c.data(), size, cudaMemcpyHostToDevice);
+}
+
+/*
+   A[]			       B[]                    C[]
+
+   a00 a01 ...   a0,n-1        b00 b01 ...   b0,n-1   c00 c01 ...   c0,n-1
+   a10 a11 ...   a1,n-1
+   ...
+
+   an-1,0
+
+
+
+
+*/
+
+
+__global__ void mult_cuda(uint32_t n, const float a[], const float b[],
+	   			      float c[]) {
+  uint32_t col = blockIdx.x * blockDim.x + threadIdx.x;
+  uint32_t row = blockIdx.y * blockDim.y + threadIdx.y;
+  float dot = 0;
+  for (int i = 0; i < n; i++) {
+    dot += a[row * n + i] * b[n * i + col];
+  }
+  c[row*n + col] = dot;
+}
+
+
+
+int main() {
+  matrix a(n,n), b(n,n), c(n,n);
+  copy_to_device(a, b, c);
+  mult_cuda(a, b, c);
+}
